@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="0" version="0.1" whiteThreshold="255">
+    <structure referenceSheet="KDACL.jpg">
+        <bubble-group bottomY="913" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="0" leftX="707" rightX="733"
+            rows="1" topY="913" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1001</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="913" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="1" leftX="1441" rightX="1467"
+            rows="1" topY="913" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1002</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="913" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="2" leftX="2178" rightX="2200"
+            rows="1" topY="913" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1003</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1126" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="3" leftX="707" rightX="733"
+            rows="1" topY="1122" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1004</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1126" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="4" leftX="1441" rightX="1467"
+            rows="1" topY="1122" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1005</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1126" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="5" leftX="2178" rightX="2200"
+            rows="1" topY="1122" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1006</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1331" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="6" leftX="707" rightX="733"
+            rows="1" topY="1331" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1007</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1331" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="7" leftX="1441" rightX="1467"
+            rows="1" topY="1331" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1008</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1331" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="8" leftX="2178" rightX="2200"
+            rows="1" topY="1331" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1009</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1540" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="9" leftX="707" rightX="733"
+            rows="1" topY="1540" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1010</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1540" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="10" leftX="1442" rightX="1468"
+            rows="1" topY="1540" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1011</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1540" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="11" leftX="2178" rightX="2200"
+            rows="1" topY="1540" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1012</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1748" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="12" leftX="707" rightX="733"
+            rows="1" topY="1748" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1013</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1748" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="13" leftX="1441" rightX="1467"
+            rows="1" topY="1748" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1014</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1748" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="14" leftX="2178" rightX="2200"
+            rows="1" topY="1748" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1015</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1957" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="15" leftX="707" rightX="733"
+            rows="1" topY="1957" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1016</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1957" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="16" leftX="1441" rightX="1467"
+            rows="1" topY="1957" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1017</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1957" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="17" leftX="2178" rightX="2200"
+            rows="1" topY="1957" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1018</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2166" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="18" leftX="707" rightX="733"
+            rows="1" topY="2166" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1019</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2166" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="19" leftX="1441" rightX="1467"
+            rows="1" topY="2166" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1020</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2166" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="20" leftX="2178" rightX="2200"
+            rows="1" topY="2166" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1021</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2375" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="21" leftX="707" rightX="733"
+            rows="1" topY="2375" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1022</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2375" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="22" leftX="1442" rightX="1468"
+            rows="1" topY="2375" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1023</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2375" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="23" leftX="2178" rightX="2200"
+            rows="1" topY="2375" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1024</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2583" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="24" leftX="707" rightX="733"
+            rows="1" topY="2583" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1025</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2583" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="25" leftX="1442" rightX="1468"
+            rows="1" topY="2583" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1026</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2583" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="26" leftX="2178" rightX="2200"
+            rows="1" topY="2583" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1027</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2792" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="27" leftX="707" rightX="733"
+            rows="1" topY="2792" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1028</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2792" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="28" leftX="1441" rightX="1467"
+            rows="1" topY="2792" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1029</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2792" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="29" leftX="2178" rightX="2200"
+            rows="1" topY="2792" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1030</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3006" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="30" leftX="707" rightX="734"
+            rows="1" topY="3001" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1031</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3004" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="31" leftX="1441" rightX="1466"
+            rows="1" topY="3001" type="vertical">
+            <answer-key>1</answer-key>
+            <question-id>KDACL1032</question-id>
+            <question-value>1</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="80" width="56"
+            x="138" y="138"/>
+        <registration-marker height="56" searchRadius="86" width="56"
+            x="2343" y="3370"/>
+    </structure>
+    <answers>
+        <sheet id="KDACL.jpg" page="0" rotation="0" src="reference sheets/KDACL.jpg"/>
+    </answers>
+</omr-project>

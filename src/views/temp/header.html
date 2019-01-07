@@ -1,0 +1,410 @@
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+<header class="c-navbar u-mb-medium">
+
+    <button class="c-sidebar-toggle u-mr-small">
+        <span>
+            <img src="img/main/logo-g.png">
+        </span>
+    </button>
+
+
+    <div class="c-dropdown dropdown" style="margin-right: 20px;">
+        <a class="c-avatar c-avatar--xsmall has-dropdown dropdown-toggle" id="dropdwonMenuAvatar" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            환자등록
+        </a>
+
+        <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuUser" style="width: 20rem;">
+            <div class="dropdown-item o-media patientRegister-dropdown">
+                <div class="o-media__body">
+                    <h5 class="u-mb-zero">환자 등록</h5><br />
+                    <form id="patient-register" method="post">
+                        <table>
+                            <tr>
+                                <td class="info_question_label">
+                                    <label class="lab_info" for="name">
+                                        병원번호
+                                    </label>
+                                </td>
+                                <td>
+                                    <input autocomplete="off" class="" id="register-hospital" name="hospital" required="required"
+                                        type="text" value="" aria-required="true" readonly="readonly">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="info_question_label">
+                                    <label class="lab_info" for="name">
+                                        이름
+                                    </label>
+                                </td>
+                                <td>
+                                    <input autocomplete="off" class="" id="register-name" name="name" required="required"
+                                        type="text" aria-required="true" placeholder=" 10자 이내">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="info_question_label">
+                                    <label class="lab_info" for="name">
+                                        주민번호
+                                    </label>
+                                </td>
+                                <td>
+                                    <input autocomplete="off" class="" id="register-birth" name="birthdate" required="required"
+                                        type="text" placeholder=" 앞 6자리" maxlength="6" num="0" style="width: 55%;"> -
+                                    <input autocomplete="off" class="" id="register-birth-gender" name="birthdate"
+                                        required="required" type="text" maxlength="1" num="1" style="width: 12%;">
+                                    * * * * * *
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="info_question_label">
+                                    <label class="lab_info" for="history_number">
+                                        차트번호
+                                    </label>
+                                </td>
+                                <td>
+                                    <input autocomplete="off" class="" id="register-historynumber" name="historyNumber"
+                                        required="required" type="text" aria-required="true">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="wrap_btn">
+                            <input id="patient-register-submit" type="submit" value="  등록하기  ">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation items that will be collapes and toggle in small viewports -->
+    <nav class="c-nav collapse" id="main-nav">
+        <ul class="c-nav__list">
+            <li class="c-nav__item nav-search">
+                <div class="c-field c-field--inline has-icon-right search-input">
+                    <span class="c-field__icon">
+                        <i class="fa fa-search"></i>
+                    </span>
+
+                    <label class="u-hidden-visually" for="navbar-search-small">Seach</label>
+                    <input class="c-input s-input" id="navbar-search-small" type="text" placeholder="환자명">
+                </div>
+                <div class="patientList-dropdown">
+                    <table class="table">
+                        <thead>
+                            <tr class="head-row">
+                                <th class="th-name"><span style="">이름</span></th>
+                                <th class="th-gender"><span style="">성별</span></th>
+                                <th class="th-birthdate"><span style="">생년월일</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="add-tr">
+                            <tr class="empty-record" style="display: none;">
+                                <td>
+                                    <label class="lab_info" for="name">
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="lab_info" for="name">
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="lab_info" for="name">
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li class="c-nav__item nav-patient">
+                <label class="c-nav__link patient-name"></label>
+                <i id="nav-patient-delete" class="fa fa-times-circle delete"></i>
+            </li>
+            <li class="c-nav__item nav-dsmv">
+                <a class="c-nav__link"></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- // Navigation items  -->
+
+
+
+    <div class="c-dropdown dropdown u-ml-auto">
+        <a class="c-avatar c-avatar--xsmall has-dropdown dropdown-toggle" href="#" id="dropdwonMenuAvatar" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <img class="c-avatar__img" src="img/avatar-72.jpg" alt="User's Profile Picture">
+            <span class="user-name"></span>
+        </a>
+
+        <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdwonMenuAvatar" style="margin: 15px 0 0;">
+            <a class="c-dropdown__item dropdown-item" href="#" style="border-bottom: none;"><i class="fa fa-user u-mr-xsmall"></i>관리자
+                페이지</a>
+            <a class="c-dropdown__item dropdown-item" href="#"><i class="fa fa-check-square-o u-mr-xsmall"></i>마이 페이지</a>
+            <a class="c-dropdown__item dropdown-item" href="/logout"><i class="fa fa-power-off u-mr-xsmall"></i>Logout</a>
+        </div>
+    </div>
+
+    <button class="c-nav-toggle" type="button" data-toggle="collapse" data-target="#main-nav">
+        <span class="c-nav-toggle__bar"></span>
+        <span class="c-nav-toggle__bar"></span>
+        <span class="c-nav-toggle__bar"></span>
+    </button><!-- // .c-nav-toggle -->
+</header>
+
+<script>
+    //사용자이름
+    var userName = Cookies.get("user_name");
+    $(".user-name").append(userName);
+
+    //병원번호
+    var hospital_id = Cookies.get("user_hospital");
+    $("#register-hospital").val(hospital_id);
+
+    //환자등록
+    function sendPatientDataToServer(result) {
+        $.ajax({
+            type: 'POST',
+            url: '/register/patient',
+            data: JSON.stringify(result),
+            success: function (data) {
+                if (data["isSuccess"]) {
+                    alert("등록되었습니다.");
+                    var patient = JSON.parse(data["patient"]);
+                    changeTargetPatient(patient);
+                } else {
+                    alert("등록에 실패하였습니다 : " + data["message"]);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error : ' + textStatus);
+                console.log('error : ' + errorThrown);
+            },
+            contentType: "application/json"
+        });
+    };
+
+    $("#patient-register").on("submit", function (event) {
+        event.preventDefault();
+        nameLength = $("#register-name").val().length;
+        if (nameLength > 9) {
+            alert('환자 등록 시 이름은 10자 이내로 작성하셔야 합니다.');
+        } else {
+            var birthdate = $("#register-birth").val();
+
+            var gender = parseInt($("#register-birth-gender").val());
+            if (gender % 2 == 0) {
+                gender = "F";
+            } else {
+                gender = "M";
+            }
+
+            var result =
+            {
+                "hospital": $("#register-hospital").val(),
+                "name": $("#register-name").val(),
+                "gender": gender,
+                "birthdate": $("#register-birth-gender").val().match(/(1|2|5|6)/) ? '19' + birthdate : birthdate,
+                "historynumber": $("#register-historynumber").val(),
+                "insurance": $("#register-insurance").val()
+            };
+            sendPatientDataToServer(result);
+        }
+    });
+
+    $("#patient-register input[name=birthdate]").keyup(function (event) {
+        var ids = ["register-birth", "register-birth-gender"];
+        var num = parseInt($(this).attr("num"));
+
+        if (this.value.length == this.maxLength) {
+            if (num < 1) {
+                var nextId = ids[num + 1];
+                var next = $("#" + nextId + "");
+                if (next) {
+                    $(this).blur();
+                    next.focus();
+                }
+            } else {
+                $(this).blur();
+                $("#register-historynumber").focus();
+            }
+        }
+    });
+
+    //주민번호 숫자만 입력
+    $('#patient-register input[name=birthdate]').keypress(function (event) {
+        if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
+            event.preventDefault();
+
+        }
+    });
+
+    //환자 검색 리스트 다른곳 클릭 시 숨김
+    $(document).bind('click', function (e) {
+        if (!$(e.target).is('.nav-search') && !$(e.target).parents('.nav-search').is('.nav-search')) {
+            $(".nav-search .search-input .s-input").val("")
+            $(".nav-search .patientList-dropdown").hide();
+        }
+    });
+
+    //환자 검색 체크
+    $(".nav-search .search-input .s-input").on("input", function (event) {
+        if (event.keycode == 13) {
+            event.preventDefault();
+        }
+        var keyword = $(".nav-search .search-input .s-input").val()
+        if (keyword == "") {
+            updateResultTableAtNav([])
+            return;
+        }
+        requestPatientDataForNavSearch({ "keyword": keyword });
+    });
+
+    //환자 검색 후 환자 존재하면 리스트 append
+    function updateResultTableAtNav(results) {
+        $(".nav-search .patientList-dropdown .table .record").remove();
+
+        if (results.length > 0) {
+            $(".nav-search .patientList-dropdown").show();
+        } else {
+            $(".nav-search .patientList-dropdown").hide();
+        }
+
+        $.each(results, function (index, result) {
+            var tag =
+                "<tr class='record'>" +
+                "<td><label class='lab_info' for='name'>" + result["name"] + "</label></td>" +
+                "<td><label class='lab_info' for='gender'>" + ((result["gender"] == "M") ? "남" : "여") + "</label></td>" +
+                "<td><label class='lab_info' for='birthdate'>" + result["birthdate"].substring(0, 10) + "</label></td>" +
+                "<td style='display:none;'><label class='lab_info' for='id' style='display:none;'>" + result["id"] + "</label></td>" +
+                "</tr>"
+            $(".add-tr").append(tag);
+        })
+    }
+
+    //환자 검색 AJAX
+    function requestPatientDataForNavSearch(keyword) {
+        var objEv = event.srcElement;
+        var num = "{}[]()<>?_|~`!@#$%^&*-+\"'\\/ ";  //특수문자 제한
+        event.returnValue = true;
+
+        for (var i = 0; i < objEv.value.length; i++) {
+            if (-1 != num.indexOf(objEv.value.charAt(i)))
+                event.returnValue = false;
+        }
+
+        if (!event.returnValue) {
+            alert("특수문자는 입력하실 수 없습니다.");
+            objEv.value = "";
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/search/patient',
+                data: JSON.stringify(keyword),
+                success: function (data) {
+                    if (data["isSuccess"]) {
+                        var parsed = JSON.parse(data["result"]);
+                        var results = [];
+                        for (var result in parsed) {
+                            results.push(parsed[result]);
+                        }
+                        searchResults = results;
+                        updateResultTableAtNav(results);
+                    } else {
+                        console.log("검색 에러 : " + data["result"]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error : ' + textStatus);
+                    console.log('error : ' + errorThrown);
+                },
+                contentType: "application/json"
+            });
+        }
+    }
+
+    //검색 환자리스트에서 환자 선택 시
+    $(document).on("click", ".nav-search .table tr", function () {
+        if ($(this).hasClass("empty-record")) {
+            return;
+        }
+        var id = $(this).find("label[for='id']").text();
+        var patient;
+        $.each(searchResults, function (index, result) {
+            if (result["id"] == id) {
+                patient = result;
+            }
+        })
+        changeTargetPatient(patient);
+    })
+
+    //환자변경 시 cookie 변경 함수
+    function changeTargetPatient(patient) {
+        if (confirm(patient["name"] + " 환자로 변경하시겠습니까?")) {
+            Cookies.set('patient', patient);
+            $(".nav-search .patientList-dropdown").hide();
+            $(".nav-search .search-input .input").val("");
+            updateCurrentPatient(patient);
+            window.location.reload();
+        }
+    }
+
+    //선택환자 보여주기
+    function updateCurrentPatient(patient) {
+        var birthdate = new Date(patient["birthdate"]);
+        var history_number = patient["history_number"];
+        var curDate = new Date();
+        var diff = curDate - birthdate;
+        var age = Math.floor(diff / 31557600000) + 1; // Divide by 1000*60*60*24*365.25
+        $(".nav-patient .patient-name").text("선택환자 : " + patient["name"] + " " + patient["gender"] + "/" + age + " 번호 : " + history_number);
+        $(".nav-patient").show();
+    }
+
+    //선택환자 마우스 동작 효과
+    $(document).on("mouseover", ".nav-patient", function () {
+        $(this).find(".delete").css("opacity", "100");
+        $(this).find(".patient-name").css("margin-right", "3px");
+    });
+
+    $(document).on("mouseleave", ".nav-patient", function () {
+        $(this).find(".delete").css("opacity", "0");
+        $(this).find(".patient-name").css("margin-right", "0");
+    });
+
+
+    //선택 환자 취소
+    $("#nav-patient-delete").click(function () {
+        if (confirm("환자 선택을 취소하시겠습니까?")) {
+            Cookies.set('patient', '');
+            Cookies.remove('patient', { path: '' });
+            $(".c-nav__item .nav-patient").hide();
+            $(".c-nav__item .nav-dsmv").hide();
+            window.location.reload();
+        }
+    });
+
+    //선택된 환자 있을 시 환자정보 항상 보여주기
+    function showIfPatientSelected() {
+        var patient = Cookies.get("patient");
+        if ((typeof patient === typeof undefined) || !patient || patient == "") {
+            return;
+        }
+        var patientData = JSON.parse(Cookies.get("patient"));
+        var name = patientData["name"];
+        if (name && name != "") {
+            updateCurrentPatient(patientData)
+        }
+    }
+
+    showIfPatientSelected();
+
+    var patientId, patientData;
+    var patient_dsmv = [];
+    var count = 0;
+    if (typeof Cookies.get("patient") != typeof undefined) {
+        patientData = JSON.parse(Cookies.get("patient"));
+        patientId = patientData.id;
+    }
+</script>

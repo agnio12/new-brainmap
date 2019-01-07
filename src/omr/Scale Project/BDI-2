@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="0" version="0.1" whiteThreshold="255">
+    <structure referenceSheet="BDI-2.jpg">
+        <bubble-group bottomY="660" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="0" leftX="2144" rightX="2186"
+            rows="4" topY="425" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1008</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1028" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="1" leftX="2144" rightX="2186"
+            rows="4" topY="793" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1009</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1396" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="2" leftX="2144" rightX="2186"
+            rows="4" topY="1161" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1010</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1764" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="3" leftX="2144" rightX="2186"
+            rows="4" topY="1529" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1011</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2132" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="4" leftX="2144" rightX="2186"
+            rows="4" topY="1897" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1012</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2500" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="5" leftX="2144" rightX="2186"
+            rows="4" topY="2265" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1013</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2868" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="6" leftX="2144" rightX="2186"
+            rows="4" topY="2633" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1014</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3236" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="7" leftX="2144" rightX="2186"
+            rows="4" topY="3001" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1015</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="170" width="56"
+            x="138" y="139"/>
+        <registration-marker height="56" searchRadius="50" width="56"
+            x="2343" y="3370"/>
+    </structure>
+    <answers>
+        <sheet id="BDI-2.jpg" page="0" rotation="0" src="reference sheets/BDI-2.jpg"/>
+    </answers>
+</omr-project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="-1" version="0.1" whiteThreshold="256">
+    <structure referenceSheet="KSAD-1.jpg">
+        <bubble-group bottomY="1677" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="0" leftX="1572" rightX="2144"
+            rows="5" topY="1209" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>KSAD1001,KSAD1002,KSAD1003,KSAD1004,KSAD1005</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2373" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="5" leftX="1571" rightX="2144"
+            rows="5" topY="1909" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>KSAD1006,KSAD1007,KSAD1008,KSAD1009,KSAD1010</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3112" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="10" leftX="1571" rightX="2144"
+            rows="5" topY="2645" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>KSAD1011,KSAD1012,KSAD1013,KSAD1014,KSAD1015</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="170" width="56"
+            x="139" y="139"/>
+        <registration-marker height="56" searchRadius="90" width="56"
+            x="2343" y="3370"/>
+    </structure>
+    <answers>
+        <sheet id="KSAD-1.jpg" page="0" rotation="0" src="reference sheets/KSAD-1.jpg"/>
+    </answers>
+</omr-project>

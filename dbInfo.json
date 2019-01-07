@@ -1,0 +1,7 @@
+{
+    "host" : "52.14.97.81",
+    "user" : "root",
+    "port" : "3306",
+    "password" : "db1004",
+    "database" : "brainmap"
+}

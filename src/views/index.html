@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BrainMap</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- weather -->
+    <link rel="stylesheet" type="text/css" href="css/weather-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/weather-icons-wind.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/datepicker.min.css" />
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="c-graph-card" data-mh="graph-cards">
+                        <div class="c-graph-card__content">
+                            <h3 class="c-graph-card__title">
+                                <%- moodchecker%>
+                            </h3>
+                            <p class="c-graph-card__date">To date, the last 10 Mood check have been made</p>
+                            <h3 class="c-graph-card__title">Average monthly mood <span id="mood-avg"></span></h3>
+                        </div>
+
+                        <div class="c-graph-card__chart mood">
+                            <canvas id="js-chart-mood" width="300" height="93"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="c-graph-card" data-mh="graph-cards">
+                        <div class="c-graph-card__content">
+                            <h3 class="c-graph-card__title">Sleep</h3>
+                            <p class="c-graph-card__date">To date, the last 10 Sleep check have been made</p>
+                            <h3 class="c-graph-card__title">Average sleep duration <span id="sleep-avg"></span>hr</h3>
+                        </div>
+
+                        <div class="c-graph-card__chart sleep">
+                            <canvas id="js-chart-sleep" width="300" height="93"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+                    <ul class="c-tabs__list nav nav-tabs" id="myTab" role="tablist">
+                        <li>
+                            <a class="c-tabs__link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                                aria-controls="nav-home" aria-selected="true">
+                                All Tasks Overview
+                            </a>
+                        </li>
+                        <li>
+                            <a class="c-tabs__link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                                aria-controls="nav-profile" aria-selected="false">
+                                Comment
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="c-tabs__content tab-content u-mb-large" id="nav-tabContent">
+                        <!-- All Tasks Overview -->
+                        <div class="c-tabs__pane active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                            style="padding: 0;">
+                            <div>
+                                <table class="c-table c-table--zebra" style="border: none;">
+                                    <tbody>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
+
+                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
+
+                                            <td class="c-table__cell">
+                                                <span id="suicidal-text">Suicidal idea</span>
+                                            </td>
+
+                                            <td class="c-table__cell">
+                                                <span id="menstruation-text">Menstruation</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
+
+                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
+
+                                            <td class="c-table__cell">
+                                                <span id="suicidal-text">Suicidal idea</span>
+                                            </td>
+
+                                            <td class="c-table__cell">
+                                                <span id="menstruation-text">Menstruation</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
+
+                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
+
+                                            <td class="c-table__cell">
+                                                <span id="suicidal-text">Suicidal idea</span>
+                                            </td>
+
+                                            <td class="c-table__cell">
+                                                <span id="menstruation-text">Menstruation</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
+
+                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
+
+                                            <td class="c-table__cell">
+                                                <span id="suicidal-text">Suicidal idea</span>
+                                            </td>
+
+                                            <td class="c-table__cell">
+                                                <span id="menstruation-text">Menstruation</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="c-tabs__pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
+                            style="padding: 0 20px;">
+                            <div id="home-comment">
+                                <table class="c-table" style="border: none;">
+                                    <tbody>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">2018-12-12</td>
+                                            <td class="c-table__cell">일이삼사오육칠팔구십육칠팔구십</td>
+                                        </tr>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">2018-12-12</td>
+                                            <td class="c-table__cell">일이삼사오육칠팔구십일이삼사오육칠팔구십</td>
+                                        </tr>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">2018-12-12</td>
+                                            <td class="c-table__cell">일이삼사오육칠팔구십일이삼사오육</td>
+                                        </tr>
+                                        <tr class="c-table__row">
+                                            <td class="c-table__cell">2018-12-12</td>
+                                            <td class="c-table__cell">사오육칠팔구십일이삼사오육칠팔구십</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <span class="c-divider has-text u-mb-medium">BrainMap Projects</span>
+
+            <div class="row">
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+
+                    <div class="c-project-card u-mb-medium">
+
+                        <div class="c-project-card__content">
+                            <div class="c-project-card__head">
+                                <h4 class="c-project-card__title">검사 결과</h4>
+                                <p class="c-project-card__info"><a href="#.">READ MORE</a></p>
+                            </div>
+
+                            <% var recentDatas = JSON.parse(datas) %>
+                            <% var STAIX1Data = recentDatas.STAIX1 %>
+                            <% var STAIX2Data = recentDatas.STAIX2 %>
+                            <% var BDIData = recentDatas.BDI %>
+                            <% var ISIData = recentDatas.ISI %>
+
+                            <div class="state-wrapper">
+                                <!-- 우울척도 (BDI) -->
+                                <div class="c-project-card__meta state c-card__border-top">
+                                    <p style="font-size: 1.1rem; line-height: 30px;">
+                                        <span>
+                                            <%- BDIData["date"] %></span><br />
+                                        <span>우울척도</span>
+                                    </p>
+                                    <p style="font-size: 2.6rem;">
+                                        <%- BDIData["value"] %>
+                                    </p>
+                                    <p style="padding-top: 9px;">
+                                        <span><img src="img/main/BDI.jpg" style="width: 50px;"></span>
+                                    </p>
+                                </div>
+
+                                <!-- 상태불안척도 (ST1) -->
+                                <div class="c-project-card__meta state c-card__border-top">
+                                    <p style="font-size: 1.1rem; line-height: 30px;">
+                                        <span>
+                                            <%- STAIX1Data["date"] %></span><br />
+                                        <span>상태불안척도</span>
+                                    </p>
+                                    <p style="font-size: 2.6rem;">
+                                        <%- STAIX1Data["value"] %>
+                                    </p>
+                                    <p style="padding-top: 9px;">
+                                        <span><img src="img/main/ST1.jpg" style="width: 50px;"></span>
+                                    </p>
+                                </div>
+
+                                <!-- 특성불안척도 (ST2) -->
+                                <div class="c-project-card__meta state c-card__border-top">
+                                    <p style="font-size: 1.1rem; line-height: 30px;">
+                                        <span>
+                                            <%- STAIX2Data["date"] %></span><br />
+                                        <span>특성불안척도</span>
+                                    </p>
+                                    <p style="font-size: 2.6rem;">
+                                        <%- STAIX2Data["value"] %>
+                                    </p>
+                                    <p style="padding-top: 9px;">
+                                        <span><img src="img/main/ST2.jpg" style="width: 50px;"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+
+                    <div class="c-project-card u-mb-medium">
+
+                        <div class="c-project-card__content">
+                            <div class="c-project-card__head">
+                                <h4 class="c-project-card__title">환자 분석 (AI)</h4>
+                                <p class="c-project-card__info"><a href="#.">READ MORE</a></p>
+                            </div>
+
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span id="analysis-risk"></span><br />
+                                    <span id="analysis-sleep"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+
+                    <div class="c-project-card u-mb-medium">
+
+                        <div class="c-project-card__content">
+                            <div class="c-project-card__head">
+                                <h4 class="c-project-card__title">치료 추천</h4>
+                                <p class="c-project-card__info"><a href="#.">READ MORE</a></p>
+                            </div>
+
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span id="last-data"></span><br />
+                                    <a href="#.">청구 가능한 보험코드&emsp;〉</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+
+                    <div class="c-project-card u-mb-medium">
+
+                        <div class="c-project-card__content">
+                            <div class="c-project-card__head">
+                                <h4 class="c-project-card__title">병원 정보</h4>
+                                <p class="c-project-card__info">BrainMap Information</p>
+                            </div>
+
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <a href="/admin?type=patient_info"><span id="hospital-tot">등록된 환자&emsp;〉&emsp;</span></a><br />
+                                    <a><span id="app-tot">어제 앱 업데이트 환자&emsp;〉&emsp;</span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- // .row -->
+
+            <!-- DATA -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="c-card c-card--responsive u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line">
+                            <h5 class="c-card__title">DATA</h5>
+                            <div id="data-search">
+                                <input type="text" placeholder="검사명 검색" id="scale-name-search">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <a href="#" style="font-size: 0.75rem;">READ MORE</a>
+                        </div>
+
+                        <div class="scale-data-wrapper" style="width: 100%; max-height: 317px; overflow-y: auto;">
+                            <table class="c-table scale-data-table">
+                                <thead class="c-table__head c-table__head--slim c-card__border-bottom">
+                                    <tr class="c-table__row">
+                                        <th class="c-table__cell data__cell--head">검사날짜</th>
+                                        <th class="c-table__cell data__cell--head">검사명</th>
+                                        <th class="c-table__cell data__cell--head">검사결과</th>
+                                        <th class="c-table__cell data__cell--head">검사수</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="c-table__row empty-record" style="display:none;">
+                                        <td class="c-table__cell">
+                                            <span class="u-text-mute">
+                                                <label class='lab_info' for='scale-date'></label>
+                                            </span>
+                                        </td>
+                                        <td class="c-table__cell">
+                                            <label class='lab_info' for='scale-name'></label>
+                                        </td>
+                                        <td class="c-table__cell">
+                                            <span class="u-text-mute">
+                                                <label class='lab_info' for='scale-value'></label>
+                                            </span>
+                                        </td>
+                                        <td class="c-table__cell">
+                                            <label class='lab_info' for='scale-count'></label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATA Graph -->
+                <div class="col-md-6">
+                    <div class="c-card u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line">
+                            <h5 class="c-card__title scale-graph">
+                                <label class="scale-title-label">DATA GRAPH</label>
+                            </h5>
+                            <a href="#" style="font-size: 0.75rem;">READ MORE</a>
+                        </div>
+                        <div class="c-graph-card__chart data-graph">
+                            <div class="scale-indicator">
+                                <canvas id="js-chart-patient" width="300" height="105"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- // .row -->
+
+
+            <!-- WEATHER -->
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="c-card u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line">
+                            <h5 class="c-card__title">WEATHER</h5>
+                        </div>
+
+                        <div class="c-card u-p-medium u-text-center" style="border: none; overflow: auto;">
+                            <div class="weather-state">
+                                <i id="weather-icon" class="weather-icon wi wi-day-cloudy-windy"></i>
+                            </div>
+
+                            <div class="weather-infos">
+                                <span id="weather-location"></span>
+                                <span style="font-size: 23px; padding: 0;" id="weather-temp">-˚</span>
+                                <span id="weather-text"></span>
+                            </div>
+
+                            <div class="weather-sub-infos">
+                                <span class="weather-sub">
+                                    <i class="fas fa-thermometer-half"></i>&ensp;<span id="weather-max-temp" class="align-middle">-°</span>
+                                </span>
+
+                                <span class="weather-sub">
+                                    <i class="fas fa-wind"></i>&ensp;<span id="weather-wind" class="align-middle">-MPH</span>
+                                </span>
+
+                                <span class="weather-sub">
+                                    <i class="fas fa-tint"></i>&ensp;<span id="weather-humidity" class="align-middle">-%</span>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- DSM-V -->
+                <div class="col-md-7">
+                    <div class="c-card u-mb-medium" style="overflow: auto;">
+                        <div class="c-card__header c-card__header--transparent o-line" style="border-bottom: none;">
+                            <h5 class="c-card__title">DSM-V</h5>
+                            <a href="#">save</a>
+                        </div>
+                        <div id="dsmv-choice-box"></div>
+                    </div>
+                </div>
+
+            </div><!-- // .row -->
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="c-card u-mb-medium" style="overflow: auto">
+                        <div class="c-card__header c-card__header--transparent o-line" style="border: none;">
+                            <h5 class="c-card__title">교육자료</h5>
+                            <a href="#" style="font-size: 0.75rem;">READ MORE</a>
+                        </div>
+
+                        <div class="col-md-4" style="float: left;" id="home-edu-slick1">
+
+                        </div>
+
+                        <div class="col-md-4" style="float: left;" id="home-edu-slick2">
+                        </div>
+
+                        <div class="col-md-4" style="float: left;" id="home-edu-slick3">
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- // .row -->
+
+        </div><!-- // .container -->
+
+    </main><!-- // .o-page__content -->
+
+    <script type="text/javascript">
+        let results = <%- results %>;
+        let analysis_risk = <%- cnt[0].cnt %>;
+        let analysis_sleep = "<%-rtn[0].rtn%>";
+        let top_cnt = <%- topCnt %>;
+        let dsmv = <%- dsmv %>;
+
+        const moodchecker = typeof getUrlVars()["moodchecker"] === typeof undefined ? "Mood" : getUrlVars()["moodchecker"];
+
+        function getUrlVars() {
+            let vars = {};
+            window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+        (function onLoad() {
+            if (typeof Cookies.get("patient") != typeof undefined) {
+                patientData = JSON.parse(Cookies.get("patient"));
+                patientId = patientData.id;
+                patientName = patientData.name;
+            }
+        })(jQuery);
+
+        //처음 index 페이지로 접속 시
+        (function timer() {
+            if (patientId == undefined) {
+                $(".c-project-card__meta").hide();
+                $(".data-graph").hide();
+                $(".scale-data-wrapper").hide();
+                clearTimeout(timer);
+            } else {
+                $(".data-graph").show();
+                $(".scale-data-wrapper").show();
+
+                //검사결과 slide
+                $('.state-wrapper .state').hide();
+                $('.state-wrapper .state:first-child').show();
+                timer = setInterval(function () {
+                    $('.state-wrapper .state:first-child').hide()
+                        .next('.state').fadeIn(2500)
+                        .end().appendTo('.state-wrapper');
+                }, 3000);
+            }
+        })(jQuery);
+
+
+        //환자분석 - 자살 위험성
+        if (analysis_risk != 0) {
+            $("#analysis-risk").text("자살 위험성이 높은 환자입니다.");
+        }
+        //환자분석 - 수면
+        switch (analysis_sleep) {
+            case 'case1':
+                $("#analysis-sleep").text("평가 정확성에 대한 확인이 필요합니다.");
+                break;
+            case 'case2':
+                $("#analysis-sleep").text("평가 정확성에 대한 확인이 필요합니다.");
+                break;
+            case 'case3':
+                $("#analysis-sleep").text("수면 패턴에 대한 확인이 필요합니다.");
+                break;
+            case 'case4':
+                $("#analysis-sleep").text("수면 패턴에 대한 확인이 필요합니다.");
+                break;
+            case 'case5':
+                $("#analysis-sleep").text("수면 패턴에 대한 확인이 필요합니다.");
+                break;
+            case 'case6':
+                $("#analysis-sleep").text("수면에 대한 개입이 필요합니다.");
+                break;
+            case 'case7':
+                $("#analysis-sleep").text("수면 패턴에 대한 확인이 필요합니다.");
+                break;
+            case 'case8':
+                $("#analysis-sleep").text("수면에 대한 개입이 필요합니다.");
+                break;
+        }
+        //치료추천 - 마지막 검사
+        if (top_cnt[0].cnt > 0) { //일반환자
+            $("#last-data").append("마지막 검사 후 " + top_cnt[0].cnt + "일이 지났습니다.");
+        }
+        if (top_cnt[1].cnt > 0) { //자녀
+            $("#last-data").append("마지막 검사 후 " + top_cnt[1].cnt + "일이 지났습니다.");
+        }
+        //병원정보 - 등록된환자
+        $("#hospital-tot").append(top_cnt[2].cnt + "명");
+        //병원정보 - 앱 업데이트
+        $("#app-tot").append(top_cnt[3].cnt + "명");
+
+        //DATA table
+        let records = "";
+        for (i = 0; i < results.length; i++) {
+            let result = results[i];
+            records += "<tr class='record c-table_data_row c-table__row u-border-top-zero' id='" + result["scaleName"] + "' scale='" + result["scaleName"] + "' result-id='" + result["result_id"] + "'>";
+            records += "<td class='c-table__cell u-text-mute'>"
+            records += "<label class='lab_info' for='scale-date'>";
+            records += result["scaleDate"];
+            records += "</label>";
+            records += "</td>";
+            records += "<td class='c-table__cell'>";
+            records += "<label class='lab_info' for='scale-name'>";
+            records += result["scaleName"];
+            records += "</label>";
+            records += "</td>";
+            records += "<td class='c-table__cell u-text-mute'>";
+            records += "<label class='lab_info' for='scale-value'>";
+            records += result["value"];
+            records += "</label>";
+            records += "</td>";
+            records += "<td class='c-table__cell'>";
+            records += "<label class='lab_info' for='scale-count'>";
+            records += result["rnum"];
+            records += "</label>";
+            records += "</td>";
+            records += "</tr>";
+            if (i == 0) {
+                $(".scale-graph .scale-title-label").replaceWith("<label class='scale-title-label'>" + result["scaleName"] + "</label>");
+                let scale = result["scaleName"];
+                requestResult(scale, patientId);
+            }
+        }
+        $(records).insertBefore(".c-table .empty-record");
+        function filterResultTableByScale(scaleName) {
+            if (scaleName == "" || scaleName == null || typeof scaleName == typeof undefined) {
+                $(".c-table .record").css("display", "")
+                return;
+            }
+            $(".c-table .record").each(function (index, record) {
+                let targetScaleName = $(record).find("label[for='scale-name']").text().toLowerCase();
+                if (!targetScaleName.includes(scaleName)) {
+                    $(record).css("display", "none");
+                } else {
+                    $(record).css("display", "");
+                }
+            });
+        }
+        //DATA table tr 클릭 시
+        $(".c-table").on("click", ".record", function () {
+            if (typeof patientId == typeof undefined) {
+                return
+            }
+            let scale = $(this).attr("scale");
+            //scale에 맞는 그래프 다시 그려주기
+            $("#js-chart-patient").remove();
+            $(".scale-indicator").append('<canvas id="js-chart-patient" width="300" height="105"></canvas>');
+            requestResult(scale, patientId);
+            //그래프의 more 클릭 시 해당 Result 페이지로 이동
+            // if (doctor_scale[scale] == 1) {
+            //     $("#graph-more").attr("href", "/doctorResult?scale=" + scale);
+            // } else {
+            //     $("#graph-more").attr("href", "/patientResult?scale=" + scale);
+            // }
+        });
+        $("#scale-name-search").on("input", function (event) {
+            if (event.keycode == 13) {
+                event.preventDefault();
+            }
+            let keyword = $("#scale-name-search").val().toLowerCase()
+            filterResultTableByScale(keyword);
+        });
+
+        //chart-patient 데이터 가져오기 AJAX
+        function requestResult(scale, patientId) {
+            if (typeof patientId == typeof undefined) {
+                return
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/patient/result?scale=' + scale + '&patientId=' + patientId,
+                success: function (data) {
+                    if (data["isSuccess"]) {
+                        drawScaleGraph(data["result"]);
+                    } else {
+                        alert("스케일 결과를 가져오는데 실패하였습니다 : " + data["message"]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error : ' + textStatus);
+                    console.log('error : ' + errorThrown);
+                    alert("스케일 결과를 가져오는데 실패하였습니다 : " + errorThrown);
+                },
+                contentType: "application/json"
+            });
+        }
+
+        //chart-patient 그려주기
+        function drawScaleGraph(rawResults) {
+            if (typeof patientData == typeof undefined || typeof rawResults == typeof undefined || rawResults.length == 0) {
+                alert("스케일 결과를 가져오는데 실패하였습니다 : " + data["message"]);
+                return;
+            }
+            var name = patientData["name"];
+            var scale = rawResults[0].scale;
+            let results = rawResults;
+            var dates = [];
+            var datas = [];
+            $(".scale-title-label").text(scale);
+            results.forEach(function (item, index) {
+                dates.push(moment(item["date"]).format('MM.DD'));
+                datas.push(item["value"]);
+            });
+            while (dates.length < 10) {
+                dates.push(" ")
+            }
+            while (datas.length <= 10) {
+                datas.push(0)
+            }
+            var chartPatient = document.getElementById("js-chart-patient");
+            //chart-patient 설정
+            var barChartPatientData = {
+                labels: dates,
+                datasets: [{
+                    label: [name],
+                    data: datas,
+                    fill: true,
+                    lineTension: 0,
+                    backgroundColor: '#5AD946',
+                    borderWidth: 1,
+                    borderColor: "#5AD946",
+                    spanGaps: false
+                }]
+            };
+            if (chartPatient) {
+                var barChartPatient = new Chart(chartPatient, {
+                    type: 'roundedBar',
+                    data: barChartPatientData,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        hover: { // pointer 효과
+                            onHover: function (e) {
+                                var point = this.getElementAtEvent(e);
+                                if (point.length) e.target.style.cursor = 'pointer';
+                                else e.target.style.cursor = 'default';
+                            }
+                        },
+                        barRoundness: 1,
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            xAxes: [{
+                                barPercentage: 0.5,
+                                ticks: {
+                                    fontSize: '11',
+                                    fontColor: '#969da5'
+                                },
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.0)',
+                                    zeroLineColor: 'rgba(0,0,0,0.0)'
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+
+                            }]
+                        }
+                    }
+                });
+            }
+            //chart-patient 클릭 시 해당 검사 페이지 이동 - 위에 선언한 let results = rawResults; 통해 클릭 시 해당 id값을 가져와 페이지 이동
+            chartPatient.onclick = function (evt, idx) {
+                var activeCharts = barChartPatient.getElementAtEvent(evt);
+                if (activeCharts.length > 0) {
+                    var clickedElementindex = activeCharts[0]._index;
+                    if (typeof results[clickedElementindex].id === typeof undefined) {
+                        return;
+                    } else {
+                        var resultId = results[clickedElementindex].id;
+                    }
+                    if (confirm("선택한 검사 결과를 열람합니다.")) {
+                        window.location.href = "/edit/" + resultId;
+                    }
+                }
+            };
+        }
+
+        //DSM-V
+        let dsmv_contents = Object.values(dsmv).sort(function (a, b) {
+            return a.sort - b.sort;
+        });
+        (function dsmv() {
+            let dsmv_html = "";
+            let filter_dsmv_content = dsmv_contents.filter(value => value.hospital_used != 0);
+            if (filter_dsmv_content.length > 0) {
+                filter_dsmv_content.forEach(function (value, index) {
+                    dsmv_html += setDsmvHtml(value, index);
+                });
+            } else {
+                dsmv_contents.filter(value => value.default > 0).forEach(function (value, index) {
+                    dsmv_html += setDsmvHtml(value, index);
+                });
+            }
+            $("#dsmv-choice-box").append(dsmv_html);
+        })(jQuery);
+
+        //dsmv list 그려주기
+        function setDsmvHtml(value, index) {
+            let html = "";
+            if (index % 3 == 0) html += '<div>';
+            html +=
+                `<div class="col-md-4 c-todo" style="float: left; padding: 0.73rem 1.875rem;">
+                <span class="dsmv-check">
+                    <input class="c-todo__input dsmv-checkbox" type="checkbox" id="${value.code}" data-code="${value.code}" data-group-code="${value.title_code}" title="${value.code}"`;
+            if (value.patient_is_checked) html += ` checked="checked" `;
+            html += `><label class="c-todo__label dsmv-item-title" for="${value.code}">${value.question_name}</label>`;
+            if (value.question_code === "000") html += ` <a href="/dsmv#${value.title_code}">-></a> `;
+            html += `</span></div>`;
+            if (index % 3 == 2) html += '</div>';
+            return html;
+        }
+
+        //교육자료
+        (function education() {
+            $.ajax({
+                type: 'GET',
+                url: '/education',
+                success: function (응답) {
+                    if (!응답["isSuccess"]) {
+                        alert(응답["message"]);
+                    } else {
+                        drawEducationItems(응답["results"])
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error : ' + textStatus);
+                    console.log('error : ' + errorThrown);
+                    alert("교육자료를 받아오는데 실패하였습니다");
+                },
+                contentType: "application/json"
+            });
+            function drawEducationItems(results) {
+                results.forEach(function (item, i) {
+                    var itemTag =
+                        `<article class="c-plan" style="padding: 20px 20px 25px;">
+                            <a href="${item.pdf_dir}"><img class="c-project-card__img" src="img/main/0${i + 1}.jpg" alt="About the image"></a>
+                            <h4>
+                                <span class="edu-title">${item.title}</span>
+                                <span class="edu-date">${item.created_time}</span>
+                            </h4>
+                            <span class="c-plan__divider" style="margin: 7px 0 12px;"></span>
+                            <ul>
+                                <li class="c-plan__feature">
+                                    ${item.description}
+                                </li>
+                            </ul>
+                        </article>`;
+                    $("#home-edu-slick" + (i + 1)).append(itemTag);
+                })
+            }
+        })(jQuery);
+
+
+        //Mood & Sleep
+        $(document).ready(function () {
+            if (typeof patientData != typeof undefined) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/moodchecker/user/' + patientData.moodchecker_id + "/" + moodchecker,
+                    success: function (data) {
+                        if (data["isSuccess"]) {
+                            moodchecker_length = data["result"].length;
+                            drawMoodGraph(data["result"], moodchecker.toLowerCase())
+                            drawSleepGraph(data["result"], moodchecker.toLowerCase())
+                        } else {
+                            alert(data["message"]);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error : ' + textStatus);
+                        console.log('error : ' + errorThrown);
+                        alert("기분 정보 요청에 실패하였습니다");
+                    },
+                    contentType: "application/json"
+                });
+            }
+        });
+
+        //chart-mood 그려주기
+        function drawMoodGraph(rawResults) {
+            $("#js-chart-mood").remove();
+            $(".mood").append('<canvas id="js-chart-mood" width="300" height="93"></canvas>');
+
+            let results = rawResults.slice().reverse();
+
+            let moods = results.map(function (item) {
+                return item.mood;
+            });
+
+            var moodSum = 0.0;
+            for (var i = 0; i < moods.length; i++) {
+                moodSum += moods[i];
+            }
+            var moodAvg = moodSum / moods.length;
+            $("#mood-avg").text(moodAvg);
+
+            var dates = [];
+
+            results.forEach(function (item, index) {
+                dates.push(moment(item["created_time"]).format("MM-DD"));
+            });
+            while (dates.length < 10) {
+                dates.push(" ")
+            }
+
+            var chartMood = document.getElementById("js-chart-mood");
+
+            //chart-mood 설정
+            var lineChartMoodData = {
+                labels: dates,
+                datasets: [{
+                    data: moods,
+                    lineTension: 0,
+                    backgroundColor: 'rgba(163,136,227, 0.1)',
+                    borderWidth: 2,
+                    borderColor: "#886CE6",
+                    borderCapStyle: 'butt',
+                    pointBorderColor: "#fff",
+                    pointBackgroundColor: "#886CE6",
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 5,
+                    pointHoverBorderWidth: 1,
+                    pointHoverBackgroundColor: "#886CE6",
+                    pointHoverBorderColor: "#fff"
+                }]
+            };
+
+            if (chartMood) {
+                var lineChartMood = new Chart(chartMood, {
+                    type: 'line',
+                    data: lineChartMoodData,
+                    options: {
+                        layout: {
+                            padding: {
+                                left: 7,
+                                right: 7,
+                                top: 0,
+                                bottom: 0
+                            }
+                        },
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: '11',
+                                    fontColor: '#969da5'
+                                },
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.0)',
+                                    zeroLineColor: 'rgba(0,0,0,0.0)'
+                                }
+                            }],
+                            yAxes: [{
+                                display: false,
+                                ticks: {
+                                    beginAtZero: true,
+                                    max: 5,
+                                    min: -5
+                                },
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.0)',
+                                    zeroLineColor: 'rgba(0,0,0,0.0)'
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+
+        //sleep
+        function drawSleepGraph(rawResults) {
+            $("#js-chart-sleep").remove();
+            $(".sleep").append('<canvas id="js-chart-sleep" width="300" height="93"></canvas>');
+
+            let results = rawResults.slice().reverse();
+
+            let sleeps = results.map(function (item) {
+                return item.sleep_time;
+            });
+
+            var sleepSum = 0.0;
+            for (var i = 0; i < sleeps.length; i++) {
+                sleepSum += parseInt(sleeps[i]);
+            }
+            var sleepAvg = sleepSum / sleeps.length;
+            $("#sleep-avg").text(sleepAvg);
+
+            var dates = [];
+
+            results.forEach(function (item, index) {
+                dates.push(moment(item["created_time"]).format("MM-DD"));
+            });
+            while (dates.length < 10) {
+                dates.push(" ")
+            }
+
+            var chartSleep = document.getElementById("js-chart-sleep");
+
+            //chart-sleep 설정
+            var barChartSleepData = {
+                labels: dates,
+                datasets: [{
+                    data: sleeps,
+                    backgroundColor: '#1991EB',
+                }]
+            };
+
+            if (chartSleep) {
+                var barChartSleep = new Chart(chartSleep, {
+                    type: 'roundedBar',
+                    data: barChartSleepData,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        barRoundness: 1,
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                                barPercentage: 0.6,
+                                ticks: {
+                                    fontSize: '11',
+                                    fontColor: '#969da5'
+                                },
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.0)',
+                                    zeroLineColor: 'rgba(0,0,0,0.0)'
+                                }
+                            }],
+                            yAxes: [{
+                                display: false,
+                                ticks: {
+                                    beginAtZero: true,
+                                    max: 12
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+
+    <script src="js/main.min.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/twix.min.js"></script>
+    <script src="js/air-datepicker/datepicker.js"></script>
+    <script src="js/air-datepicker/i18n/datepicker.en.js"></script>
+    <script src="js/chart-custom.js"></script>
+    <!-- <script src="js/index.js"></script> -->
+
+</body>
+
+</html>

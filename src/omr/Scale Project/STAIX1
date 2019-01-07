@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="253" version="0.1" whiteThreshold="253">
+    <structure referenceSheet="STAIX1.jpg">
+        <bubble-group bottomY="1454" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="1" leftX="1572" rightX="2144"
+            rows="5" topY="1062" type="vertical">
+            <answer-key>1111,1110,1111,1111,1111</answer-key>
+            <question-id>ST1001,ST1002,ST1003,ST1004,ST1005</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2014" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="6" leftX="1572" rightX="2144"
+            rows="5" topY="1621" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>ST1006,ST1007,ST1008,ST1009,ST1010</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2573" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="11" leftX="1572" rightX="2144"
+            rows="5" topY="2181" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>ST1011,ST1012,ST1013,ST1014,ST1015</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3144" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="16" leftX="1572" rightX="2144"
+            rows="5" topY="2751" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>ST1016,ST1017,ST1018,ST1019,ST1020</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="97" width="56"
+            x="2343" y="3370"/>
+        <registration-marker height="56" searchRadius="200" width="56"
+            x="138" y="138"/>
+    </structure>
+    <answers>
+        <sheet id="STAIX1.jpg" page="0" rotation="0" src="reference sheets/STAIX1.jpg"/>
+    </answers>
+</omr-project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="0" version="0.1" whiteThreshold="0">
+    <structure referenceSheet="PSQI.jpg">
+        <bubble-group bottomY="2086" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="0" leftX="1578" rightX="2151"
+            rows="10" topY="1264" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111,1111,1111,1111,1111,1111</answer-key>
+            <question-id>PSQI1009,PSQI1010,PSQI1011,PSQI1012,PSQI1013,PSQI1014,PSQI1015,PSQI1016,PSQI1017,PSQI1018</question-id>
+            <question-value>0123,0123,0123,0123,0123,0123,0123,0123,0123,0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2453" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="10" leftX="1579" rightX="2151"
+            rows="1" topY="2453" type="vertical">
+            <answer-key>1111</answer-key>
+            <question-id>PSQI1020</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2703" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="11" leftX="1578" rightX="2151"
+            rows="1" topY="2702" type="vertical">
+            <answer-key>1111</answer-key>
+            <question-id>PSQI1021</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2931" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="12" leftX="1578" rightX="2151"
+            rows="1" topY="2931" type="vertical">
+            <answer-key>1111</answer-key>
+            <question-id>PSQI1022</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3167" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="13" leftX="1578" rightX="2151"
+            rows="1" topY="3165" type="vertical">
+            <answer-key>1111</answer-key>
+            <question-id>PSQI1023</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="70" width="56"
+            x="138" y="138"/>
+        <registration-marker height="56" searchRadius="80" width="56"
+            x="2343" y="3370"/>
+    </structure>
+    <answers>
+        <sheet id="PSQI.jpg" page="0" rotation="0" src="reference sheets/PSQI.jpg"/>
+    </answers>
+</omr-project>

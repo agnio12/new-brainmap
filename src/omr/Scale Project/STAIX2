@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="0" version="0.1" whiteThreshold="255">
+    <structure referenceSheet="STAIX2.jpg">
+        <bubble-group bottomY="1322" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="0" leftX="1572" rightX="2144"
+            rows="5" topY="930" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>ST2001,ST2002,ST2003,ST2004,ST2005</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1882" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="1" leftX="1572" rightX="2144"
+            rows="5" topY="1490" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>ST2006,ST2007,ST2008,ST2009,ST2010</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2442" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="2" leftX="1572" rightX="2144"
+            rows="5" topY="2049" type="vertical">
+            <answer-key>1111,1111,1111,1111,1111</answer-key>
+            <question-id>ST2011,ST2012,ST2013,ST2014,ST2015</question-id>
+            <question-value>1234,1234,1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2806" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="3" leftX="1571" rightX="2144"
+            rows="3" topY="2616" type="vertical">
+            <answer-key>1111,1111,1111</answer-key>
+            <question-id>ST2016,ST2017,ST2018</question-id>
+            <question-value>1234,1234,1234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3051" bubbleHeight="30" bubbleWidth="30"
+            columns="4" indexOffset="4" leftX="1572" rightX="2144"
+            rows="2" topY="2953" type="vertical">
+            <answer-key>1111,1111</answer-key>
+            <question-id>ST2019,ST2020</question-id>
+            <question-value>1234,1234</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="100" width="56"
+            x="2342" y="138"/>
+        <registration-marker height="56" searchRadius="90" width="56"
+            x="138" y="3370"/>
+    </structure>
+    <answers>
+        <sheet id="STAIX2.jpg" page="0" rotation="0" src="reference sheets/STAIX2.jpg"/>
+    </answers>
+</omr-project>

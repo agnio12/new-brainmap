@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omr-project blackThreshold="0" version="0.1" whiteThreshold="255">
+    <structure referenceSheet="BDI-3.jpg">
+        <bubble-group bottomY="740" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="0" leftX="2144" rightX="2186"
+            rows="4" topY="437" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1016</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1202" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="1" leftX="2144" rightX="2186"
+            rows="4" topY="901" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1017</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="1645" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="2" leftX="2144" rightX="2186"
+            rows="4" topY="1346" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1018</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2203" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="3" leftX="2144" rightX="2186"
+            rows="5" topY="1804" type="horizontal">
+            <answer-key>11111</answer-key>
+            <question-id>BDI1019</question-id>
+            <question-value>01234</question-value>
+        </bubble-group>
+        <bubble-group bottomY="3168" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="4" leftX="2144" rightX="2186"
+            rows="4" topY="2864" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1020</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <bubble-group bottomY="2693" bubbleHeight="30" bubbleWidth="30"
+            columns="1" indexOffset="5" leftX="2144" rightX="2186"
+            rows="4" topY="2392" type="horizontal">
+            <answer-key>1111</answer-key>
+            <question-id>BDI1021</question-id>
+            <question-value>0123</question-value>
+        </bubble-group>
+        <registration-marker height="56" searchRadius="180" width="56"
+            x="138" y="138"/>
+        <registration-marker height="56" searchRadius="50" width="56"
+            x="2343" y="3370"/>
+    </structure>
+    <answers>
+        <sheet id="BDI-3.jpg" page="0" rotation="0" src="reference sheets/BDI-3.jpg"/>
+    </answers>
+</omr-project>
