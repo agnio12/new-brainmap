@@ -24,7 +24,7 @@
     <!-- weather -->
     <link rel="stylesheet" type="text/css" href="css/weather-icons.min.css">
     <link rel="stylesheet" type="text/css" href="css/weather-icons-wind.min.css">
-    
+
 </head>
 
 <body class="o-page">
@@ -44,11 +44,11 @@
                                 <%- moodchecker%>
                             </h3>
                             <p class="c-graph-card__date">To date, the last 10 Mood check have been made</p>
-                            <h3 class="c-graph-card__title">Average monthly mood <span id="mood-avg"></span></h3>
+                            <h3 class="c-graph-card__title">Average monthly mood&ensp;<span id="mood-avg"></span></h3>
                         </div>
 
                         <div class="c-graph-card__chart mood">
-                            <canvas id="js-chart-mood" width="300" height="93"></canvas>
+                            <canvas id="js-chart-mood" width="300" height="74"></canvas>
                         </div>
                     </div>
                 </div>
@@ -58,125 +58,46 @@
                         <div class="c-graph-card__content">
                             <h3 class="c-graph-card__title">Sleep</h3>
                             <p class="c-graph-card__date">To date, the last 10 Sleep check have been made</p>
-                            <h3 class="c-graph-card__title">Average sleep duration <span id="sleep-avg"></span>hr</h3>
+                            <h3 class="c-graph-card__title">Average sleep duration&ensp;<span id="sleep-avg"></span>hr</h3>
                         </div>
 
                         <div class="c-graph-card__chart sleep">
-                            <canvas id="js-chart-sleep" width="300" height="93"></canvas>
+                            <canvas id="js-chart-sleep" width="300" height="74"></canvas>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-xl-4">
-                    <ul class="c-tabs__list nav nav-tabs" id="myTab" role="tablist">
-                        <li>
-                            <a class="c-tabs__link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                                aria-controls="nav-home" aria-selected="true">
-                                All Tasks Overview
-                            </a>
-                        </li>
-                        <li>
-                            <a class="c-tabs__link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-                                aria-controls="nav-profile" aria-selected="false">
-                                Comment
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="c-progress-card" data-mh="graph-cards">
+                        <h3 class="c-progress-card__title">All Tasks Overview</h3>
+                        <p class="c-progress-card__date" style="margin: 1.0rem 0 1.175rem;  font-size: 1.0rem;">
+                            <%-moodchecker%>
+                        </p>
 
-                    <div class="c-tabs__content tab-content u-mb-large" id="nav-tabContent">
-                        <!-- All Tasks Overview -->
-                        <div class="c-tabs__pane active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
-                            style="padding: 0;">
-                            <div>
-                                <table class="c-table c-table--zebra" style="border: none;">
-                                    <tbody>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
-
-                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
-
-                                            <td class="c-table__cell">
-                                                <span id="suicidal-text">Suicidal idea</span>
-                                            </td>
-
-                                            <td class="c-table__cell">
-                                                <span id="menstruation-text">Menstruation</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
-
-                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
-
-                                            <td class="c-table__cell">
-                                                <span id="suicidal-text">Suicidal idea</span>
-                                            </td>
-
-                                            <td class="c-table__cell">
-                                                <span id="menstruation-text">Menstruation</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
-
-                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
-
-                                            <td class="c-table__cell">
-                                                <span id="suicidal-text">Suicidal idea</span>
-                                            </td>
-
-                                            <td class="c-table__cell">
-                                                <span id="menstruation-text">Menstruation</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">Mood&emsp;<span id="mood-score">+2</span></td>
-
-                                            <td class="c-table__cell">Sleep&emsp;<span id="sleep-score">8hr</span></td>
-
-                                            <td class="c-table__cell">
-                                                <span id="suicidal-text">Suicidal idea</span>
-                                            </td>
-
-                                            <td class="c-table__cell">
-                                                <span id="menstruation-text">Menstruation</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="transparent-scrollbar" style="width: 100%; max-height: 130px; overflow-y: auto;">
+                            <div class="c-progress-card__item empty-tasks" style="display: none;">
+                                <div class="c-progress-card__label">
+                                    <label class="tasks-date"></label>
+                                </div>
+                                <div class="c-progress-card__label">
+                                    <label class="tasks-mood"></label>
+                                </div>
+                                <div class="c-progress-card__label">
+                                    <label class="tasks-sleep"></label>
+                                </div>
+                                <div class="c-progress-card__label">
+                                    <label class="tasks-suicidal"></label>
+                                    <input type="hidden" value="">
+                                </div>
+                                <div class="c-progress-card__label">
+                                    <label class="tasks-period"></label>
+                                </div>
+                            </div><!-- // .c-progress-card__item -->
                         </div>
-
-                        <!-- Comment -->
-                        <div class="c-tabs__pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
-                            style="padding: 0 20px;">
-                            <div id="home-comment">
-                                <table class="c-table" style="border: none;">
-                                    <tbody>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">2018-12-12</td>
-                                            <td class="c-table__cell">일이삼사오육칠팔구십육칠팔구십</td>
-                                        </tr>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">2018-12-12</td>
-                                            <td class="c-table__cell">일이삼사오육칠팔구십일이삼사오육칠팔구십</td>
-                                        </tr>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">2018-12-12</td>
-                                            <td class="c-table__cell">일이삼사오육칠팔구십일이삼사오육</td>
-                                        </tr>
-                                        <tr class="c-table__row">
-                                            <td class="c-table__cell">2018-12-12</td>
-                                            <td class="c-table__cell">사오육칠팔구십일이삼사오육칠팔구십</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
+
 
             <span class="c-divider has-text u-mb-medium">BrainMap Projects</span>
 
@@ -197,12 +118,11 @@
                             <% var BDIData = recentDatas.BDI %>
                             <% var ISIData = recentDatas.ISI %>
 
-                            <div class="state-wrapper">
+                            <div class="state-wrapper" style="position: relative;">
                                 <!-- 우울척도 (BDI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
                                     <p style="font-size: 1.1rem; line-height: 30px;">
-                                        <span>
-                                            <%- BDIData["date"] %></span><br />
+                                        <span><%- BDIData["date"] %></span><br />
                                         <span>우울척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
@@ -216,8 +136,7 @@
                                 <!-- 상태불안척도 (ST1) -->
                                 <div class="c-project-card__meta state c-card__border-top">
                                     <p style="font-size: 1.1rem; line-height: 30px;">
-                                        <span>
-                                            <%- STAIX1Data["date"] %></span><br />
+                                        <span><%- STAIX1Data["date"] %></span><br />
                                         <span>상태불안척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
@@ -231,8 +150,7 @@
                                 <!-- 특성불안척도 (ST2) -->
                                 <div class="c-project-card__meta state c-card__border-top">
                                     <p style="font-size: 1.1rem; line-height: 30px;">
-                                        <span>
-                                            <%- STAIX2Data["date"] %></span><br />
+                                        <span><%- STAIX2Data["date"] %></span><br />
                                         <span>특성불안척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
@@ -324,8 +242,8 @@
                             <a href="#" style="font-size: 0.75rem;">READ MORE</a>
                         </div>
 
-                        <div class="scale-data-wrapper" style="width: 100%; max-height: 317px; overflow-y: auto;">
-                            <table class="c-table scale-data-table">
+                        <div class="scale-data-wrapper transparent-scrollbar" style="width: 100%; max-height: 317px; overflow-y: auto;">
+                            <table class="c-table scale-data-table" style="border: none;">
                                 <thead class="c-table__head c-table__head--slim c-card__border-bottom">
                                     <tr class="c-table__row">
                                         <th class="c-table__cell data__cell--head">검사날짜</th>
@@ -675,9 +593,9 @@
                     data: datas,
                     fill: true,
                     lineTension: 0,
-                    backgroundColor: '#5AD946',
+                    backgroundColor: '#3bbe27',
                     borderWidth: 1,
-                    borderColor: "#5AD946",
+                    borderColor: "#3bbe27",
                     spanGaps: false
                 }]
             };
@@ -825,6 +743,7 @@
                             moodchecker_length = data["result"].length;
                             drawMoodGraph(data["result"], moodchecker.toLowerCase())
                             drawSleepGraph(data["result"], moodchecker.toLowerCase())
+                            tasksInfo(data["result"], moodchecker.toLowerCase())
                         } else {
                             alert(data["message"]);
                         }
@@ -842,7 +761,7 @@
         //chart-mood 그려주기
         function drawMoodGraph(rawResults) {
             $("#js-chart-mood").remove();
-            $(".mood").append('<canvas id="js-chart-mood" width="300" height="93"></canvas>');
+            $(".mood").append('<canvas id="js-chart-mood" width="300" height="74"></canvas>');
 
             let results = rawResults.slice().reverse();
 
@@ -938,7 +857,7 @@
         //sleep
         function drawSleepGraph(rawResults) {
             $("#js-chart-sleep").remove();
-            $(".sleep").append('<canvas id="js-chart-sleep" width="300" height="93"></canvas>');
+            $(".sleep").append('<canvas id="js-chart-sleep" width="300" height="74"></canvas>');
 
             let results = rawResults.slice().reverse();
 
@@ -1010,10 +929,56 @@
             }
         }
 
+        //All Tasks 정보 넣어주기
+        function tasksInfo(rawResults) {
+            let results = rawResults;
+
+            let tasks = "";
+            for (i = 0; i < results.length; i++) {
+                let result = results[i];
+
+                tasks += '<div class="c-progress-card__item" style="margin: 0;">';
+                tasks += '<div class="c-progress-card__label">';
+                tasks += '<label class="tasks-date">' + moment(result["created_time"]).format("YYYY-MM-DD") + '</label></div>';
+                tasks += '<div class="c-progress-card__label" style="flex-basis: 17%;">';
+                tasks += '<label class="tasks-mood">Mood&ensp;' + result["mood"] + '</label></div>';
+                tasks += '<div class="c-progress-card__label" style="flex-basis: 17%;">';
+                tasks += '<label class="tasks-sleep">Sleep&ensp;' + result["sleep_time"] + 'hr</label></div>';
+                tasks += '<div class="c-progress-card__label" style="flex-basis: 23%;">';
+                tasks += '<label class="tasks-suicide" title="' + result["suicide"] + '">Suicidal idea</label></div>';
+                tasks += '<div class="c-progress-card__label" style="flex-basis: 23%;">';
+                tasks += '<label class="tasks-period" title="' + result["period"] + '">Menstruation</label></div></div>';
+                tasks += '<div class="c-progress-card__item">';
+                tasks += '<div class="c-progress-card__label"></div>';
+                tasks += '<div class="c-progress-card__label" style="flex-basis: 80%;">';
+                tasks += '<label class="tasks-comment">' + result["comment"] + '</label></div></div>';
+            }
+
+            $(tasks).insertBefore(".empty-tasks");
+
+            //자살사고가 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-suicide").each(function() {
+                var checkVal = $(this).attr("title");
+                if(checkVal == 'true'){
+                    $(this).css("font-weight", "bold");
+                    $(this).css("color", "#000");
+                }
+            });
+
+            //월경이 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-period").each(function() {
+                var checkVal = $(this).attr("title");
+                if(checkVal == 'true'){
+                    $(this).css("font-weight", "bold");
+                    $(this).css("color", "#000");
+                }
+            });
+        }
     </script>
 
-    <script src="js/main.min.js"></script>
     <script src="js/moment.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/weather.js"></script>
     <script src="js/chart-custom.js"></script>
     <!-- <script src="js/index.js"></script> -->
 

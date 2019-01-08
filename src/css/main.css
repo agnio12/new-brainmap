@@ -13596,6 +13596,16 @@ textarea.c-input {
    New CSS - by JH
    ========================================================================== */
 
+/* scrollbar 숨기기 */
+.transparent-scrollbar {
+  -ms-overflow-style: none;  /* IE 10+ */
+  overflow: -moz-scrollbars-none; /* Firefox */
+}
+
+.transparent-scrollbar::-webkit-scrollbar {
+  width: 0 !important
+}
+
 /* border-top */
 .c-card__border-top {  border-top: 1px solid #e6eaee;}
 .c-card__border-bottom {  border-bottom: 1px solid #e6eaee;}
