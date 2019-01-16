@@ -10,6 +10,7 @@
     </button>
 
 
+    <!-- 환자 등록 -->
     <div class="c-dropdown dropdown" style="margin-right: 20px;">
         <a class="c-avatar c-avatar--xsmall has-dropdown dropdown-toggle" id="dropdwonMenuAvatar" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -79,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Navigation items that will be collapes and toggle in small viewports -->
+    <!-- 환자 검색 -->
     <nav class="c-nav collapse" id="main-nav">
         <ul class="c-nav__list">
             <li class="c-nav__item nav-search">
@@ -87,8 +88,6 @@
                     <span class="c-field__icon">
                         <i class="fa fa-search"></i>
                     </span>
-
-                    <label class="u-hidden-visually" for="navbar-search-small">Seach</label>
                     <input class="c-input s-input" id="navbar-search-small" type="text" placeholder="환자명">
                 </div>
                 <div class="patientList-dropdown">
@@ -119,19 +118,23 @@
                     </table>
                 </div>
             </li>
+
+            <!-- 선택환자 정보 -->
             <li class="c-nav__item nav-patient">
                 <label class="c-nav__link patient-name"></label>
                 <i id="nav-patient-delete" class="fa fa-times-circle delete"></i>
             </li>
+
+            <!-- 선택환자 DSM-V 정보 -->
             <li class="c-nav__item nav-dsmv">
-                <a class="c-nav__link"></a>
+                <label class="c-nav__link dsmv-text">DSM-V&ensp;:&ensp;</label>
             </li>
         </ul>
     </nav>
-    <!-- // Navigation items  -->
 
 
 
+    <!-- 사용자 정보 -->
     <div class="c-dropdown dropdown u-ml-auto">
         <a class="c-avatar c-avatar--xsmall has-dropdown dropdown-toggle" href="#" id="dropdwonMenuAvatar" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -151,7 +154,7 @@
         <span class="c-nav-toggle__bar"></span>
         <span class="c-nav-toggle__bar"></span>
         <span class="c-nav-toggle__bar"></span>
-    </button><!-- // .c-nav-toggle -->
+    </button>
 </header>
 
 <script>
@@ -237,7 +240,6 @@
     $('#patient-register input[name=birthdate]').keypress(function (event) {
         if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
             event.preventDefault();
-
         }
     });
 
@@ -360,6 +362,7 @@
         var age = Math.floor(diff / 31557600000) + 1; // Divide by 1000*60*60*24*365.25
         $(".nav-patient .patient-name").text("선택환자 : " + patient["name"] + " " + patient["gender"] + "/" + age + " 번호 : " + history_number);
         $(".nav-patient").show();
+        $(".nav-dsmv").show();
     }
 
     //선택환자 마우스 동작 효과
@@ -400,11 +403,59 @@
 
     showIfPatientSelected();
 
+    //환자 Cookie 정보
     var patientId, patientData;
     var patient_dsmv = [];
     var count = 0;
     if (typeof Cookies.get("patient") != typeof undefined) {
         patientData = JSON.parse(Cookies.get("patient"));
         patientId = patientData.id;
+    }
+
+        //DSM-V 정보
+        if (typeof patientId != typeof undefined) {
+        $.ajax({
+            type: 'GET',
+            url: '/patient/' + patientId + "/dsmv",
+            success: function (data) {
+                if (data["isSuccess"]) {
+                    let dsmv_text = data["results"].filter(value => value.is_checked > 0);
+                    let groupby_dsmv_text = new Array();
+                    for(let i = 0; i < dsmv_text.length; i++) {
+                        count++;
+                        if(i == 0) {
+                            groupby_dsmv_text.push(dsmv_text[i].title_name);
+                            continue;
+                        } else {
+                            if(dsmv_text[i].title_name != dsmv_text[i-1].title_name) {
+                                groupby_dsmv_text.push(dsmv_text[i].title_name);
+                            }
+                        }
+                    }
+
+                    $.each(groupby_dsmv_text, function (i) {
+                        $(".dsmv-text").append(groupby_dsmv_text[i].toString() + "&emsp;");
+                    });
+
+                    //체크된 DSM-V 값이 없을때
+                    if (count == 0) {
+                        $(".dsmv-text").append("지금까진 등록질환이 없습니다.&emsp;");
+                    }
+                } else {
+                    $.alert({
+                        title: "",
+                        content: "<br/>"+data["message"]
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error : ' + textStatus);
+                console.log('error : ' + errorThrown);
+                $.alert({
+                    title: "",
+                    content: "<br/>DSM-V 데이터 요청에 실패하였습니다"});
+            },
+            contentType: "application/json"
+        });
     }
 </script>

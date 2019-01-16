@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>MoodDetail</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+    <!-- datepicker -->
+    <link rel="stylesheet" type="text/css" href="css/datepicker.min.css" />
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="c-card u-p-medium u-mb-medium">
+                        <div class="u-flex u-justify-between u-align-items-center">
+                            <h3 class="c-card__title">Revenue</h3>
+                            <span class="u-text-small u-text-uppercase u-text-mute">
+                                <span id="preview" class="preview-arrow"></span>
+                                <input type="text" id="datepicker" maxlength="7" class="datepicker-here index"
+                                    data-language='en' data-min-view="months" data-view="months" data-date-format="yyyy-mm"
+                                    readonly="readonly" />
+                                <span id="next" class="next-arrow"></span>
+                            </span>
+                        </div>
+                        <div class="u-flex u-align-items-center">
+                            <div style="display:inline-block; margin: 0 auto; font-size: 0.81rem;">
+                                <span style='margin-left: 10px;'><img width='15' height='15' style='margin-right:5px;'
+                                        src='img/moodchecker/graph/mood/ic_guide_mood.png'>기분</span>
+                                <span style='margin-left: 10px;'><img width='15' height='15' style='margin-right:5px;'
+                                        src='img/moodchecker/graph/mood/ic_guide_sleep.png'>수면시간</span>
+                                <span style='margin-left: 10px;'><img width='15' height='15' style='margin-right:5px;'
+                                        src='img/moodchecker/graph/mood/ic_guide_suicide.png'>자살사고</span>
+                                <span style='margin-left: 10px;'><img width='13' height='10' style='margin-right:5px;'
+                                        src='img/moodchecker/graph/mood/ic_guide_period.png'>월경</span>
+                            </div>
+                        </div>
+
+                        <div class="sleep">
+                            <canvas id="js-chart-sleep" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="c-card u-p-medium u-mb-small">
+                        <div class="u-mb-medium">
+                            <h4 class="u-h5">All Tasks Overview</h4>
+                        </div>
+                        <p class="u-text-small u-text-mute u-mb-small">
+                            <strong id="patient-name" class="u-text-bold"></strong>님의 최근 한달간 브레인맵에 등록된
+                            <strong id="analysis-count" class="u-text-bold"></strong>개의 기록을 분석하였습니다.
+                        </p>
+
+                        <div class="o-line u-mb-small">
+                            <p class="u-text-small u-mr-small">평균 기분</p>
+                            <div class="c-progress c-progress--success c-progress--small u-mb-zero" style="width: 31%;">
+                                <div class="c-progress__bar" style="width:100%;"></div>
+                            </div>
+                            <div class="u-text-small u-text-mute u-ml-small">
+                                <span id="average"></span> [심한 기분변동이 총 <span id="emotion_change"></span>차례 발생]
+                            </div>
+                        </div>
+
+                        <div class="o-line u-mb-small">
+                            <p class="u-text-small u-mr-small">평균 수면</p>
+                            <div class="c-progress c-progress--fancy c-progress--small u-mb-zero" style="width: 67%;">
+                                <div class="c-progress__bar" style="width:100%;"></div>
+                            </div>
+                            <div class="u-text-small u-text-mute u-ml-small"><span id="sleep"></span>&ensp;시간</div>
+                        </div>
+
+                        <div class="o-line u-mb-small">
+                            <p class="u-text-small u-mr-small">수면 부족</p>
+                            <div class="c-progress c-progress--info c-progress--small u-mb-zero" style="width: 67%;">
+                                <div class="c-progress__bar" style="width:100%;"></div>
+                            </div>
+                            <div class="u-text-small u-text-mute u-ml-small"><span id="lack-sleep"></span>회 부족</div>
+                        </div>
+
+                        <div class="o-line u-mb-small">
+                            <p class="u-text-small u-mr-small">자살 사고</p>
+                            <div class="c-progress c-progress--warning c-progress--small u-mb-zero" style="width: 67%;">
+                                <div class="c-progress__bar" style="width:100%;"></div>
+                            </div>
+                            <div class="u-text-small u-text-mute u-ml-small"><span id="analysis-suicide-text"></span>번
+                                호소</div>
+                        </div>
+
+                    </div>
+
+                    <div class="c-card u-p-medium u-mb-small">
+                        <div class="u-mb-small">
+                            <h4 class="u-h5">Comment</h4>
+                        </div>
+
+                        <div class="transparent-scrollbar" id="mood-comments" style="max-height: 180px; overflow-y: auto;">
+                            <div class="o-line empty-record" style="display: none;">
+                                <p class="u-text-small u-mr-small">Progress</p>
+                                <div class="u-text-small u-text-mute u-ml-small">test</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- // .row -->
+
+            <div class="row">
+                <div class="col-sm-12 col-lg-6 col-xl-3">
+                    <div class="c-state-card" data-mh="state-cards">
+                        <div class="c-state-card__icon c-state-card__icon--info">
+                            <i class="fa fa-line-chart"></i>
+                        </div>
+
+                        <div class="c-state-card__content">
+                            <h5 class="c-state-card__number">$9,587
+                                <span class="c-state-card__status u-bg-green">
+                                    <i class="fa fa-caret-up"></i>
+                                </span>
+                            </h5>
+                            <p class="c-state-card__meta">Total Profit <span class="u-text-success">(+$286)</span></p>
+                        </div>
+                    </div>
+                </div><!-- // .col-md-3 -->
+
+                <div class="col-sm-12 col-lg-6 col-xl-3">
+                    <div class="c-state-card" data-mh="state-cards">
+                        <div class="c-state-card__icon c-state-card__icon--fancy">
+                            <i class="fa fa-pie-chart"></i>
+                        </div>
+
+                        <div class="c-state-card__content">
+                            <h5 class="c-state-card__number">$2,190
+                                <span class="c-state-card__status u-bg-green">
+                                    <i class="fa fa-caret-up"></i>
+                                </span>
+                            </h5>
+                            <p class="c-state-card__meta">Revenue <span class="u-text-success">(+$286)</span></p>
+                        </div>
+                    </div>
+                </div><!-- // .col-md-3 -->
+
+                <div class="col-sm-12 col-lg-6 col-xl-3">
+                    <div class="c-state-card" data-mh="state-cards">
+                        <div class="c-state-card__icon c-state-card__icon--warning">
+                            <i class="fa fa-user"></i>
+                        </div>
+
+                        <div class="c-state-card__content">
+                            <h5 class="c-state-card__number">93
+                                <span class="c-state-card__status u-bg-red">
+                                    <i class="fa fa-caret-down"></i>
+                                </span>
+                            </h5>
+                            <p class="c-state-card__meta">Active Clients <span class="u-text-danger">(-2)</span></p>
+                        </div>
+                    </div>
+                </div><!-- // .col-md-3 -->
+
+                <div class="col-sm-12 col-lg-6 col-xl-3">
+                    <div class="c-state-card" data-mh="state-cards">
+                        <div class="c-state-card__icon c-state-card__icon--success">
+                            <i class="fa fa-bar-chart"></i>
+                        </div>
+
+                        <div class="c-state-card__content">
+                            <h5 class="c-state-card__number">$431
+                                <span class="c-state-card__status u-bg-green">
+                                    <i class="fa fa-caret-up"></i>
+                                </span>
+                            </h5>
+                            <p class="c-state-card__meta">Profit <span class="u-text-success">(+$3.11)</span></p>
+                        </div>
+                    </div>
+                </div><!-- // .col-md-3 -->
+            </div><!-- // .row -->
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="c-card c-card--responsive u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line">
+                            <h5 class="c-card__title">Recent Income</h5>
+                            <div class="c-card__meta">
+                                <a href="#">View All</a>
+                            </div>
+                        </div>
+
+                        <table class="c-table u-border-zero">
+                            <tbody>
+                                <tr class="c-table__row u-border-top-zero">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar1-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Minnie Ferguson</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">One Page Dashboard</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="c-table__row">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar2-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Ann Hunter</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">New Website</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="c-table__row">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar3-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Wedding</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">New Website</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="c-table__row">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar4-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Caleb Castillo</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">One-Pager for iOS App</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="c-card c-card--responsive u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line">
+                            <h5 class="c-card__title">Best Customers</h5>
+                            <a class="c-card__meta" href="#">View All</a>
+                        </div>
+
+                        <table class="c-table u-border-zero">
+                            <tbody>
+                                <tr class="c-table__row u-border-top-zero">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar5-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Minnie Ferguson</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">New Website</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="c-table__row">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar6-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Minnie Ferguson</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">New Website</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="c-table__row">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar7-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Minnie Ferguson</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">New Website</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="c-table__row">
+                                    <td class="c-table__cell">
+                                        <div class="u-flex u-align-items-center">
+                                            <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                                <img class="c-avatar__img" src="img/avatar8-72.jpg" alt="Adam's face">
+                                            </div>
+                                            <span class="u-text-bold">Minnie Ferguson</span>
+                                        </div>
+                                    </td>
+                                    <td class="c-table__cell">New Website</td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-bold">$150</span>
+                                    </td>
+                                    <td class="c-table__cell u-text-right">
+                                        <span class="u-text-mute">3 Days ago</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div><!-- // .row -->
+        </div><!-- // .container -->
+    </main>
+
+    <script src="js/moment.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/chart-custom.js"></script>
+    <script src="js/jquery-confirm.js"></script>
+    <script src="js/air-datepicker/datepicker.js"></script>
+    <script src="js/air-datepicker/i18n/datepicker.en.js"></script>
+
+    <script>
+
+        const moodchecker = typeof getUrlVars()["moodchecker"] === typeof undefined ? "Mood" : getUrlVars()["moodchecker"];
+
+        function getUrlVars() {
+            let vars = {};
+            window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+        //datePicker 달력 설정
+        (function datePicker() {
+            $("#datepicker").datepicker({
+                language: "en",
+                keyboardNav: false,
+                autoClose: true,
+                todayButton: new Date(),
+                onSelect: function () {
+                    $(this).change();
+                    callByMoodchecker();
+                }
+            }).data('datepicker').selectDate(new Date(), true);
+
+            $("#preview").click(function () {
+                let minusDate = new Date($("#datepicker").val());
+                minusDate.setMonth(minusDate.getMonth() - 1);
+                setDatepickers(minusDate);
+            });
+
+            $("#next").click(function () {
+                let plusDate = new Date($("#datepicker").val());
+                plusDate.setMonth(plusDate.getMonth() + 1);
+                setDatepickers(plusDate);
+            });
+        })(jQuery);
+
+        function setDatepickers(date) {
+            $("#datepicker").datepicker({
+                language: "en",
+                keyboardNav: false,
+                autoClose: true,
+                todayButton: new Date(),
+                onSelect: function () {
+                    $(this).change();
+                    callByMoodchecker();
+                }
+            }).data('datepicker').selectDate(date);
+        }
+
+        function callByMoodchecker() {
+            if (typeof patientData != typeof undefined) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/moodchecker/user/' + patientData.moodchecker_id + "/" + moodchecker + "/" + $("#datepicker").val(),
+                    success: function (data) {
+                        if (data["isSuccess"]) {
+                            moodchecker_length = data["result"].length;
+                            drawMoodGraph(data["result"], moodchecker.toLowerCase())
+                            drawCommentsTable(data["result"].map(function (item) {
+                                return {
+                                    "created_time": moment(item.created_time).format("YY-MM-DD"),
+                                    "comment": item.comment
+                                }
+                            }));
+                            if (moodchecker === "Mood") {
+                                analysis(data["result"], true);
+                            }
+                        } else {
+                            $.alert({
+                                title: "",
+                                content: data["message"]
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error : ' + textStatus);
+                        console.log('error : ' + errorThrown);
+                        alert("기분 정보 요청에 실패하였습니다");
+                    },
+                    contentType: "application/json"
+                });
+            }
+        }
+
+        //Mood 정보 AJAX
+        $(document).ready(function () {
+            if (typeof patientData != typeof undefined) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/moodchecker/user/' + patientData.moodchecker_id + "/" + moodchecker + "/" + $("#datepicker").val(),
+                    success: function (data) {
+                        if (data["isSuccess"]) {
+                            moodchecker_length = data["result"].length;
+                            drawMoodGraph(data["result"], moodchecker.toLowerCase())
+                            drawCommentsTable(data["result"].map(function (item) {
+                                return {
+                                    "created_time": moment(item.created_time).format("YY-MM-DD"),
+                                    "comment": item.comment
+                                }
+                            }));
+                            if (moodchecker === "Mood") {
+                                analysis(data["result"], true);
+                            }
+                        } else {
+                            $.alert({
+                                title: "",
+                                content: data["message"]
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error : ' + textStatus);
+                        console.log('error : ' + errorThrown);
+                        alert("기분 정보 요청에 실패하였습니다");
+                    },
+                    contentType: "application/json"
+                });
+            }
+        });
+
+        //chart-mood 그려주기
+        function drawMoodGraph(rawResults) {
+            $("#js-chart-sleep").remove();
+            $(".sleep").append('<canvas id="js-chart-sleep" width="300" height="150"></canvas>');
+
+            let results = rawResults.slice().reverse();
+
+            let sleep = results.map(function (item) {
+                return item.sleep_time;
+            });
+
+            // var sleepSum = 0.0;
+            // for (var i = 0; i < sleeps.length; i++) {
+            //     sleepSum += parseInt(sleeps[i]);
+            // }
+            // var sleepAvg = sleepSum / sleeps.length;
+            // $("#sleep-avg").text(sleepAvg);
+
+            var dates = [];
+            results.forEach(function (item, index) {
+                dates.push(moment(item["created_time"]).format("D"));
+            });
+            while (dates.length < 10) {
+                dates.push(" ")
+            }
+
+            var chartSleep = document.getElementById("js-chart-sleep");
+
+            //chart-sleep 설정
+            var lineChartSleepData = {
+                labels: dates,
+                datasets: [{
+                    fill: true,
+                    lineTension: 0,
+                    backgroundColor: 'rgba(0,172,255, 0.1)',
+                    borderWidth: 2,
+                    borderColor: "#00AAFF",
+                    pointRadius: 4,
+                    pointBorderColor: "#00AAFF",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: "#00AAFF",
+                    pointHoverBorderColor: "#00AAFF",
+                    pointHoverBorderWidth: 2,
+                    data: sleep,
+                    spanGaps: false
+                }]
+            };
+
+            if (chartSleep) {
+                var lineChartSleep = new Chart(chartSleep, {
+                    type: 'line',
+                    data: lineChartSleepData,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        layout: {
+                            padding: {
+                                left: 0,
+                                right: 0,
+                                top: 30,
+                                bottom: 0
+                            }
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                ticks: {
+                                    fontSize: '11',
+                                    fontColor: '#969da5'
+                                },
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.0)',
+                                    zeroLineColor: 'rgba(0,0,0,0.0)'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.1)',
+                                    zeroLineColor: 'rgba(0,0,0,0.1)'
+                                },
+                                ticks: {
+                                    fontSize: '11',
+                                    fontColor: '#969da5',
+                                    max: 12
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+
+
+        //All Tasks
+        function analysis(mood_result, loading) {
+            if (mood_result.length == 0) {
+                $("#analysis-div").hide();
+                return;
+            }
+            if (loading) {
+                $("#analysis-div").hide();
+            } else if (moodchecker === "Mood" && $(".slider").attr("style") === "left: 50%;" && moodchecker_length > 0) {
+                $("#analysis-div").show();
+            }
+            $("#analysis-date").html($("#datepicker").val());
+
+            let analysis_count = mood_result.filter(value => value.id > 0).length;
+            let start_value = false;
+            let copy_value = {};
+            let analysis_mood_result = mood_result.reverse().map(value => {
+                let value_date = value.created_time;
+                if (value.id != -1) {
+                    $.extend(copy_value, value);
+                }
+
+                if (value.id == -1 && !$.isEmptyObject(copy_value)) {
+                    let paste_value = $.extend(new Object(), copy_value);
+                    paste_value.id = -1;
+                    paste_value.created_time = value_date;
+                    return paste_value;
+                }
+                return value;
+            }).reverse().map(value => {
+                if (value.id > -1) {
+                    start_value = true;
+                }
+
+                if (!start_value) {
+                    return false;
+                }
+                return value;
+            });
+
+            //평균기분
+            //filter(value => value.id > -1)
+            let mood = (analysis_mood_result.filter(value => value).map((item) => {
+                return item.mood;
+            }).reduce((a, b) => a + b) / analysis_count).toFixed(1);
+
+            //평균 수면시간
+            let sleep = (analysis_mood_result.filter(value => value.id > -1).map((item) => {
+                return parseInt(item.sleep_time, 10);
+            }).reduce((a, b) => a + b) / analysis_count).toFixed(1);
+
+            //수면부족 횟수
+            let lack_sleep_count = analysis_mood_result.filter(value => value.id > -1).map((item) => {
+                return parseInt(item.sleep_time, 10) <= 5 ? 1 : 0;
+            }).reduce((a, b) => a + b);
+
+            //기분이 고양되어있는 횟수
+            let up_count = 0;
+            //기분이 다운되어있는 횟수
+            let down_count = 0;
+            let icon_img_name = analysis_mood_result.filter(value => value).map((item) => {
+                up_count += item.mood >= 2 ? 1 : 0;
+                down_count += item.mood <= -2 ? 1 : 0;
+
+                if (up_count > 0 && item.mood < 2) {
+                    up_count = 0;
+                }
+
+                if (down_count > 0 && item.mood > -2) {
+                    down_count = 0;
+                }
+
+                return { up_count: up_count, down_count: down_count };
+            }).map(function (item) {
+                return item.up_count >= 7 ? "uplifting" : item.down_count >= 7 ? "dysthymia" : "";
+            }).sort(function (a, b) {
+                if (a.toUpperCase() < b.toUpperCase()) {
+                    return 1;
+                }
+
+                if (b.toUpperCase() < a.toUpperCase()) {
+                    return -1;
+                }
+                return 0;
+            })[0];
+
+            //심한 기분변동
+            let emotion_change = analysis_mood_result.filter(value => value).map((value, index, array) => {
+                let this_mood = array[index].mood;
+                let pre_mood = typeof array[index - 1] === typeof undefined ? "10" : array[index - 1].mood;
+
+                let this_sign = Math.sign(this_mood);
+                let pre_sign = Math.sign(pre_mood);
+
+                if (pre_mood > 4 || pre_mood < -4) {
+                    return 0;
+                }
+
+                if ((this_sign != 0 && pre_sign != 0) && this_sign != pre_sign) {
+                    return 1;
+                }
+                return 0;
+            }).reduce((a, b) => a + b);
+
+            //자살 사고 횟수
+            let suicide = analysis_mood_result.filter(value => value).map(function (item) {
+                return item.suicide ? 1 : 0;
+            }).reduce((a, b) => a + b);
+
+            $("#patient-name").html(patientData.name);
+            $("#average").html(mood);
+            $("#sleep").html(sleep);
+            $("#lack-sleep").html(lack_sleep_count);
+            $("#analysis-suicide-text").html(suicide);
+            $("#emotion_change").html(emotion_change);
+            $("#analysis-count").html(analysis_count);
+
+            $("#analysis-mood-icon img").remove();
+            $("#analysis-mood-text").html("");
+            if (icon_img_name != "") {
+                $("#analysis-mood-text").html(icon_img_name === "uplifting" ? "기분 고양" : "기분 저하");
+                $("#analysis-mood-icon").append('<img src="img/main/' + icon_img_name + '.png" width="15" height="15" />');
+            } else {
+                $("#analysis-mood-text").html();
+            }
+        }
+
+        //Comment
+        function drawCommentsTable(results) {
+            let records = "";
+            for (i = 0; i < results.length; i++) {
+                let result = results[i];
+                records +=
+                    '<div class="c-divider u-mt-xsmall u-mb-xsmall"></div>' +
+                    '<div class="o-line">' +
+                    '<p class="u-text-small u-mr-small">' +
+                    result["created_time"] +
+                    '</p>' +
+                    '<div class="u-text-small u-text-mute u-ml-small">' +
+                    result["comment"] +
+                    '</div></div>'
+            }
+            $(records).insertBefore("#mood-comments .empty-record");
+        }
+
+    </script>
+</body>
+
+</html>

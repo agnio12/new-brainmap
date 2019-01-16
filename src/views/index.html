@@ -25,6 +25,9 @@
     <link rel="stylesheet" type="text/css" href="css/weather-icons.min.css">
     <link rel="stylesheet" type="text/css" href="css/weather-icons-wind.min.css">
 
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
 </head>
 
 <body class="o-page">
@@ -47,9 +50,11 @@
                             <h3 class="c-graph-card__title">Average monthly mood&ensp;<span id="mood-avg"></span></h3>
                         </div>
 
-                        <div class="c-graph-card__chart mood">
-                            <canvas id="js-chart-mood" width="300" height="74"></canvas>
-                        </div>
+                        <a href="/moodDetail" class="mood-chart">
+                            <div class="c-graph-card__chart mood" style="cursor: pointer;">
+                                <canvas id="js-chart-mood" width="300" height="74"></canvas>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
@@ -60,10 +65,11 @@
                             <p class="c-graph-card__date">To date, the last 10 Sleep check have been made</p>
                             <h3 class="c-graph-card__title">Average sleep duration&ensp;<span id="sleep-avg"></span>hr</h3>
                         </div>
-
-                        <div class="c-graph-card__chart sleep">
-                            <canvas id="js-chart-sleep" width="300" height="74"></canvas>
-                        </div>
+                        <a href="/sleepDetail" class="mood-chart">
+                            <div class="c-graph-card__chart sleep" style="cursor: pointer;">
+                                <canvas id="js-chart-sleep" width="300" height="74"></canvas>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
@@ -87,7 +93,6 @@
                                 </div>
                                 <div class="c-progress-card__label">
                                     <label class="tasks-suicidal"></label>
-                                    <input type="hidden" value="">
                                 </div>
                                 <div class="c-progress-card__label">
                                     <label class="tasks-period"></label>
@@ -121,7 +126,7 @@
                             <div class="state-wrapper" style="position: relative;">
                                 <!-- 우울척도 (BDI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.1rem; line-height: 30px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px;">
                                         <span><%- BDIData["date"] %></span><br />
                                         <span>우울척도</span>
                                     </p>
@@ -135,7 +140,7 @@
 
                                 <!-- 상태불안척도 (ST1) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.1rem; line-height: 30px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px;">
                                         <span><%- STAIX1Data["date"] %></span><br />
                                         <span>상태불안척도</span>
                                     </p>
@@ -149,7 +154,7 @@
 
                                 <!-- 특성불안척도 (ST2) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.1rem; line-height: 30px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px;">
                                         <span><%- STAIX2Data["date"] %></span><br />
                                         <span>특성불안척도</span>
                                     </p>
@@ -181,6 +186,18 @@
                                     <span id="analysis-sleep"></span>
                                 </p>
                             </div>
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span>환자 분석 추가 내용</span><br />
+                                    <span>환자 분석 추가 내용</span>
+                                </p>
+                            </div>
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span>환자 분석 추가 내용</span><br />
+                                    <span>환자 분석 추가 내용</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -202,6 +219,18 @@
                                     <a href="#.">청구 가능한 보험코드&emsp;〉</a>
                                 </p>
                             </div>
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span>치료 추천 추가 내용</span><br />
+                                    <span>치료 추천 추가 내용</span>
+                                </p>
+                            </div>
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span>치료 추천 추가 내용</span><br />
+                                    <span>치료 추천 추가 내용</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -221,6 +250,18 @@
                                 <p style="line-height: 32px;">
                                     <a href="/admin?type=patient_info"><span id="hospital-tot">등록된 환자&emsp;〉&emsp;</span></a><br />
                                     <a><span id="app-tot">어제 앱 업데이트 환자&emsp;〉&emsp;</span></a>
+                                </p>
+                            </div>
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span>병원 정보 추가 내용</span><br />
+                                    <span>병원 정보 추가 내용</span>
+                                </p>
+                            </div>
+                            <div class="c-project-card__meta c-card__border-top">
+                                <p style="line-height: 32px;">
+                                    <span>병원 정보 추가 내용</span><br />
+                                    <span>병원 정보 추가 내용</span>
                                 </p>
                             </div>
                         </div>
@@ -340,9 +381,13 @@
                     <div class="c-card u-mb-medium" style="overflow: auto;">
                         <div class="c-card__header c-card__header--transparent o-line" style="border-bottom: none;">
                             <h5 class="c-card__title">DSM-V</h5>
-                            <a href="#">save</a>
+                            <a id="dsmv_save">save</a>
                         </div>
-                        <div id="dsmv-choice-box"></div>
+                        <div style="width: 100%; max-height: 345px; overflow: auto;">
+                        <table class="c-table" style="border: none;">
+                            <tbody id="dsmv-choice-box"></tbody>
+                        </table>
+                    </div>
                     </div>
                 </div>
 
@@ -401,27 +446,12 @@
         })(jQuery);
 
         //처음 index 페이지로 접속 시
-        (function timer() {
-            if (patientId == undefined) {
-                $(".c-project-card__meta").hide();
-                $(".data-graph").hide();
-                $(".scale-data-wrapper").hide();
-                clearTimeout(timer);
-            } else {
-                $(".data-graph").show();
-                $(".scale-data-wrapper").show();
-
-                //검사결과 slide
-                $('.state-wrapper .state').hide();
-                $('.state-wrapper .state:first-child').show();
-                timer = setInterval(function () {
-                    $('.state-wrapper .state:first-child').hide()
-                        .next('.state').fadeIn(2500)
-                        .end().appendTo('.state-wrapper');
-                }, 3000);
-            }
-        })(jQuery);
-
+        if (patientId == undefined) {
+            $(".c-project-card__meta").hide();
+            $(".data-graph").hide();
+            $(".mood-chart").hide();
+            $(".scale-data-wrapper").hide();
+        }
 
         //환자분석 - 자살 위험성
         if (analysis_risk != 0) {
@@ -673,23 +703,86 @@
                 });
             }
             $("#dsmv-choice-box").append(dsmv_html);
-        })(jQuery);
+    
+            //dsmv list 그려주기
+            function setDsmvHtml(value, index) {
+                let html = "";
+                if (index % 3 == 0) html += '<tr>';
+                html +=
+                    `<td class="col-md-4 c-todo" style="float: left; padding: 0.74rem 1.875rem;">
+                    <span class="dsmv-check">
+                        <input class="c-todo__input dsmv-checkbox" type="checkbox" id="${value.code}" data-code="${value.code}" data-group-code="${value.title_code}" title="${value.code}"`;
+                if (value.patient_is_checked) html += ` checked="checked" `;
+                html += `><label class="c-todo__label dsmv-item-title" for="${value.code}">${value.question_name}</label>`;
+                if (value.question_code === "000") html += ` <a href="/dsmv#${value.title_code}">-></a> `;
+                html += `</span></td>`;
+                if (index % 3 == 2) html += '</tr>';
+                return html;
+            }
 
-        //dsmv list 그려주기
-        function setDsmvHtml(value, index) {
-            let html = "";
-            if (index % 3 == 0) html += '<div>';
-            html +=
-                `<div class="col-md-4 c-todo" style="float: left; padding: 0.73rem 1.875rem;">
-                <span class="dsmv-check">
-                    <input class="c-todo__input dsmv-checkbox" type="checkbox" id="${value.code}" data-code="${value.code}" data-group-code="${value.title_code}" title="${value.code}"`;
-            if (value.patient_is_checked) html += ` checked="checked" `;
-            html += `><label class="c-todo__label dsmv-item-title" for="${value.code}">${value.question_name}</label>`;
-            if (value.question_code === "000") html += ` <a href="/dsmv#${value.title_code}">-></a> `;
-            html += `</span></div>`;
-            if (index % 3 == 2) html += '</div>';
-            return html;
-        }
+            //신경인지장애 선택 시
+            let is_cognition = Object.values(dsmv).filter(value => value.title_code == "Q" && value.patient_is_checked == 1);
+            if (typeof location.href.split("&QSelect=")[1] === typeof undefined) {
+                if (is_cognition.length > 0) {
+                    location.href = "/?moodchecker=Cognition&QSelect=1";
+                }
+            }
+
+            //새로 DSM-V 설정
+            $(".dsmv-checkbox").change(function () {
+                if (typeof patientId == typeof undefined) {
+                    $.alert({
+                        title: "",
+                        content: "지정된 환자가 없습니다.<br/>먼저 환자를 검색후 선택 해주세요."
+                    });
+                    $(this).attr("checked", false);
+                    $("c-todo__input").attr("checked", false);
+                    return;
+                }
+
+                dsmv_contents.forEach(value => {
+                    if (value.code === $(this).attr("data-code")) {
+                        value.patient_is_checked = $(this).is(":checked") ? 1 : 0;
+                    }
+                });
+
+                $.post(`/patient/${patientId}/dsmv`, {
+                    dsmv: JSON.stringify(dsmv_contents)
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log('error : ' + textStatus);
+                    console.log('error : ' + errorThrown);
+                    alert("DSM-V 데이터 갱신에 실패하였습니다");
+                });
+            });
+
+            //DSMV-V의 save 버튼 클릭 시
+            $("#dsmv_save").click(function () {
+                if (typeof patientId == typeof undefined) {
+                    $.alert({
+                        title: "",
+                        content: "지정된 환자가 없습니다.<br/>먼저 환자를 검색후 선택 해주세요."
+                    });
+                    return;
+                }
+                $.confirm({
+                    type: "green",
+                    icon: "far fa-save",
+                    title: "DSM-V 저장",
+                    content: "DSM-V의 정보를 저장하시겠습니까?",
+                    buttons: {
+                        saveButton: {
+                            text: "저장",
+                            action: function () {
+                                location.reload();
+                            }
+                        },
+                        cancleButton: {
+                            text: "취소"
+                        }
+                    }
+                });
+            });
+        })(jQuery);
 
         //교육자료
         (function education() {
@@ -937,7 +1030,7 @@
             for (i = 0; i < results.length; i++) {
                 let result = results[i];
 
-                tasks += '<div class="c-progress-card__item" style="margin: 0;">';
+                tasks += '<div class="c-progress-card__item">';
                 tasks += '<div class="c-progress-card__label">';
                 tasks += '<label class="tasks-date">' + moment(result["created_time"]).format("YYYY-MM-DD") + '</label></div>';
                 tasks += '<div class="c-progress-card__label" style="flex-basis: 17%;">';
@@ -945,13 +1038,9 @@
                 tasks += '<div class="c-progress-card__label" style="flex-basis: 17%;">';
                 tasks += '<label class="tasks-sleep">Sleep&ensp;' + result["sleep_time"] + 'hr</label></div>';
                 tasks += '<div class="c-progress-card__label" style="flex-basis: 23%;">';
-                tasks += '<label class="tasks-suicide" title="' + result["suicide"] + '">Suicidal idea</label></div>';
+                tasks += '<label class="tasks-suicide" title="' + result["suicide"] + '" style="color: #b7bfc9;">Suicidal idea</label></div>';
                 tasks += '<div class="c-progress-card__label" style="flex-basis: 23%;">';
-                tasks += '<label class="tasks-period" title="' + result["period"] + '">Menstruation</label></div></div>';
-                tasks += '<div class="c-progress-card__item">';
-                tasks += '<div class="c-progress-card__label"></div>';
-                tasks += '<div class="c-progress-card__label" style="flex-basis: 80%;">';
-                tasks += '<label class="tasks-comment">' + result["comment"] + '</label></div></div>';
+                tasks += '<label class="tasks-period" title="' + result["period"] + '" style="color: #b7bfc9;">Menstruation</label></div></div>';
             }
 
             $(tasks).insertBefore(".empty-tasks");
@@ -980,6 +1069,7 @@
     <script src="js/main.min.js"></script>
     <script src="js/weather.js"></script>
     <script src="js/chart-custom.js"></script>
+    <script src="js/jquery-confirm.js"></script>
     <!-- <script src="js/index.js"></script> -->
 
 </body>

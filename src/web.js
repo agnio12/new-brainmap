@@ -486,6 +486,87 @@ app.post('/search/patient', function (req, res, next) {
     })
 })
 
+//DSM-V - GET
+app.get('/patient/:patientId/dsmv', function (req, res) {
+    var hospital = req.cookies.user_hospital;
+    if (req.cookies.didLogin != "true" || isUndefined(hospital)) {
+        res.send({ isSuccess: false, message: '로그인 안됨' });
+        return;
+    }
+    var patientId = req.params.patientId;
+    if (isUndefined(patientId)) {
+        res.send({ isSuccess: false, message: "필수 항목 누락" });
+        return;
+    }
+
+    let query = `
+        SELECT 
+            d.code, d.title_code, d.title_name, d.question_code, d.question_name, d.sort, ifnull(pd.is_checked, 0) AS is_checked
+        FROM dsmv d
+        LEFT OUTER JOIN patient_dsmv pd ON d.code = pd.dsmv AND pd.patient_id = '${patientId}' AND pd.hospital_id = ${hospital}
+    `;
+
+    pool.getConnection(function (err, connection) {
+        connection.query(query, function (err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.send({ isSuccess: false, message: "DSM-V 정보 읽는 중 에러 발생" });
+                return;
+            }
+            rows.forEach(function (item, i, items) {
+                item.created_time = moment(item.created_time).format('YYYY-MM-DD');
+            })
+            res.send({ isSuccess: true, results: rows });
+        });
+    });
+});
+
+//DSM-V - POST
+app.post('/patient/:patientId/dsmv', function (req, res) {
+    let hospital = req.cookies.user_hospital;
+    if (req.cookies.didLogin != "true" || isUndefined(hospital)) {
+        res.send({ isSuccess: false, message: '로그인 안됨' });
+        return;
+    }
+    let patientId = req.params.patientId;
+    let dsmv = JSON.parse(req.body.dsmv);
+    let select_query = `SELECT COUNT(*) AS count FROM patient_dsmv WHERE hospital_id = '${hospital}' AND patient_id = '${patientId}';`;
+
+    pool.getConnection(function (err, connection) {
+        connection.query(select_query, function (err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.send({ isSuccess: false, message: "DSM-V 입력 중 에러 발생" });
+                return;
+            }
+
+            let inner_query = "";
+            if(rows[0].count > 0) {
+                inner_query += `DELETE FROM patient_dsmv WHERE hospital_id = ${hospital} AND patient_id = '${patientId}';`;
+            }
+            inner_query += `INSERT INTO patient_dsmv(patient_id, dsmv, is_checked, hospital_id) VALUES`;
+            dsmv.forEach(value => {
+                inner_query += `('${patientId}', '${value.code}', ${value.patient_is_checked}, ${hospital}),`;
+            });
+            inner_query = inner_query.replace(/(\,+$)/g, ";");
+
+            pool.getConnection(function (err, connection) {
+                connection.query(inner_query, function (err, rows) {
+                    connection.release();
+                    if (err) {
+                        console.log(err);
+                        res.send({ isSuccess: false, message: "DSM-V 입력 중 에러 발생" });
+                        return;
+                    }
+                    res.send({ isSuccess: true, message: "DSM-V 입력 완료" });
+                });
+            });
+        });
+    });
+});
+
 //교육자료 select
 app.get('/education', function (req, res) {
     if (req.cookies.didLogin != "true") {
@@ -560,13 +641,14 @@ app.get('/patient/result', function (req, res) {
 
 
 
-//Mood 정보
+//Mood 정보 - index
 app.get('/moodchecker/user/:userId/mood', function (req, res) {
     var userId = req.params.userId;
     if (isUndefined(userId)) {
         res.status(500).send({ isSuccess: false, message: "사용자 아이디 정보가 없음" })
         return;
     }
+
     var query = `SELECT * FROM mood WHERE user_id='${userId}' ORDER BY created_time DESC LIMIT 10`;
     pool.getConnection(function (err, connection) {
         connection.query(query, function (err, rows) {
@@ -594,7 +676,38 @@ app.get('/moodchecker/user/:userId/mood', function (req, res) {
 });
 
 
-//MoodChecker 정보
+//Mood Detail
+app.get('/moodDetail', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.send({ isSuccess: false, message: '로그인이 필요한 서비스입니다.' });
+        return;
+    }
+    res.render('moodDetail', 
+        {
+            innerExpress: express,
+            ejs: ejs,
+            innerApp: app,
+            moodchecker: (typeof req.query.moodchecker === "undefined" ? "Mood" : req.query.moodchecker)
+    });
+});
+
+//Sleep Detail
+app.get('/sleepDetail', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.send({ isSuccess: false, message: '로그인이 필요한 서비스입니다.' });
+        return;
+    }
+    res.render('sleepDetail', 
+        {
+            innerExpress: express,
+            ejs: ejs,
+            innerApp: app,
+            moodchecker: (typeof req.query.moodchecker === "undefined" ? "Mood" : req.query.moodchecker)
+    });
+});
+
+
+//Mood Detail - Mood & Sleep (기분정보)
 app.get('/moodchecker/user/:userId/:moodchecker/:date', function (req, res) {
     var userId = req.params.userId;
     var item = (typeof req.params.moodchecker === "undefined" ? "Mood" : req.params.moodchecker).toLowerCase();
@@ -620,7 +733,8 @@ app.get('/moodchecker/user/:userId/:moodchecker/:date', function (req, res) {
     var firstDate = moment(new Date(date.getFullYear(), date.getMonth(), 1)).format('YYYY-MM-DD');
     var lastDate = moment(new Date(date.getFullYear(), date.getMonth() + 1, 0)).format('YYYY-MM-DD');
 
-    var query = "SELECT * FROM " + item + " WHERE user_id='" + userId + "' and created_time between '" + firstDate + "' and '" + lastDate + "' ORDER BY created_time DESC";
+    var query = `SELECT * FROM ${item} WHERE user_id='${userId}' AND created_time between '${firstDate}' AND '${lastDate}' ORDER BY created_time DESC`;
+
     pool.getConnection(function (err, connection) {
         connection.query(query, function (err, rows) {
             connection.release();
@@ -635,17 +749,12 @@ app.get('/moodchecker/user/:userId/:moodchecker/:date', function (req, res) {
 
             rows.forEach(function (element, i, items) {
                 element.created_time = moment(element.created_time).format('YYYY-MM-DD');
-
                 element.period = (element.period == 1)
                 element.suicide = (element.suicide == 1)
-
                 element.medicine = (element.medicine == 1)
             })
 
             if (rows.length > 0) {
-                // var startDate = rows[rows.length - 1].created_time;
-                // var endDate = rows[0].created_time;
-
                 var startDate = firstDate;
                 var endDate = lastDate;
                 var dates = moment(startDate).twix(endDate).toArray('days').map(function (item) {
@@ -684,8 +793,6 @@ app.get('/moodchecker/user/:userId/:moodchecker/:date', function (req, res) {
         })
     })
 });
-
-
 
 
 //isUndefined 함수
