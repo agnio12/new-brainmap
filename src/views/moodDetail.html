@@ -738,16 +738,20 @@
             let records = "";
             for (i = 0; i < results.length; i++) {
                 let result = results[i];
-                records +=
-                    '<div class="c-divider u-mt-xsmall u-mb-xsmall"></div>' +
-                    '<div class="o-line">' +
-                    '<p class="u-text-small u-mr-small">' +
-                    result["created_time"] +
-                    '</p>' +
-                    '<div class="u-text-small u-text-mute u-ml-small">' +
-                    result["comment"] +
-                    '</div></div>'
+                records += `
+                    <div class="record">
+                        <div class="c-divider u-mt-xsmall u-mb-xsmall"></div>
+                        <div class="o-line">
+                            <p class="u-text-small u-mr-small">
+                                ${result["created_time"]}
+                            </p>
+                            <div class="u-text-small u-text-mute u-ml-small">
+                                ${result["comment"]}
+                            </div>
+                        </div>
+                    </div>`;
             }
+            $("#mood-comments .record").remove();
             $(records).insertBefore("#mood-comments .empty-record");
         }
 

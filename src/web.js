@@ -641,7 +641,7 @@ app.get('/patient/result', function (req, res) {
 
 
 
-//Mood 정보 - index
+//Mood 정보
 app.get('/moodchecker/user/:userId/mood', function (req, res) {
     var userId = req.params.userId;
     if (isUndefined(userId)) {
@@ -794,6 +794,21 @@ app.get('/moodchecker/user/:userId/:moodchecker/:date', function (req, res) {
     })
 });
 
+
+//Tasks Detail
+app.get('/tasksDetail', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.send({ isSuccess: false, message: '로그인이 필요한 서비스입니다.' });
+        return;
+    }
+    res.render('tasksDetail', 
+        {
+            innerExpress: express,
+            ejs: ejs,
+            innerApp: app,
+            moodchecker: (typeof req.query.moodchecker === "undefined" ? "Mood" : req.query.moodchecker)
+    });
+});
 
 //isUndefined 함수
 function isUndefined($0) {

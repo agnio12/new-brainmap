@@ -9398,7 +9398,7 @@ textarea.c-input {
   white-space: nowrap;
   vertical-align: middle; }
   
-.c-table__cell:last-child { padding-right: 0; }
+.c-table__cell:last-child { padding-right: 1.875rem; }
 
 .c-table__cell--head {
   color: #7f8fa4;
@@ -10627,8 +10627,8 @@ textarea.c-input {
     font-size: 0.875rem;
     cursor: pointer; }
     .c-todo.is-completed .c-todo__input + .c-todo__label {
-      text-decoration: line-through;
-      opacity: .5; }
+      text-decoration: none;
+      opacity: 1; }
   .c-todo__input + .c-todo__label::before {
     display: inline-block;
     position: absolute;
@@ -13648,8 +13648,7 @@ textarea.c-input {
 .c-project-card__meta a:hover {  font-weight: bold;}
 
 /* DATA table */
-.data__cell--head {  color: #7f8fa4; padding: 10px 0 !important;}
-.c-table__row td {  padding: 20px 0;}
+.data__cell--head {  color: #7f8fa4;}
 .scale-data-table tbody tr:hover {  cursor: pointer; background-color: rgba(230, 234, 238, 0.3);}
 
 /* DATA 검사명 검색 */
@@ -13699,4 +13698,12 @@ textarea.c-input {
   padding: 3px;
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
+}
+
+/* == Tasks Detail == */
+.tasks-table .text-s {
+  font-size: 1.0rem;
+}
+.tasks-table .text-m {
+  font-size: 1.4rem;
 }

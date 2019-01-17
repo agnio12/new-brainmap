@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BrainMap</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+    <!-- datepicker -->
+    <link rel="stylesheet" type="text/css" href="css/datepicker.min.css" />
+
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <div class="container-fluid">
+                <div class="row">
+                        <div class="col-sm-12">
+                            <div class="c-table-responsive@desktop" style="max-height: 810px; overflow-y: auto;">
+                                <table class="c-table tasks-table">
+                                    <caption class="c-table__title">
+                                        All Tasks Overview Detail <small>Mood</small>
+                                        <span id="preview" class="preview-arrow" style="margin-left: 30px;"></span>
+                                        <input type="text" id="datepicker" maxlength="7" class="datepicker-here index"
+                                            data-language='en' data-min-view="months" data-view="months" data-date-format="yyyy-mm"
+                                            readonly="readonly" />
+                                        <span id="next" class="next-arrow"></span>
+                                    </caption>
+                                    <thead class="c-table__head c-table__head--slim">
+                                        <tr class="c-table__row">
+                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Registration Date</th>
+                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Mood</th>
+                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Sleep</th>
+                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Suicidal idea</th>
+                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Menstruation</th>
+                                            <th class="c-table__cell c-table__cell--head">Comment</th>
+                                        </tr>
+                                    </thead>
+        
+                                    <tbody>
+                                        <tr class="c-table__row empty-tasks" style="display: none;">
+                                            <td class="c-table__cell"></td>
+                                            <td class="c-table__cell"></td>
+                                            <td class="c-table__cell"></td>
+                                            <td class="c-table__cell"></td>
+                                            <td class="c-table__cell"></td>
+                                            <td class="c-table__cell"></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table><!-- // .c-table -->
+                            </div>
+                        </div>
+                    </div><!-- // .row -->
+
+        </div><!-- // .container -->
+
+    </main><!-- // .o-page__content -->
+
+    <script src="js/moment.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/jquery-confirm.js"></script>
+    <script src="js/air-datepicker/datepicker.js"></script>
+    <script src="js/air-datepicker/i18n/datepicker.en.js"></script>
+
+    <script type="text/javascript">
+
+        const moodchecker = typeof getUrlVars()["moodchecker"] === typeof undefined ? "Mood" : getUrlVars()["moodchecker"];
+
+        function getUrlVars() {
+            let vars = {};
+            window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+        //datePicker 달력 설정
+        (function datePicker() {
+            $("#datepicker").datepicker({
+                language: "en",
+                keyboardNav: false,
+                autoClose: true,
+                todayButton: new Date(),
+                onSelect: function () {
+                    $(this).change();
+                    callByMoodchecker();
+                }
+            }).data('datepicker').selectDate(new Date(), true);
+
+            $("#preview").click(function () {
+                let minusDate = new Date($("#datepicker").val());
+                minusDate.setMonth(minusDate.getMonth() - 1);
+                setDatepickers(minusDate);
+            });
+
+            $("#next").click(function () {
+                let plusDate = new Date($("#datepicker").val());
+                plusDate.setMonth(plusDate.getMonth() + 1);
+                setDatepickers(plusDate);
+            });
+        })(jQuery);
+
+        function setDatepickers(date) {
+            $("#datepicker").datepicker({
+                language: "en",
+                keyboardNav: false,
+                autoClose: true,
+                todayButton: new Date(),
+                onSelect: function () {
+                    $(this).change();
+                    callByMoodchecker();
+                }
+            }).data('datepicker').selectDate(date);
+        }
+
+        //Mood & Sleep
+        $(document).ready(function () {
+            if (typeof patientData != typeof undefined) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/moodchecker/user/' + patientData.moodchecker_id + "/" + moodchecker + "/" + $("#datepicker").val(),
+                    success: function (data) {
+                        if (data["isSuccess"]) {
+                            moodchecker_length = data["result"].length;
+                            tasksInfo(data["result"], moodchecker.toLowerCase())
+                        } else {
+                            alert(data["message"]);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error : ' + textStatus);
+                        console.log('error : ' + errorThrown);
+                        alert("기분 정보 요청에 실패하였습니다");
+                    },
+                    contentType: "application/json"
+                });
+            }
+        });
+
+        function callByMoodchecker() {
+            if (typeof patientData != typeof undefined) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/moodchecker/user/' + patientData.moodchecker_id + "/" + moodchecker + "/" + $("#datepicker").val(),
+                    success: function (data) {
+                        if (data["isSuccess"]) {
+                            moodchecker_length = data["result"].length;
+                            tasksInfo(data["result"], moodchecker.toLowerCase())
+                        } else {
+                            alert(data["message"]);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error : ' + textStatus);
+                        console.log('error : ' + errorThrown);
+                        alert("기분 정보 요청에 실패하였습니다");
+                    },
+                    contentType: "application/json"
+                });
+            }
+        }
+
+        //All Tasks 정보 넣어주기
+        function tasksInfo(rawResults) {
+            let results = rawResults;
+
+            let tasks = "";
+            for (i = 0; i < results.length; i++) {
+                let result = results[i];
+
+                let emptyId = result["id"];
+
+                if(emptyId == -1) { //등록된 데이터가 없을 시
+                    tasks += `
+                    <tr class="c-table__row record">
+                        <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
+                        <td class="c-table__cell text-s" colspan="5">No Data Registered.</td>
+                    </tr>`;
+                } else { //등록된 데이터가 있을 시
+                    tasks += `
+                    <tr class="c-table__row record">';
+                        <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
+                        <td class="c-table__cell text-s">${result["mood"]}</td>
+                        <td class="c-table__cell text-s">${result["sleep_time"]} hr</td>
+                        <td class="c-table__cell text-m suicide" title="${result["suicide"]}">
+                            <i class="fas fa-plus-circle tasks-suicide" style="color: #dce1e7;"></i>
+                        </td>
+                        <td class="c-table__cell text-m period" title="${result["period"]}">
+                            <i class="far fa-calendar-check tasks-period"  style="color: #dce1e7;"></i>
+                        </td>
+                        <td class="c-table__cell text-s">${result["comment"]}</td>
+                    </tr>`;
+                }
+            }
+            $(".tasks-table .record").remove();
+            $(tasks).insertBefore(".tasks-table .empty-tasks");
+
+            //자살사고가 있을 시 해당 날짜에 속한 아이콘 색상 변경
+            $(".tasks-suicide").each(function() {
+                var checkVal = $(this).parent(".suicide").attr("title");
+                if(checkVal == 'true'){
+                    $(this).css("color", "#39b54a");
+                }
+            });
+
+            //월경이 있을 시 해당 날짜에 속한 아이콘 색상 변경
+            $(".tasks-period").each(function() {
+                var checkVal = $(this).parent(".period").attr("title");
+                if(checkVal == 'true'){
+                    $(this).css("color", "#2ea1f8");
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

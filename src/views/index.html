@@ -75,12 +75,14 @@
 
                 <div class="col-xl-4">
                     <div class="c-progress-card" data-mh="graph-cards">
-                        <h3 class="c-progress-card__title">All Tasks Overview</h3>
-                        <p class="c-progress-card__date" style="margin: 1.0rem 0 1.175rem;  font-size: 1.0rem;">
-                            <%-moodchecker%>
-                        </p>
+                        <h3 class="c-progress-card__title u-mb-medium">
+                            <a href="/tasksDetail" style="color: #000; text-decoration: none;">
+                                All Tasks Overview&emsp;
+                                <span style="color: #7f8fa4;"><%-moodchecker%></span>
+                            </a>
+                        </h3>
 
-                        <div class="transparent-scrollbar" style="width: 100%; max-height: 130px; overflow-y: auto;">
+                        <div class="transparent-scrollbar" style="width: 100%; max-height: 170px; overflow-y: auto;">
                             <div class="c-progress-card__item empty-tasks" style="display: none;">
                                 <div class="c-progress-card__label">
                                     <label class="tasks-date"></label>
