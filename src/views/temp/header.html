@@ -344,13 +344,29 @@
 
     //환자변경 시 cookie 변경 함수
     function changeTargetPatient(patient) {
-        if (confirm(patient["name"] + " 환자로 변경하시겠습니까?")) {
-            Cookies.set('patient', patient);
-            $(".nav-search .patientList-dropdown").hide();
-            $(".nav-search .search-input .input").val("");
-            updateCurrentPatient(patient);
-            window.location.reload();
-        }
+        $.confirm({
+            type: 'blue',
+            icon: "far fa-user-circle",
+            title: "환자 변경",
+            content: patient["name"] + " 환자로 변경하시겠습니까?",
+            buttons: {
+                changePatient: {
+                    text: "환자 변경",
+                    action: function() {
+                        Cookies.set('patient', patient);
+                        $(".nav-search .dropdown-menu").removeClass("show");
+                        $(".nav-search .search-input .input").val("");
+                        $(".navbar-container .nav-patient").addClass("show");
+                        $(".navbar-container .nav-dsmv").addClass("show");
+                        updateCurrentPatient(patient);
+                        window.location.reload();
+                    }
+                },
+                changeCancle: {
+                    text: "취소"
+                }
+            }
+        })
     }
 
     //선택환자 보여주기
