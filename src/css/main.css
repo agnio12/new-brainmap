@@ -13670,40 +13670,11 @@ textarea.c-input {
 .c-plan .edu-pdf-btn a {  color: #fff; text-decoration: none;}
 
 /* == Mood Deatil Graph == */
-/* datepicker */
-.datepicker-here {
-  text-align: center;
-  font-size: 18px;
-  color: #7f8fa4;
-  width: 85px;
-  border: none;
-  cursor: pointer;
-}
-
-.next-arrow {
-  cursor: pointer;
-  border: solid #93a3b8;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.preview-arrow {
-  cursor: pointer;
-  border: solid #93a3b8;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-}
+/* datepicker 라이브러리 */
+.datepicker-here {  text-align: center; font-size: 18px; color: #7f8fa4; width: 85px; border: none; cursor: pointer;}
+.next-arrow {  cursor: pointer; border: solid #93a3b8; border-width: 0 3px 3px 0; display: inline-block; padding: 3px; transform: rotate(135deg); -webkit-transform: rotate(-45deg);}
+.preview-arrow {  cursor: pointer; border: solid #93a3b8; border-width: 0 3px 3px 0; display: inline-block; padding: 3px; transform: rotate(135deg); -webkit-transform: rotate(135deg);}
 
 /* == Tasks Detail == */
-.tasks-table .text-s {
-  font-size: 1.0rem;
-}
-.tasks-table .text-m {
-  font-size: 1.4rem;
-}
+.tasks-table .text-s {  font-size: 1.0rem;}
+.tasks-table .text-m {  font-size: 1.4rem;}

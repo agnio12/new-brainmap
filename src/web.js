@@ -642,14 +642,17 @@ app.get('/patient/result', function (req, res) {
 
 
 //Mood 정보
-app.get('/moodchecker/user/:userId/mood', function (req, res) {
+app.get('/moodchecker/user/:userId/:moodchecker', function (req, res) {
     var userId = req.params.userId;
+    var item = (typeof req.params.moodchecker === "undefined" ? "Mood" : req.params.moodchecker).toLowerCase();
+
     if (isUndefined(userId)) {
         res.status(500).send({ isSuccess: false, message: "사용자 아이디 정보가 없음" })
         return;
     }
 
-    var query = `SELECT * FROM mood WHERE user_id='${userId}' ORDER BY created_time DESC LIMIT 10`;
+    var query = `SELECT * FROM ${item} WHERE user_id='${userId}' ORDER BY created_time DESC LIMIT 10`;
+
     pool.getConnection(function (err, connection) {
         connection.query(query, function (err, rows) {
             connection.release();

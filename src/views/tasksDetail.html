@@ -43,7 +43,7 @@
                             <div class="c-table-responsive@desktop" style="max-height: 810px; overflow-y: auto;">
                                 <table class="c-table tasks-table">
                                     <caption class="c-table__title">
-                                        All Tasks Overview Detail <small>Mood</small>
+                                        All Tasks Overview Detail <small><%- moodchecker%></small>
                                         <span id="preview" class="preview-arrow" style="margin-left: 30px;"></span>
                                         <input type="text" id="datepicker" maxlength="7" class="datepicker-here index"
                                             data-language='en' data-min-view="months" data-view="months" data-date-format="yyyy-mm"
@@ -53,10 +53,21 @@
                                     <thead class="c-table__head c-table__head--slim">
                                         <tr class="c-table__row">
                                             <th class="c-table__cell c-table__cell--head" style="width: 12%;">Registration Date</th>
-                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Mood</th>
-                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Sleep</th>
-                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Suicidal idea</th>
-                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;">Menstruation</th>
+                                            <th class="c-table__cell c-table__cell--head" style="width: 12%;"><%- moodchecker%></th>
+
+                                            <% if(moodchecker == 'Mood') { %>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Sleep</th>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Suicidal idea</th>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Menstruation</th>
+                                            <% } else if (moodchecker == 'Anxiety'){ %>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Sleep</th>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Panic Attack</th>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Medicine</th>
+                                            <% } else if (moodchecker == 'ADHD'){ %>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Hyperactivitys</th>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Aggressions</th>
+                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Side Effects</th>
+                                            <% } %>   
                                             <th class="c-table__cell c-table__cell--head">Comment</th>
                                         </tr>
                                     </thead>
@@ -199,40 +210,141 @@
                     tasks += `
                     <tr class="c-table__row record">
                         <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
-                        <td class="c-table__cell text-s" colspan="5">No Data Registered.</td>
+                        <td class="c-table__cell text-s" colspan="5" style="color: #9299a0;">- No Data Registered -</td>
                     </tr>`;
                 } else { //등록된 데이터가 있을 시
-                    tasks += `
-                    <tr class="c-table__row record">';
-                        <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
-                        <td class="c-table__cell text-s">${result["mood"]}</td>
-                        <td class="c-table__cell text-s">${result["sleep_time"]} hr</td>
-                        <td class="c-table__cell text-m suicide" title="${result["suicide"]}">
-                            <i class="fas fa-plus-circle tasks-suicide" style="color: #dce1e7;"></i>
-                        </td>
-                        <td class="c-table__cell text-m period" title="${result["period"]}">
-                            <i class="far fa-calendar-check tasks-period"  style="color: #dce1e7;"></i>
-                        </td>
-                        <td class="c-table__cell text-s">${result["comment"]}</td>
-                    </tr>`;
+
+                    if(moodchecker == 'Mood'){
+                        tasks += `
+                            <tr class="c-table__row record">';
+                                <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
+                                <td class="c-table__cell text-s">${result["mood"]}</td>
+                                <td class="c-table__cell text-s">${result["sleep_time"]} hr</td>
+                                <td class="c-table__cell text-m suicide" title="${result["suicide"]}">
+                                    <i class="fas fa-plus-circle tasks-suicide" style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-m period" title="${result["period"]}">
+                                    <i class="far fa-calendar-check tasks-period"  style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-s tasks-comment">${result["comment"]}</td>
+                            </tr>`;
+                    } else if (moodchecker == 'Anxiety') {
+                        let panics = Object.values(JSON.parse(results[i].panic));
+
+                        tasks += `
+                            <tr class="c-table__row record">';
+                                <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
+                                <td class="c-table__cell text-s">${result["anxiety"]}</td>
+                                <td class="c-table__cell text-s">${result["sleep_time"]} hr</td>
+                                <td class="c-table__cell text-m panic" title="${panics}">
+                                    <i class="fas fa-sad-tear tasks-panic" style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-m medicine" title="${result["medicine"]}">
+                                    <i class="fas fa-capsules tasks-medicine"  style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-s tasks-comment">${result["comment"]}</td>
+                            </tr>`;
+                    } else if (moodchecker == 'ADHD') {
+                        let hyperactivitys = Object.values(JSON.parse(results[i].hyperactivity));
+                        let aggressions = Object.values(JSON.parse(results[i].aggression));
+                        let drug_side_effects = Object.values(JSON.parse(results[i].drug_side_effects));
+
+                        tasks += `
+                            <tr class="c-table__row record">';
+                                <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
+                                <td class="c-table__cell text-s">${result["adhd"]}</td>
+                                <td class="c-table__cell text-m hyperactivity" title="${hyperactivitys}">
+                                    <i class="fas fa-plus tasks-hyperactivity" style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-m aggression" title="${aggressions}">
+                                    <i class="fas fa-bolt tasks-aggression" style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-m side_effects" title="${drug_side_effects}">
+                                    <i class="fas fa-exclamation-circle tasks-side_effects"  style="color: #dce1e7;"></i>
+                                </td>
+                                <td class="c-table__cell text-s tasks-comment">${result["comment"]}</td>
+                            </tr>`;
+                    }
+
                 }
             }
             $(".tasks-table .record").remove();
             $(tasks).insertBefore(".tasks-table .empty-tasks");
 
-            //자살사고가 있을 시 해당 날짜에 속한 아이콘 색상 변경
+            //Comment의 내용이 없을 시
+            $(".tasks-comment").each(function() {
+                var checkVal = $(this).text();
+                if(checkVal == ''){
+                    $(this).text("No Comments.");
+                }
+            });
+
+        //Mood    
+            //자살사고가 있을 시 해당 날짜에 속한 아이콘 색상 변경 (파랑)
             $(".tasks-suicide").each(function() {
                 var checkVal = $(this).parent(".suicide").attr("title");
+                if(checkVal == 'true'){
+                    $(this).css("color", "#2ea1f8");
+                }
+            });
+
+            //월경이 있을 시 해당 날짜에 속한 아이콘 색상 변경 (녹색)
+            $(".tasks-period").each(function() {
+                var checkVal = $(this).parent(".period").attr("title");
                 if(checkVal == 'true'){
                     $(this).css("color", "#39b54a");
                 }
             });
 
-            //월경이 있을 시 해당 날짜에 속한 아이콘 색상 변경
-            $(".tasks-period").each(function() {
-                var checkVal = $(this).parent(".period").attr("title");
+
+        //Anxiety  
+            //공황증상이 있을 시 해당 날짜에 속한 아이콘 색상 변경 (파랑)
+            $(".tasks-panic").each(function() {
+                var checkVal = $(this).parent(".panic").attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("color", "#2ea1f8");
+                    }
+                }
+            });
+
+            //약물치료가 있을 시 해당 날짜에 속한 아이콘 색상 변경 (녹색)
+            $(".tasks-medicine").each(function() {
+                var checkVal = $(this).parent(".medicine").attr("title");
                 if(checkVal == 'true'){
-                    $(this).css("color", "#2ea1f8");
+                    $(this).css("color", "#39b54a");
+                }
+            });
+
+        
+        //ADHD
+            //과잉행동이 있을 시 해당 날짜에 속한 아이콘 색상 변경 (파랑)
+            $(".tasks-hyperactivity").each(function() {
+                var checkVal = $(this).parent(".hyperactivity").attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("color", "#2ea1f8");
+                    }
+                }
+            });
+
+            //공격적행동이 있을 시 해당 날짜에 속한 아이콘 색상 변경 (녹색)
+            $(".tasks-aggression").each(function() {
+                var checkVal = $(this).parent(".aggression").attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("color", "#39b54a");
+                    }
+                }
+            });
+
+            //약물부작용이 있을 시 해당 날짜에 속한 아이콘 색상 변경 (보라색)
+            $(".tasks-side_effects").each(function() {
+                var checkVal = $(this).parent(".side_effects").attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("color", "#9d90e4");
+                    }
                 }
             });
         }

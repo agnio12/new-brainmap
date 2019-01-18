@@ -46,8 +46,10 @@
                             <h3 class="c-graph-card__title">
                                 <%- moodchecker%>
                             </h3>
-                            <p class="c-graph-card__date">To date, the last 10 Mood check have been made</p>
-                            <h3 class="c-graph-card__title">Average monthly mood&ensp;<span id="mood-avg"></span></h3>
+                            <p class="c-graph-card__date">To date, the last 10
+                                <%-moodchecker%> check have been made</p>
+                            <h3 class="c-graph-card__title">Average 10day
+                                <%-moodchecker%>&ensp;<span id="moodchecker-avg"></span></h3>
                         </div>
 
                         <a href="/moodDetail" class="mood-chart">
@@ -74,29 +76,30 @@
                 </div>
 
                 <div class="col-xl-4">
-                    <a href="/tasksDetail" style="color: #000; text-decoration: none;">
+                    <a href="/tasksDetail?moodchecker=<%-moodchecker%>" style="color: #000; text-decoration: none;">
                         <div class="c-progress-card" data-mh="graph-cards">
                             <h3 class="c-progress-card__title u-mb-medium">
                                 All Tasks Overview&emsp;
-                                <span style="color: #7f8fa4;"><%-moodchecker%></span>
+                                <span style="color: #7f8fa4;">
+                                    <%-moodchecker%></span>
                             </h3>
-                
+
                             <div class="transparent-scrollbar" style="width: 100%; max-height: 170px; overflow-y: auto;">
                                 <div class="c-progress-card__item empty-tasks" style="display: none;">
                                     <div class="c-progress-card__label">
-                                        <label class="tasks-date"></label>
+                                        <label></label>
                                     </div>
                                     <div class="c-progress-card__label">
-                                        <label class="tasks-mood"></label>
+                                        <label></label>
                                     </div>
                                     <div class="c-progress-card__label">
-                                        <label class="tasks-sleep"></label>
+                                        <label></label>
                                     </div>
                                     <div class="c-progress-card__label">
-                                        <label class="tasks-suicidal"></label>
+                                        <label></label>
                                     </div>
                                     <div class="c-progress-card__label">
-                                        <label class="tasks-period"></label>
+                                        <label></label>
                                     </div>
                                 </div><!-- // .c-progress-card__item -->
                             </div>
@@ -129,7 +132,8 @@
                                 <!-- 우울척도 (BDI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
                                     <p style="font-size: 1.0rem; line-height: 30px;">
-                                        <span><%- BDIData["date"] %></span><br />
+                                        <span>
+                                            <%- BDIData["date"] %></span><br />
                                         <span>우울척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
@@ -143,7 +147,8 @@
                                 <!-- 상태불안척도 (ST1) -->
                                 <div class="c-project-card__meta state c-card__border-top">
                                     <p style="font-size: 1.0rem; line-height: 30px;">
-                                        <span><%- STAIX1Data["date"] %></span><br />
+                                        <span>
+                                            <%- STAIX1Data["date"] %></span><br />
                                         <span>상태불안척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
@@ -157,7 +162,8 @@
                                 <!-- 특성불안척도 (ST2) -->
                                 <div class="c-project-card__meta state c-card__border-top">
                                     <p style="font-size: 1.0rem; line-height: 30px;">
-                                        <span><%- STAIX2Data["date"] %></span><br />
+                                        <span>
+                                            <%- STAIX2Data["date"] %></span><br />
                                         <span>특성불안척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
@@ -386,10 +392,10 @@
                             <a id="dsmv_save">save</a>
                         </div>
                         <div style="width: 100%; max-height: 345px; overflow: auto;">
-                        <table class="c-table" style="border: none;">
-                            <tbody id="dsmv-choice-box"></tbody>
-                        </table>
-                    </div>
+                            <table class="c-table" style="border: none;">
+                                <tbody id="dsmv-choice-box"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -430,6 +436,9 @@
         let dsmv = <%- dsmv %>;
 
         const moodchecker = typeof getUrlVars()["moodchecker"] === typeof undefined ? "Mood" : getUrlVars()["moodchecker"];
+
+        $(".c-sidebar__link").removeClass("is-active");
+        $(".c-sidebar__list .c-sidebar__link:contains('" + moodchecker + "')").addClass('is-active');
 
         function getUrlVars() {
             let vars = {};
@@ -705,7 +714,7 @@
                 });
             }
             $("#dsmv-choice-box").append(dsmv_html);
-    
+
             //dsmv list 그려주기
             function setDsmvHtml(value, index) {
                 let html = "";
@@ -864,12 +873,40 @@
                 return item.mood;
             });
 
-            var moodSum = 0.0;
-            for (var i = 0; i < moods.length; i++) {
-                moodSum += moods[i];
+            let anxietys = results.map(function (item) {
+                return item.anxiety;
+            });
+
+            let adhd = results.map(function (item) {
+                return item.adhd;
+            });
+
+
+            if (moodchecker == "Mood") {
+                var moodSum = 0.0;
+                for (var i = 0; i < moods.length; i++) {
+                    moodSum += moods[i];
+                }
+                var moodAvg = moodSum / moods.length;
+                $("#moodchecker-avg").text(moodAvg);
+
+            } else if (moodchecker == "Anxiety") {
+                var anxietysSum = 0.0;
+                for (var i = 0; i < anxietys.length; i++) {
+                    anxietysSum += anxietys[i];
+                }
+                var anxietysAvg = anxietysSum / anxietys.length;
+                $("#moodchecker-avg").text(anxietysAvg);
+
+            } else if (moodchecker == "ADHD") {
+                var adhdSum = 0.0;
+                for (var i = 0; i < adhd.length; i++) {
+                    adhdSum += adhd[i];
+                }
+                var adhdAvg = adhdSum / adhd.length;
+                $("#moodchecker-avg").text(adhdAvg);
             }
-            var moodAvg = moodSum / moods.length;
-            $("#mood-avg").text(moodAvg);
+
 
             var dates = [];
 
@@ -883,29 +920,86 @@
             var chartMood = document.getElementById("js-chart-mood");
 
             //chart-mood 설정
-            var lineChartMoodData = {
-                labels: dates,
-                datasets: [{
-                    data: moods,
-                    lineTension: 0,
-                    backgroundColor: 'rgba(163,136,227, 0.1)',
-                    borderWidth: 2,
-                    borderColor: "#886CE6",
-                    borderCapStyle: 'butt',
-                    pointBorderColor: "#fff",
-                    pointBackgroundColor: "#886CE6",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 5,
-                    pointHoverBorderWidth: 1,
-                    pointHoverBackgroundColor: "#886CE6",
-                    pointHoverBorderColor: "#fff"
-                }]
-            };
+
+            function getyMin(moodchecker) {
+                if (moodchecker == "Mood") {
+                    return -5;
+                } else {
+                    return -1;
+                }
+            }
+
+            function getyMax(moodchecker) {
+                if (moodchecker == "Mood") {
+                    return 5;
+                } else {
+                    return 10;
+                }
+            }
+
+            if (moodchecker == "Mood") {
+                var lineChartMoodCheckerData = {
+                    labels: dates,
+                    datasets: [{
+                        data: moods,
+                        lineTension: 0,
+                        backgroundColor: 'rgba(163,136,227, 0.1)',
+                        borderWidth: 2,
+                        borderColor: "#886CE6",
+                        borderCapStyle: 'butt',
+                        pointBorderColor: "#fff",
+                        pointBackgroundColor: "#886CE6",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 5,
+                        pointHoverBorderWidth: 1,
+                        pointHoverBackgroundColor: "#886CE6",
+                        pointHoverBorderColor: "#fff"
+                    }]
+                };
+            } else if (moodchecker == "Anxiety") {
+                var lineChartMoodCheckerData = {
+                    labels: dates,
+                    datasets: [{
+                        data: anxietys,
+                        lineTension: 0,
+                        backgroundColor: 'rgba(163,136,227, 0.1)',
+                        borderWidth: 2,
+                        borderColor: "#886CE6",
+                        borderCapStyle: 'butt',
+                        pointBorderColor: "#fff",
+                        pointBackgroundColor: "#886CE6",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 5,
+                        pointHoverBorderWidth: 1,
+                        pointHoverBackgroundColor: "#886CE6",
+                        pointHoverBorderColor: "#fff"
+                    }]
+                };
+            } else if (moodchecker == "ADHD") {
+                var lineChartMoodCheckerData = {
+                    labels: dates,
+                    datasets: [{
+                        data: adhd,
+                        lineTension: 0,
+                        backgroundColor: 'rgba(163,136,227, 0.1)',
+                        borderWidth: 2,
+                        borderColor: "#886CE6",
+                        borderCapStyle: 'butt',
+                        pointBorderColor: "#fff",
+                        pointBackgroundColor: "#886CE6",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 5,
+                        pointHoverBorderWidth: 1,
+                        pointHoverBackgroundColor: "#886CE6",
+                        pointHoverBorderColor: "#fff"
+                    }]
+                };
+            }
 
             if (chartMood) {
                 var lineChartMood = new Chart(chartMood, {
                     type: 'line',
-                    data: lineChartMoodData,
+                    data: lineChartMoodCheckerData,
                     options: {
                         layout: {
                             padding: {
@@ -934,9 +1028,8 @@
                             yAxes: [{
                                 display: false,
                                 ticks: {
-                                    beginAtZero: true,
-                                    max: 5,
-                                    min: -5
+                                    max: getyMax(moodchecker),
+                                    min: getyMin(moodchecker)
                                 },
                                 gridLines: {
                                     color: 'rgba(0,0,0,0.0)',
@@ -1032,36 +1125,144 @@
             for (i = 0; i < results.length; i++) {
                 let result = results[i];
 
-                tasks += '<div class="c-progress-card__item">';
-                tasks += '<div class="c-progress-card__label">';
-                tasks += '<label class="tasks-date">' + moment(result["created_time"]).format("YYYY-MM-DD") + '</label></div>';
-                tasks += '<div class="c-progress-card__label" style="flex-basis: 17%;">';
-                tasks += '<label class="tasks-mood">Mood&ensp;' + result["mood"] + '</label></div>';
-                tasks += '<div class="c-progress-card__label" style="flex-basis: 17%;">';
-                tasks += '<label class="tasks-sleep">Sleep&ensp;' + result["sleep_time"] + 'hr</label></div>';
-                tasks += '<div class="c-progress-card__label" style="flex-basis: 23%;">';
-                tasks += '<label class="tasks-suicide" title="' + result["suicide"] + '" style="color: #b7bfc9;">Suicidal idea</label></div>';
-                tasks += '<div class="c-progress-card__label" style="flex-basis: 23%;">';
-                tasks += '<label class="tasks-period" title="' + result["period"] + '" style="color: #b7bfc9;">Menstruation</label></div></div>';
+                if (moodchecker == "Mood") {
+                    tasks += `
+                    <div class="c-progress-card__item">
+                        <div class="c-progress-card__label">
+                            <label>${moment(result["created_time"]).format("YYYY-MM-DD")}</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 17%;">
+                            <label>Mood&ensp;${result["mood"]}</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 19%;">
+                            <label>Sleep&ensp;${result["sleep_time"]}hr</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 21%;">
+                            <label class="tasks-suicide" title="${result["suicide"]}" style="color: #b7bfc9;">Suicidal idea</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 23%;">
+                            <label class="tasks-period" title="${result["period"]}" style="color: #b7bfc9;">Menstruation</label>
+                        </div>
+                    </div>`;
+                } else if (moodchecker == "Anxiety") {
+                    let panics = Object.values(JSON.parse(results[i].panic));
+
+                    tasks += `
+                    <div class="c-progress-card__item">
+                        <div class="c-progress-card__label" style="flex-basis: 19%;">
+                            <label>${moment(result["created_time"]).format("YYYY-MM-DD")}</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 19%;">
+                            <label>Anxiety&ensp;${result["anxiety"]}</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 19%;">
+                            <label>Sleep&ensp;${result["sleep_time"]}hr</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 22%;">
+                            <label class="tasks-panic" title="${panics}" style="color: #b7bfc9;">Panic Attack</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 21%;">
+                            <label class="tasks-medicine" title="${result["medicine"]}" style="color: #b7bfc9;">Medicine</label>
+                        </div>
+                    </div>`;
+                } else if (moodchecker == "ADHD") {
+                    let hyperactivitys = Object.values(JSON.parse(results[i].hyperactivity));
+                    let aggressions = Object.values(JSON.parse(results[i].aggression));
+                    let drug_side_effects = Object.values(JSON.parse(results[i].drug_side_effects));
+
+                    tasks += `
+                    <div class="c-progress-card__item">
+                        <div class="c-progress-card__label" style="flex-basis: 19%;">
+                            <label>${moment(result["created_time"]).format("YYYY-MM-DD")}</label>
+                        </div>    
+                        <div class="c-progress-card__label" style="flex-basis: 15%;">
+                            <label>ADHD&ensp;${result["adhd"]}</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 23%;">
+                            <label class="tasks-hyperactivitys" title="${hyperactivitys}" style="color: #b7bfc9;">Hyperactivitys</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 19%;">
+                            <label class="tasks-aggressions" title="${aggressions}" style="color: #b7bfc9;">Aggressions</label>
+                        </div>
+                        <div class="c-progress-card__label" style="flex-basis: 20%;">
+                            <label class="tasks-drug_side_effects" title="${drug_side_effects}" style="color: #b7bfc9;">Side Effects</label>
+                        </div>
+                    </div>`;
+                }
+
             }
 
             $(tasks).insertBefore(".empty-tasks");
 
-            //자살사고가 있을 시 해당 날짜에 속한 텍스트 표시
-            $(".tasks-suicide").each(function() {
+            //Mood - 자살사고가 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-suicide").each(function () {
                 var checkVal = $(this).attr("title");
-                if(checkVal == 'true'){
+                if (checkVal == 'true') {
                     $(this).css("font-weight", "bold");
                     $(this).css("color", "#000");
                 }
             });
 
-            //월경이 있을 시 해당 날짜에 속한 텍스트 표시
-            $(".tasks-period").each(function() {
+            //Mood - 월경이 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-period").each(function () {
                 var checkVal = $(this).attr("title");
-                if(checkVal == 'true'){
+                if (checkVal == 'true') {
                     $(this).css("font-weight", "bold");
                     $(this).css("color", "#000");
+                }
+            });
+
+            //Anxiety - 공황발작이 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-panic").each(function () {
+                var checkVal = $(this).attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("font-weight", "bold");
+                        $(this).css("color", "#000");
+                    }
+                }
+            });
+
+            //Anxiety - 약물치료 해당 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-medicine").each(function () {
+                var checkVal = $(this).attr("title");
+                if (checkVal == '1') {
+                    $(this).css("font-weight", "bold");
+                    $(this).css("color", "#000");
+                }
+            });
+
+
+            //ADHD - 과잉행동 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-hyperactivitys").each(function () {
+                var checkVal = $(this).attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("font-weight", "bold");
+                        $(this).css("color", "#000");
+                    }
+                }
+            });
+
+            //ADHD - 공격적행동 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-aggressions").each(function () {
+                var checkVal = $(this).attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("font-weight", "bold");
+                        $(this).css("color", "#000");
+                    }
+                }
+            });
+
+            //ADHD - 약물부작용이 있을 시 해당 날짜에 속한 텍스트 표시
+            $(".tasks-drug_side_effects").each(function () {
+                var checkVal = $(this).attr("title");
+                for (let j in checkVal) {
+                    if (checkVal[j] == '1') {
+                        $(this).css("font-weight", "bold");
+                        $(this).css("color", "#000");
+                    }
                 }
             });
         }
