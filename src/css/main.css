@@ -13678,3 +13678,51 @@ textarea.c-input {
 /* == Tasks Detail == */
 .tasks-table .text-s {  font-size: 1.0rem;}
 .tasks-table .text-m {  font-size: 1.4rem;}
+.tasks-head {  width: 12%; cursor: pointer;}
+.c-table__head__border-bottom {  border-bottom: 2px solid #e6eaee;}
+
+
+/* == Result ( 자가평가, 임상평가) == */
+
+/* Comment에서 해당 점수 표시 */
+.choice-box {  background-color: rgba(111, 205, 216, 0.4);}
+
+/* Scale-List & Result-List  table */
+.font-change {  background-color: rgba(230, 234, 238, 0.3);}
+.head-padding {  padding: 1.2rem 1.875rem !important;}
+.scale-list:hover {  cursor: pointer; font-weight: bold;}
+.td-padding {  padding: 15px 0 15px 0px !important;} 
+.td2-padding {  padding: 15px 1.875rem 15px 0px !important;}
+.div-padding {  padding: 15px 1.875rem;}
+
+
+/* 답안 - Comment */
+.step { 
+  width: 100%;
+  line-height: 27px;
+}
+.step-score {
+  float: left;
+  width: 30%;
+}
+
+.step-text {
+  float: left;
+  width: 70%;
+}
+
+.detail { 
+  display: none;
+}
+
+.detail-step {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.detail-comm {
+  font-size: 0.95rem;
+  height: 111px; 
+  overflow-y: auto;
+  line-height: 27px;
+}
