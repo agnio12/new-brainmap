@@ -1011,7 +1011,7 @@ app.get('/patient/result/comment/:resultId/:visibleType', function (req, res) {
     })
 })
 
-// result data push
+//result data push
 function pushDrawItems(item, results) {
     var result = results[item.scaleCode];
     if (typeof result == typeof undefined || result.length > 9) {
@@ -1027,7 +1027,7 @@ function pushDrawItems(item, results) {
     results[item.scaleCode] = result;
 }
 
-// answers data push
+//answers data push
 function pushAnswersItems(item, answers) {
     var answer = answers[item.scale];
     if (typeof answer == typeof undefined) {
