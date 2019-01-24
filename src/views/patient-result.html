@@ -152,28 +152,23 @@
                 </div>
 
                 <div class="col-lg-4">
-                        <% for (i = 0 ; i < values.length ; i++) { %>
-                            <% var result = values[i]; %>
-                            <% if (result.length > 0) { %>
                     <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
                         <div class="c-card__header c-card__header--transparent o-line head-padding">
                             <h5 class="c-card__title">Detail Comments</h5>
-                            <a class="c-card__meta">
-                                <%- result[0].scaleEngName %></a>
+                            <a class="c-card__meta"></a>
                         </div>
                         <div class="c-card u-p-medium" style="border: none; height: 230px; overflow-y: auto;">
                             <div class="o-line u-mb-small">
-                                <div id="<%- result[0].scaleCode %>-d"></div>
+                                <div></div>
                                 <div class="detail-block" style="width: 100%;">
-                                    <div class="detail-step" id='<%- result[0].scaleCode %>'></div>
-                                    <div class="detail-comm" id='<%- result[0].scaleCode %>'></div>
+                                    <div class="detail-step"></div>
+                                    <div class="detail-comm"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <% } %>
-                    <% } %>
                 </div>
+
             </div><!-- // .row -->
         </div><!-- // .container -->
 
@@ -432,8 +427,6 @@
             $topInfoLabel.replaceWith("<label class='top-info-label'>" + topInfos[scale] + "</label>");
             var recentValue = (result.length > 0) ? result[0]["value"] : -1;
             var $commentLabel = $("#" + scale + "-c").next(".comment-block").children(".comment-label");
-            var $DetailScore = $("#" + scale + "-d").next(".detail-block").children(".detail-step");
-            var $DetailText = $("#" + scale + "-d").next(".detail-block").children(".detail-comm");
             var latestResultId = result[result.length - 1].resultId;
             // KDACL(우울형용사) scale이 아닐때만 comment 업데이트 2018.09.04 buffer0
             if (scale != 'KDACL') {
@@ -596,10 +589,6 @@
                         var comment = data["result"];
                         var scaleId = $commentLabel.attr("id");
                         $commentLabel.replaceWith("<label class='comment-label' id='" + scaleId + "'>" + comment + "</label>");
-                        var detail_score = $("#" + scaleId + " .detail-score").text();
-                        var detail_text = $("#" + scaleId + " .detail-text").text();
-                        $DetailScore.replaceWith("<div class='detail-step' id='" + scaleId + "'>" + detail_score + "</div>");
-                        $DetailText.replaceWith("<div class='detail-comm' id='" + scaleId + "'>" + detail_text + "</div>");
                         //SAS 스케일 시 함수 적용
                         if (scaleId == 'SAS') {
                             SAS_comments();
