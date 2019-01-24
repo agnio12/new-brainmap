@@ -84,7 +84,7 @@
                                     <%-moodchecker%></span>
                             </h3>
 
-                            <div class="transparent-scrollbar" style="width: 100%; max-height: 170px; overflow-y: auto;">
+                            <div style="width: 100%; max-height: 170px; overflow-y: auto;">
                                 <div class="c-progress-card__item empty-tasks" style="display: none;">
                                     <div class="c-progress-card__label">
                                         <label></label>
@@ -131,16 +131,16 @@
                             <div class="state-wrapper" style="position: relative;">
                                 <!-- 우울척도 (BDI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.0rem; line-height: 30px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px; padding-right: 24px;">
                                         <span>
                                             <%- BDIData["date"] %></span><br />
                                         <span>우울척도</span>
                                     </p>
-                                    <p style="font-size: 2.6rem;">
+                                    <p style="font-size: 2.6rem;" id="BDI-val">
                                         <%- BDIData["value"] %>
                                     </p>
                                     <p style="padding-top: 9px;">
-                                        <span><img src="img/main/BDI.jpg" style="width: 50px;"></span>
+                                        <span><img src="" style="width: 50px;" id="BDI-img"></span>
                                     </p>
                                 </div>
 
@@ -159,18 +159,18 @@
                                     </p>
                                 </div>
 
-                                <!-- 특성불안척도 (ST2) -->
+                                <!-- 수면척도 (ISI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.0rem; line-height: 30px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px; padding-right: 24px;">
                                         <span>
-                                            <%- STAIX2Data["date"] %></span><br />
-                                        <span>특성불안척도</span>
+                                            <%- ISIData["date"] %></span><br />
+                                        <span>수면척도</span>
                                     </p>
                                     <p style="font-size: 2.6rem;">
-                                        <%- STAIX2Data["value"] %>
+                                        <%- ISIData["value"] %>
                                     </p>
                                     <p style="padding-top: 9px;">
-                                        <span><img src="img/main/ST2.jpg" style="width: 50px;"></span>
+                                        <span><img src="img/main/ISI.jpg" style="width: 50px;"></span>
                                     </p>
                                 </div>
                             </div>
@@ -462,6 +462,18 @@
             $(".data-graph").hide();
             $(".mood-chart").hide();
             $(".scale-data-wrapper").hide();
+        }
+
+        //검사결과 - BDI 스케일 4단계 표시
+        var BDI_value = parseInt($("#BDI-val").text());
+        if(BDI_value < 10) { //9점이하
+            $("#BDI-img").attr("src", "img/main/BDI-1.png");
+        } else if(BDI_value < 16) { //10 ~ 15점
+            $("#BDI-img").attr("src", "img/main/BDI-2.png");
+        } else if(BDI_value < 24) { //16 ~ 23점
+            $("#BDI-img").attr("src", "img/main/BDI-3.png");
+        } else if(BDI_value <= 24) { //24점이상
+            $("#BDI-img").attr("src", "img/main/BDI-4.png");
         }
 
         //환자분석 - 자살 위험성

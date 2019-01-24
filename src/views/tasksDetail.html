@@ -49,6 +49,11 @@
                                             data-language='en' data-min-view="months" data-view="months" data-date-format="yyyy-mm"
                                             readonly="readonly" />
                                         <span id="next" class="next-arrow"></span>
+                                        <span style="float: right;">
+                                            <a class="c-btn c-btn--secondary" href="#" id="tasks-btn1"></a>&ensp;
+                                            <a class="c-btn c-btn--secondary" href="#" id="tasks-btn2"></a>
+                                        </span>
+                                        
                                     </caption>
                                     <thead class="c-table__head c-table__head--slim">
                                         <tr class="c-table__row">
@@ -56,17 +61,17 @@
                                             <th class="c-table__cell c-table__cell--head" style="width: 12%;"><%- moodchecker%></th>
 
                                             <% if(moodchecker == 'Mood') { %>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Sleep</th>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Suicidal idea</th>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Menstruation</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Sleep</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Suicidal idea</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Menstruation</th>
                                             <% } else if (moodchecker == 'Anxiety'){ %>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Sleep</th>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Panic Attack</th>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Medicine</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Sleep</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Panic Attack</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Medicine</th>
                                             <% } else if (moodchecker == 'ADHD'){ %>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Hyperactivitys</th>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Aggressions</th>
-                                                <th class="c-table__cell c-table__cell--head" style="width: 12%;">Side Effects</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Hyperactivitys</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Aggressions</th>
+                                                <th class="c-table__cell c-table__cell--head tasks-head">Side Effects</th>
                                             <% } %>   
                                             <th class="c-table__cell c-table__cell--head">Comment</th>
                                         </tr>
@@ -80,6 +85,12 @@
                                             <td class="c-table__cell"></td>
                                             <td class="c-table__cell"></td>
                                             <td class="c-table__cell"></td>
+                                        </tr>
+
+                                        <tr class="c-table__row no-tasks" style="display: none;">
+                                            <td class="c-table__cell text-s" colspan="6" style="padding: 3rem;">
+                                                이번달에 등록된 데이터가 없습니다.
+                                            </td>
                                         </tr>
 
                                     </tbody>
@@ -108,6 +119,24 @@
                 vars[key] = value;
             });
             return vars;
+        }
+
+        //우측 상단 버튼
+        if(moodchecker == 'Mood'){
+            $("#tasks-btn1").text("Anxiety");
+            $("#tasks-btn1").attr("href","tasksDetail?moodchecker=Anxiety");
+            $("#tasks-btn2").text("ADHD");
+            $("#tasks-btn2").attr("href","tasksDetail?moodchecker=ADHD");
+        } else if(moodchecker == 'Anxiety') {
+            $("#tasks-btn1").text("Mood");
+            $("#tasks-btn1").attr("href","tasksDetail?moodchecker=Mood");
+            $("#tasks-btn2").text("ADHD");
+            $("#tasks-btn2").attr("href","tasksDetail?moodchecker=ADHD");
+        } else if(moodchecker == 'ADHD') {
+            $("#tasks-btn1").text("Mood");
+            $("#tasks-btn1").attr("href","tasksDetail?moodchecker=Mood");
+            $("#tasks-btn2").text("Anxiety");
+            $("#tasks-btn2").attr("href","tasksDetail?moodchecker=Anxiety");
         }
 
         //datePicker 달력 설정
@@ -158,7 +187,12 @@
                     success: function (data) {
                         if (data["isSuccess"]) {
                             moodchecker_length = data["result"].length;
-                            tasksInfo(data["result"], moodchecker.toLowerCase())
+                            if(moodchecker_length > 0) {
+                                tasksInfo(data["result"], moodchecker.toLowerCase());
+                                $(".no-tasks").hide();
+                            } else {
+                                $(".no-tasks").show();
+                            }
                         } else {
                             alert(data["message"]);
                         }
@@ -181,7 +215,12 @@
                     success: function (data) {
                         if (data["isSuccess"]) {
                             moodchecker_length = data["result"].length;
-                            tasksInfo(data["result"], moodchecker.toLowerCase())
+                            if(moodchecker_length > 0) {
+                                tasksInfo(data["result"], moodchecker.toLowerCase());
+                                $(".no-tasks").hide();
+                            } else {
+                                $(".no-tasks").show();
+                            }
                         } else {
                             alert(data["message"]);
                         }
@@ -221,10 +260,10 @@
                                 <td class="c-table__cell text-s">${result["mood"]}</td>
                                 <td class="c-table__cell text-s">${result["sleep_time"]} hr</td>
                                 <td class="c-table__cell text-m suicide" title="${result["suicide"]}">
-                                    <i class="fas fa-plus-circle tasks-suicide" style="color: #dce1e7;"></i>
+                                    <i class="fas fa-user-times tasks-suicide" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-m period" title="${result["period"]}">
-                                    <i class="far fa-calendar-check tasks-period"  style="color: #dce1e7;"></i>
+                                    <i class="fas fa-raindrops tasks-period" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-s tasks-comment">${result["comment"]}</td>
                             </tr>`;
@@ -237,10 +276,10 @@
                                 <td class="c-table__cell text-s">${result["anxiety"]}</td>
                                 <td class="c-table__cell text-s">${result["sleep_time"]} hr</td>
                                 <td class="c-table__cell text-m panic" title="${panics}">
-                                    <i class="fas fa-sad-tear tasks-panic" style="color: #dce1e7;"></i>
+                                    <i class="far fa-frown-open tasks-panic" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-m medicine" title="${result["medicine"]}">
-                                    <i class="fas fa-capsules tasks-medicine"  style="color: #dce1e7;"></i>
+                                    <i class="fas fa-pills tasks-medicine" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-s tasks-comment">${result["comment"]}</td>
                             </tr>`;
@@ -254,13 +293,13 @@
                                 <td class="c-table__cell text-s">${moment(result["created_time"]).format("YYYY-MM-DD")}</td>
                                 <td class="c-table__cell text-s">${result["adhd"]}</td>
                                 <td class="c-table__cell text-m hyperactivity" title="${hyperactivitys}">
-                                    <i class="fas fa-plus tasks-hyperactivity" style="color: #dce1e7;"></i>
+                                    <i class="fas fa-user-plus tasks-hyperactivity" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-m aggression" title="${aggressions}">
                                     <i class="fas fa-bolt tasks-aggression" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-m side_effects" title="${drug_side_effects}">
-                                    <i class="fas fa-exclamation-circle tasks-side_effects"  style="color: #dce1e7;"></i>
+                                    <i class="fas fa-tablets tasks-side_effects" style="color: #dce1e7;"></i>
                                 </td>
                                 <td class="c-table__cell text-s tasks-comment">${result["comment"]}</td>
                             </tr>`;

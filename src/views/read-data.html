@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BrainMap</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+    <!-- datepicker -->
+    <link rel="stylesheet" type="text/css" href="css/datepicker.min.css" />
+
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="c-card c-card--responsive u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line">
+                            <h5 class="c-card__title">데이터 열람</h5>
+                            <span>
+                                <%-patientHistoryNum%> &nbsp&nbsp&nbsp
+                                <%-patientName%> &nbsp&nbsp&nbsp
+                                <%-patientBirthDate%></span>
+                            <div class="c-field has-icon-right" style="width: 180px;">
+                                <input class="c-input" type="text" placeholder="검사명">
+                                <span class="c-field__icon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <table class="c-table u-border-zero">
+                            <thead class="c-table__head c-table__head--slim c-table__head__border-bottom">
+                                <tr class="c-table__row">
+                                    <th class="c-table__cell c-table__cell--head">검사명</th>
+                                    <th class="c-table__cell c-table__cell--head">검사 날짜</th>
+                                    <th class="c-table__cell c-table__cell--head">검사 결과</th>
+                                    <th class="c-table__cell c-table__cell--head">검사 횟수</th>
+                                    <th class="c-table__cell c-table__cell--head">보험 코드</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="c-table__row u-border-top-zero ">
+                                    <td class="c-table__cell u-text-mute">00450</td>
+                                    <td class="c-table__cell">Design Works</td>
+                                    <td class="c-table__cell u-text-mute">Carlson Limited</td>
+                                    <td class="c-table__cell">$2,580</td>
+                                    <td class="c-table__cell u-text-mute">Carlson Limited</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- // .row -->
+
+        </div><!-- // .container -->
+
+    </main><!-- // .o-page__content -->
+
+    <script src="js/moment.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/jquery-confirm.js"></script>
+    <script src="js/air-datepicker/datepicker.js"></script>
+    <script src="js/air-datepicker/i18n/datepicker.en.js"></script>
+
+    <script type="text/javascript">
+        $(".c-sidebar__link").removeClass("is-active");
+        $(".c-sidebar__list .c-sidebar__link:contains('데이터 열람')").addClass('is-active');
+    </script>
+
+</body>
+
+</html>

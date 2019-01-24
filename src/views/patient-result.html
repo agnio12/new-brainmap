@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BrainMap</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <% var parsedResults = JSON.parse(results+'') %>
+        <% var keys = Object.keys(parsedResults) %>
+        <% var values = keys.map(function(key) { return parsedResults[key] }) %>
+        <!-- 스케일 번호 지정 2018-08.24 by buffer0 -->
+        <% var parsedScaleNum = JSON.parse(scaleNumber+'') %>
+
+        <div class="container">
+            <div class="row">
+
+                <!-- Scale Graph -->
+                <div class="col-xl-8">
+                    <% for (i = 0 ; i < values.length ; i++) { %>
+                    <% var result = values[i]; %>
+                    <% if (result.length > 0) { %>
+
+                    <div class="c-card u-p-medium u-mb-medium scale-grpah <%- result[0].scaleCode %>" name="<%- result[0].scaleCode %>">
+                        <div class="u-flex u-justify-between u-align-items-center u-mb-small">
+                            <h3 class="c-card__title">
+                                <%- result[0].scaleName %>
+                            </h3>
+                            <span class="u-text-small u-text-uppercase u-text-mute">
+                                <%- result[0].scaleEngName %></span>
+                        </div>
+
+                        <div class="u-flex u-mb-small" style="height: 30px; padding-left: 10px;">
+                            <span class="u-text-small u-text-mute">
+                                <label class="top-info-label"></label>
+                            </span>
+                        </div>
+
+                        <canvas id='<%- result[0].scaleCode %>' ondblclick='chartOnDbClick(event,<%- parsedScaleNum[result[0].scaleCode]-1 %>)'
+                            width="300" height="148" class="scale-indicator"></canvas>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="c-card c-card--responsive u-mb-medium">
+                        <div class="c-card__header c-card__header--transparent o-line head-padding">
+                            <h5 class="c-card__title">Scale List</h5>
+                        </div>
+                        <div style="height: 207px; overflow-y: auto;">
+                            <% for (i = 0 ; i < values.length ; i++) { %>
+                            <% var result = values[i]; %>
+                            <% if (result.length > 0) { %>
+                            <div class="c-card" style="border: none;">
+                                <div class="o-line div-padding scale-list" title="<%- result[0].scaleCode %>" style="border-bottom: 1px solid #e6eaee;">
+                                    <p class="u-text-small u-mr-small">
+                                        <%- result[0].scaleName %>
+                                    </p>
+                                    </td>
+                                    <div class="u-text-small u-text-mute u-ml-small">
+                                        <%- result[0].scaleEngName %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <% for (i = 0 ; i < values.length ; i++) { %>
+                    <% var result = values[i]; %>
+                    <% if (result.length > 0) { %>
+                    <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
+                        <div class="c-card__header c-card__header--transparent o-line head-padding">
+                            <h5 class="c-card__title">Results List</h5>
+                            <a class="c-card__meta">
+                                <%- result[0].scaleEngName %></a>
+                        </div>
+                        <div style="height: 103px; overflow-y: auto;">
+                            <% for (j = 0 ; j < result.length ; j++) { %>
+                            <% var resultData = result.slice().reverse();%>
+                            <div class="c-card" style="border: none;">
+                                <div class="o-line div-padding" style="border-bottom: 1px solid #e6eaee;">
+                                    <p class="u-text-small u-mr-small">
+                                        <%- resultData[j].date %>
+                                    </p>
+                                    <div class="u-text-small u-text-mute u-ml-small">
+                                        <%- resultData[j].value %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
+
+            </div><!-- // .row -->
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <% for (i = 0 ; i < values.length ; i++) { %>
+                    <% var result = values[i]; %>
+                    <% if (result.length > 0) { %>
+                    <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
+                        <div class="c-card__header c-card__header--transparent o-line head-padding">
+                            <h5 class="c-card__title">Scale Comments</h5>
+                            <a class="c-card__meta">
+                                <%- result[0].scaleEngName %></a>
+                        </div>
+                        <div class="c-card u-p-medium" style="border: none;">
+                            <div class="o-line u-mb-small">
+                                <div id="<%- result[0].scaleCode %>-c"></div>
+                                <div class="comment-block" style="width: 100%;">
+                                    <label class="comment-label" id='<%- result[0].scaleCode %>'></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
+
+                <div class="col-lg-4">
+                        <% for (i = 0 ; i < values.length ; i++) { %>
+                            <% var result = values[i]; %>
+                            <% if (result.length > 0) { %>
+                    <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
+                        <div class="c-card__header c-card__header--transparent o-line head-padding">
+                            <h5 class="c-card__title">Scale Comments</h5>
+                            <a class="c-card__meta">
+                                <%- result[0].scaleEngName %></a>
+                        </div>
+                        <div class="c-card u-p-medium" style="border: none; height: 230px; overflow-y: auto;">
+                            <div class="o-line u-mb-small">
+                                <div id="<%- result[0].scaleCode %>-d"></div>
+                                <div class="detail-block" style="width: 100%;">
+                                    <div class="detail-step" id='<%- result[0].scaleCode %>'></div>
+                                    <div class="detail-comm" id='<%- result[0].scaleCode %>'></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
+            </div><!-- // .row -->
+        </div><!-- // .container -->
+
+    </main><!-- // .o-page__content -->
+
+    <script src="js/moment.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/jquery-confirm.js"></script>
+    <script src="js/chart-custom.js"></script>
+
+    <script type="text/javascript">
+        $(".c-sidebar__link").removeClass("is-active");
+        $(".c-sidebar__list .c-sidebar__link:contains('자가평가')").addClass('is-active');
+
+        $(".scale-grpah").hide();
+
+        var scales_box = $(".scale-grpah").attr("name");
+        $("." + scales_box).show();
+
+        $(".scale-list").on("click", function () {
+            var scale_name = $(this).attr("title");
+            $(".scale-list").removeClass("font-change");
+            $(this).addClass("font-change");
+            $(".scale-grpah").hide();
+            $("." + scale_name).show();
+        });
+
+
+
+        $(document).mouseup(function (e) {
+            var modal_content = $(".modal-content");
+            if (!modal_content.is(e.target) && modal_content.has(e.target).length === 0) {
+                $("#kdacl_modal").css("display", "none")
+            }
+        });
+
+        var results = JSON.parse('<%- results %>');
+        var averages = JSON.parse('<%- averages %>');
+        var keys = Object.keys(results);
+        var patientData = JSON.parse(Cookies.get("patient"));
+        var name = patientData["name"];
+        var isMale = (patientData["gender"] == "M");
+        var compareGroups =
+        {
+            // TODO : 병원평균을 포함하여 나머지 데이터들 DB에서 가져와야.
+            STAIX1: [{ value: averages.STAIX1, title: "우리 병원" }, { value: 45.89, title: "고등학생" }, { value: 42.5, title: "대학생" }],
+
+            STAIX2: [{ value: averages.STAIX2, title: "우리 병원" }, { value: 46.24, title: "고등학생" }, { value: 44.53, title: "대학생" }],
+
+            BDI: [{ value: averages.BDI, title: "우리 병원" }, { value: 8.43, title: "일반인" }, { value: 23.46, title: "우울증 환자" }, { value: 16.0, title: "절단점", isCuttingPoint: true }],
+
+            KDACL: [{ value: averages.KDACL, title: "우리 병원" }],
+
+            PSQI: [{ value: averages.PSQI, title: "우리 병원" }, { value: 5.0, title: "국내 절단점" }, { value: 9.0, title: "국외 절단점" }],
+
+            ISI: [{ value: 16.0, title: "절단점", isCuttingPoint: true }],
+
+            AUDITC: [{ value: averages.AUDITC, title: "우리 병원" }],
+
+            PHQ15: [{ value: 5.0, title: "절단점", isCuttingPoint: true }],
+
+            PHQPanic: [{ value: averages.PHQPanic, title: "우리 병원" }],
+
+            BIS: [{ value: averages.BIS, title: "우리 병원" }],
+
+            KSAD: [{ value: averages.KSAD, title: "우리 병원" }, { value: 76.67, title: "일반인" }, { value: 81.69, title: "대학생" }, { value: 105.81, title: "사회공포증 환자" }],
+
+            CESD: [{ value: averages.CESD, title: "우리 병원" }],
+
+            BSDS: [{ value: 13.0, title: "절단점", isCuttingPoint: true }],
+
+            ASI: [{ value: 24.1, title: "불안집단" }, { value: 7.58, title: "정상인 집단" }],
+
+            SAIC: [{ value: averages.SAIC, title: "우리 병원" }, { value: 33.27, title: "초등학생 평상시" }, { value: 36.44, title: "초등학생 시험직전" }],
+
+            TAIC: [{ value: averages.TAIC, title: "우리 병원" }, { value: 31.96, title: "초등학생" }],
+
+            CDI: [{ value: averages.CDI, title: "우리 병원" }],
+
+            CESDC: [{ value: averages.CESDC, title: "우리 병원" }],
+
+            SAS: [{ value: averages.SAS, title: "우리 병원" }],
+
+            SCARED: [{ value: 24.0, title: "절단점", isCuttingPoint: true }],
+
+            DBDS: [{ value: averages.SDQKR, title: "우리 병원" }],
+
+            ARS: [{ value: 13.0, title: "절단점", isCuttingPoint: true }],
+
+            SDQKR: [{ value: 17.0, title: "절단점", isCuttingPoint: true }]
+
+        }
+
+        var topInfos =
+        {
+            // TODO : 우리환자 평균을 포함하여 나머지 데이터들 DB에서 가져와야.
+            STAIX1: '상태불안은 특수한 상황에서 자율신경계의 각성으로 인해 야기된 일시적인 불안 상태를 의미합니다.<BR>이것은 내가 "지금" 느끼는 우려, 긴장, 신경과민, 걱정 등의 느낌을 반영하는 것입니다.',
+            STAIX2: "특성 불안은 불안을 일으키는 경향으로 개인이 지니고 있는 지속적인 특성을 의미합니다.",
+            BDI: "우울증의 인지적, 정서적, 동기적, 신체적 증상 영역을 포함하는 21문항으로 구성된 검사입니다.",
+            KDACL: "개인의 감정상태를 나타내는 다양한 감정들을 알아봄으로써 현재의 우울 정서를 알 수 있는 검사입니다.",
+            PSQI: "한 달간의 일반적인 수면질과 불편 정도를 측정하는 검사입니다.<BR>수면질과 수면방해의 일시적 변화를 측정하는데 효과적입니다.",
+            ISI: "",
+            AUDITC: "심각한 알코올의존의 증상 유무를 가려내는 것보다는 초기의 문제음주를 선별하는 것이 목적인 검사입니다.",
+            PHQ15: "신체증상을 평가하기 위해 만들어진 스케일로 외래진료환자가 호소하는 신체 증상의 90% 이상을 포함하고 있습니다.",
+            PHQPanic: "",
+            BIS: "당신의 충동적 성향을 평가할 수 있는 스케일입니다.",
+            KSAD: "사회적 상황에서의 불안을 측정하여 사회적 상호작용과 관련한 불편감 및 회피 등을 알아보는 검사입니다.",
+            CESD: "CES-D는 역학조사에서 모든 연령층에 가장 많이 사용하는 우울증상 평가도구입니다.",
+            BSDS: "양극성장애 스펙트럼 진단척도<BR>경한 조증 증상을 특징으로 하는 여러 양극성 장애 선별이 도움 되고자 개발된 척도입니다.",
+            ASI: "",
+            SAIC: "상태불안은 특수한 상황에서 자율신경계의 각성으로 인해 야기된 일시적인 불안 상태를 의미합니다.<BR>이것은 내가 “지금” 느끼는 우려, 긴장, 신경과민, 걱정 등의 느낌을 반영하는 것입니다.",
+            TAIC: "특성 불안은 불안을 일으키는 경향으로 개인이 지니고 있는 지속적인 특성을 의미합니다.",
+            CDI: "소아의 우울 정도를 알아보는 검사 입니다.",
+            CESDC: "",
+            SAS: "",
+            SCARED: "DSM-IV의 불안장애 진단 유형을 토대로 하여 불안을 측정하기 위해 만들어진 스케일입니다.",
+            DBDS: "정신과 진단 분류인 DSM-IV의 주의력결핍 과잉행동장애(ADHD), 적대적 반항장애(ODD), 품행장애(CD) 들의 진단기준에 근거하여 부모가 아동의 행동에 대하여 평가할 수 있도록 개발한 척도입니다.",
+            ARS: "",
+            SDQKR: "이 검사는 ‘사회지향행동ʼ, ‘과잉행동ʼ, ‘정서증상ʼ, ‘품행문제ʼ, ‘또래문제ʼ 5개 척도로 구성되어 있습니다.<BR>아동청소년의 다양한 증상과 강점을 측정 가능하며, 개입 이전과 이후의 효과를 측정하는데 사용되기도 합니다."
+        }
+
+        var chartArray = []; //chart 배열
+
+        for (i = 0; i < keys.length; i++) {
+            var scale = keys[i];
+            if (typeof results[scale] == typeof undefined || results[scale].length == 0) {
+                continue;
+            }
+            var dates = [];
+            var datas = [];
+            var regions = [];
+            let result = results[scale].slice().reverse();
+
+            result.forEach(function (item, index) {
+                dates.push(item["date"]);
+                datas.push(item["value"]);
+            });
+            while (dates.length < 10) {
+                dates.push(" ")
+            }
+            while (datas.length <= 10) {
+                datas.push(0)
+            }
+
+            var chartScale = document.getElementById(scale);
+
+            var chartScaleData = {
+                labels: dates,
+                datasets: [{
+                    label: [name],
+                    fill: true,
+                    backgroundColor: 'rgba(111, 205, 216, 0.5)',
+                    borderWidth: 2,
+                    borderColor: "rgba(111, 205, 216, 1.00)",
+                    pointRadius: 4,
+                    pointBorderColor: "rgba(111, 205, 216, 1.00)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(111, 205, 216, 1.00)",
+                    pointHoverBorderWidth: 2,
+                    data: datas,
+                    spanGaps: false
+                }]
+            };
+
+            if (chartScale) {
+                var lineChartScale = new Chart(chartScale, {
+                    type: 'line',
+                    data: chartScaleData,
+                    options: {
+                        layout: {
+                            padding: {
+                                left: 0,
+                                right: 0,
+                                top: 30,
+                                bottom: 0
+                            }
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                ticks: {
+                                    fontSize: '11',
+                                    fontColor: '#969da5'
+                                },
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.0)',
+                                    zeroLineColor: 'rgba(0,0,0,0.0)'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                gridLines: {
+                                    color: 'rgba(0,0,0,0.1)',
+                                    zeroLineColor: 'rgba(0,0,0,0.1)'
+                                },
+                                ticks: {
+                                    fontSize: '11',
+                                    fontColor: '#969da5',
+                                    callback: function (value) { //소수점 제거
+                                        if (value % 1 === 0) {
+                                            return value;
+                                        }
+                                    },
+                                    min: scale.match(/^(STAIX1|STAIX2)$/) ? 20 : 0
+                                }
+                            }]
+                        },
+                        legend: {
+                            position: 'bottom',
+                            onHover: function (e) { // pointer 효과
+                                e.target.style.cursor = 'pointer';
+                            },
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        hover: { // pointer 효과
+                            onHover: function (e) {
+                                var point = this.getElementAtEvent(e);
+                                if (point.length) e.target.style.cursor = 'pointer';
+                                else e.target.style.cursor = 'default';
+                            }
+                        },
+                        //point 한번 클릭 시 상세보기
+                        onClick: function (evt, activeElements) {
+                            var scaleName = evt.target.id;
+                            var activePoints = this.getElementAtEvent(evt);
+                            if (activePoints.length) {
+                                var elementIndex = activeElements[0]._index;
+                                var resultId = result[elementIndex].resultId;
+                                if (scaleName != 'KDACL') {
+                                    //해당 점수에 맞는 상세 답안 출력 / 답안이 없는 스케일의 경우 아무 comments도 띄우지 않음 - 2018.09.06 by buffer0
+                                    requestComment(resultId, $("#" + scaleName + "-c").next(".comment-block").children(".comment-label"), 'S');
+                                }
+                                if (scaleName == 'KDACL') {
+                                    kdacl_value = resultId;
+                                    updateAnswers(scaleName, resultId); // KDACL comment - 2018.09.06 by buffer0
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // chart 배열에 차트오브젝트 담기
+            chartArray.push(lineChartScale);
+
+            // chart compareGroups data 추가 - 2018.08.22
+            addChartData(scale, chartArray.length - 1);
+
+            var $topInfoLabel = $("div[name='" + scale + "'] .top-info-label");
+            $topInfoLabel.replaceWith("<label class='top-info-label'>" + topInfos[scale] + "</label>");
+            var recentValue = (result.length > 0) ? result[0]["value"] : -1;
+            var $commentLabel = $("#" + scale + "-c").next(".comment-block").children(".comment-label");
+            var $DetailScore = $("#" + scale + "-d").next(".detail-block").children(".detail-step");
+            var $DetailText = $("#" + scale + "-d").next(".detail-block").children(".detail-comm");
+            var latestResultId = result[result.length - 1].resultId;
+            // KDACL(우울형용사) scale이 아닐때만 comment 업데이트 2018.09.04 buffer0
+            if (scale != 'KDACL') {
+                updateCommentLabel(scale, latestResultId);
+            }
+            if (scale == 'KDACL') {
+                kdacl_value = latestResultId;
+                $(".comment-label").css("padding", "0 30px 30px 30px");
+                updateAnswers(scale, latestResultId);
+            }
+        }
+
+
+        function updateCommentLabel(scale, resultId) {
+            var $commentLabel =
+                $("#" + scale + "-c").next(".comment-block").children(".comment-label");
+            requestComment(resultId, $commentLabel);
+        }
+
+        // KDACL(우울형용사) scale이 아닐때만 comment 업데이트 - 2018.09.06 by buffer0
+        function updateAnswers(scale, resultId) {
+
+            // 긍정&부정형용사
+            var questions = {
+                "P01": "가뿐하다.", "P02": "따뜻하다.", "03": "맥빠진다.", "04": "어수선하다.", "05": "우울하다.", "06": "막막하다.",
+                "P07": "뿌듯하다.", "08": "침울하다.", "P09": "든든하다.", "10": "죽고싶다.", "11": "허탈하다.", "12": "비참하다.",
+                "P13": "시원하다.", "P14": "편하다.", "15": "울적하다.", "16": "넌더리난다.", "17": "슬프다.", "P18": "홀가분하다.",
+                "19": "절망적이다.", "20": "서글프다", "21": "외롭다.", "P22": "좋다.", "23": "무기력하다.", "P24": "개운하다.", "25": "멍하다.",
+                "26": "허무하다.", "27": "의기소침하다.", "28": "허전하다.", "29": "쓸쓸하다.", "P30": "부드럽다.", "P31": "느긋하다.", "32": "맥없다."
+            };
+            var qKeys = Object.keys(questions);
+            var answers = JSON.parse('<%- answers %>'); // 2018.09.04 buffer0 answers data 추가
+            var akeys = Object.keys(answers); // 2018.09.04 buffer0 answers data 추가
+
+            $('#comments_KDACL_td1').html('');
+            //$('#comments_KDACL_td2').html('');
+            $('#comments_KDACL_td3').html('');
+            //$('#comments_KDACL_td4').html('');
+
+            for (var i = 0; i < akeys.length; i++) {
+                var scale = akeys[i];
+                if (typeof answers[scale] == typeof undefined || answers[scale].length == 0) {
+                    continue;
+                }
+
+                let answer = answers[scale].slice().reverse();
+                answer.forEach(function (item, index) {
+                    if (resultId == item["resultId"]) {
+
+                        var q_id = '';
+
+                        if (item["question_id"] == 'KDACL1001' || item["question_id"] == 'KDACL1002' || item["question_id"] == 'KDACL1007' || item["question_id"] == 'KDACL1009' ||
+                            item["question_id"] == 'KDACL1013' || item["question_id"] == 'KDACL1014' || item["question_id"] == 'KDACL1018' || item["question_id"] == 'KDACL1022' ||
+                            item["question_id"] == 'KDACL1024' || item["question_id"] == 'KDACL1030' || item["question_id"] == 'KDACL1031') {
+                            q_id = 'P' + item["question_id"].substring(7, 9); // 부정형용사일때 변수
+                            $('#comments_KDACL_td3').append(questions[q_id] + " ");
+                            qKeys.splice(qKeys.indexOf(q_id), 1);
+                        } else {
+                            q_id = item["question_id"].substring(7, 9); // 긍정형용사일때 변수
+                            $('#comments_KDACL_td1').append(questions[q_id] + " ");
+                            qKeys.splice(qKeys.indexOf(q_id), 1);
+                        }
+                    }
+                });
+            }
+
+            $("#" + scale + "-c").next(".comment-block").children(".comment-label").append($('#comments_kdacl'));
+            $('#comments_kdacl').show();
+            kdacl_unceck_value1 = '';
+            kdacl_unceck_value2 = '';
+            qKeys.map(function (key, item) {
+                if (qKeys[item].substring(0, 1) == 'P') { // 긍정형용사 X
+                    kdacl_unceck_value2 += questions[key] + ' ';
+                } else { // 부정형용사 X
+                    kdacl_unceck_value1 += questions[key] + ' ';
+                }
+            });
+        }
+
+        // chart.js add data function - 2018-8.22  by buffer0 (chart 생성이후 datasets추가 함수)
+        function addChartData(scale, idx) {
+            var colors = { //각각 수치들의 line 색상
+                "우리 병원": ["rgb(110, 222, 235, 0.4)", "rgb(110, 222, 235, 1.00)", true],
+                "고등학생": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
+                "대학생": ["rgb(32, 123, 167, 0.4)", "rgb(32, 123, 167, 1.00)", true],
+                "일반인": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
+                "우울증 환자": ["rgb(32, 123, 167, 0.4)", "rgb(32, 123, 167, 1.00)", true],
+                "국내 절단점": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
+                "국외 절단점": ["rgb(32, 123, 167, 0.4)", "rgb(32, 123, 167, 1.00)", true],
+                "불안집단": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
+                "정상인 집단": ["rgb(32, 123, 167, 0.4)", "rgb(32, 123, 167, 1.00)", true],
+                "초등학생": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
+                "초등학생 평상시": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
+                "초등학생 시험직전": ["rgb(32, 123, 167, 0.4)", "rgb(32, 123, 167, 1.00)", true],
+                "사회공포증 환자": ["rgb(139, 167, 181, 0.4)", "rgb(139, 167, 181, 1.00)", true],
+                "절단점": ["rgb(13, 64, 89, 0.4)", "rgb(13, 64, 89, 1.00)", true]
+            }
+
+            compareGroups[scale].forEach(function (item, index) {
+                var cutDatas = [];
+                while (cutDatas.length <= 10) {
+                    cutDatas.push(item["value"]);
+                }
+
+                chartArray[idx].data.datasets.push({
+                    label: [item["title"]],
+                    data: cutDatas,
+                    backgroundColor: colors[item["title"]][0],
+                    borderColor: colors[item["title"]][1],
+                    hidden: colors[item["title"]][2], //line 숨기기 (boolean으로 구분)
+                    borderWidth: 1.5,
+                    pointRadius: 0, //point 지점 숨기기
+                    fill: false //Area 효과 없애기
+                });
+                chartArray[idx].update();
+            });
+        }
+
+
+        // chart.js click function - 2018-8.10  by buffer0 
+        // line graph point 더블 클릭 시 검사결과 페이지 이동 이벤트함수
+        function chartOnDbClick(evt, idx) {
+            var scaleName = evt.target.id; // 현재스케일네임 확인용
+
+            var activePoints = chartArray[idx].getElementAtEvent(evt); // active point 클릭이벤트 포인트
+
+            let result = results[scaleName].slice().reverse(); // result 값
+
+            if (activePoints.length > 0) { // active point 가 있을 시
+                var clickedElementindex = activePoints[0]._index;
+                //var clickedDatasetIndex = activePoints[0]._datasetIndex;
+                //var label = chartArray[idx].data.labels[clickedElementindex]; 
+                //var value = chartArray[idx].data.datasets[clickedDatasetIndex].data[clickedElementindex]; 
+
+                // 검사 값이 없는 point 클릭 시 null 에러 방지 2018-08.24 by buffer0
+                if (clickedElementindex == result.length) {
+                    return;
+                } else {
+                    var resultId = result[clickedElementindex].resultId; //설문작성 번호
+                }
+
+                //검사결과
+                window.location.href = "/edit/" + resultId; //해당 검사 페이지 이동
+            }
+        }
+
+        /* Comment */
+        function requestComment(resultId, $commentLabel, visibleType) {
+            // visibleType 상세보기 show hide 매게변수 - 2018.09.03 by buffer0
+            if (typeof visibleType === typeof undefined) {
+                visibleType = 'H';
+            } else {
+                visibleType = 'S';
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/patient/result/comment/' + resultId + '/' + visibleType,
+                success: function (data) {
+                    if (data["isSuccess"]) {
+                        var comment = data["result"];
+                        var scaleId = $commentLabel.attr("id");
+                        $commentLabel.replaceWith("<label class='comment-label' id='" + scaleId + "'>" + comment + "</label>");
+                        var detail_score = $("#" + scaleId + " .detail-score").text();
+                        var detail_text = $("#" + scaleId + " .detail-text").text();
+                        $DetailScore.replaceWith("<div class='detail-step' id='" + scaleId + "'>" + detail_score + "</div>");
+                        $DetailText.replaceWith("<div class='detail-comm' id='" + scaleId + "'>" + detail_text + "</div>");
+                        //SAS 스케일 시 함수 적용
+                        if (scaleId == 'SAS') {
+                            SAS_comments();
+                        }
+
+                    } else {
+                        var comment = data["result"];
+                        $commentLabel.replaceWith("<label class='comment-label'>" + comment + "</label>");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error : ' + textStatus);
+                    console.log('error : ' + errorThrown);
+                    return ""
+                },
+                contentType: "application/json"
+            });
+        }
+
+        /* SAS Comments 값에 따른 background-color 설정 */
+        function SAS_comments() {
+            //고위험군 - 총점 / 요인 총합
+            if (parseInt($("#SAS-total").val()) >= 45) {
+                $(".SAS-contents").css("background-color", "rgba(111, 205, 216, 0.4)");
+                $(".SAS-contents").css("font-weight", "bold");
+            }
+
+            //잠재적 위험군 - 총점 / 요인
+            else if ((parseInt($("#SAS-total").val()) >= 42 && parseInt($("#SAS-total").val()) <= 44) ||
+                parseInt($("#latent-1").val()) >= 14 || parseInt($("#latent-3").val()) >= 12 || parseInt($("#latent-4").val()) >= 13) {
+
+                //잠재적 위험군 Text-Box
+                $(".SAS-latent").css("background-color", "rgba(111, 205, 216, 0.4)");
+                $(".SAS-latent").css("font-weight", "bold");
+
+                if (parseInt($("#latent-1").val()) >= 14) { //1요인 - 14이상
+                    $("#latent-td-1").css("background-color", "rgba(111, 205, 216, 0.4)");
+                    $("#latent-td-1").css("font-weight", "bold");
+
+                }
+                if (parseInt($("#latent-3").val()) >= 12) { //3요인 - 12이상
+                    $("#latent-td-3").css("background-color", "rgba(111, 205, 216, 0.4)");
+                    $("#latent-td-3").css("font-weight", "bold");
+
+                }
+                if (parseInt($("#latent-4").val()) >= 13) { //4요인 - 13이상
+                    $("#latent-td-4").css("background-color", "rgba(111, 205, 216, 0.4)");
+                    $("#latent-td-4").css("font-weight", "bold");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

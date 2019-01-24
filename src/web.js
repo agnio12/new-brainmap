@@ -209,7 +209,7 @@ app.get('/', function (req, res) {
             var datas = { STAIX1: STAIX1, STAIX2: STAIX2, BDI: BDI, ISI: ISI };
 
             var query =
-            `SELECT
+                `SELECT
                  c.result_id AS result_id,
                  c.scalename AS scaleName,
                  c.eng_scalename AS eng_scalename,
@@ -455,7 +455,7 @@ app.post('/register/patient', function (req, res, next) {
 app.post('/search/patient', function (req, res, next) {
     var keyword = req.body["keyword"];
     var hospital = req.cookies.user_hospital;
-    
+
     if (isUndefined(hospital)) {
         console.log("병원 정보 누락.");
         res.send({ isSuccess: false, result: "병원 정보 누락" });
@@ -543,7 +543,7 @@ app.post('/patient/:patientId/dsmv', function (req, res) {
             }
 
             let inner_query = "";
-            if(rows[0].count > 0) {
+            if (rows[0].count > 0) {
                 inner_query += `DELETE FROM patient_dsmv WHERE hospital_id = ${hospital} AND patient_id = '${patientId}';`;
             }
             inner_query += `INSERT INTO patient_dsmv(patient_id, dsmv, is_checked, hospital_id) VALUES`;
@@ -599,7 +599,7 @@ app.get('/patient/result', function (req, res) {
     }
     var patientId = req.query.patientId;
     var scale = req.query.scale;
-    
+
     if (isUndefined(patientId)) {
         res.send({ isSuccess: false, message: '유효하지 않은 환자입니다.' });
         return;
@@ -685,13 +685,13 @@ app.get('/moodDetail', function (req, res) {
         res.send({ isSuccess: false, message: '로그인이 필요한 서비스입니다.' });
         return;
     }
-    res.render('moodDetail', 
+    res.render('moodDetail',
         {
             innerExpress: express,
             ejs: ejs,
             innerApp: app,
             moodchecker: (typeof req.query.moodchecker === "undefined" ? "Mood" : req.query.moodchecker)
-    });
+        });
 });
 
 //Sleep Detail
@@ -700,13 +700,13 @@ app.get('/sleepDetail', function (req, res) {
         res.send({ isSuccess: false, message: '로그인이 필요한 서비스입니다.' });
         return;
     }
-    res.render('sleepDetail', 
+    res.render('sleepDetail',
         {
             innerExpress: express,
             ejs: ejs,
             innerApp: app,
             moodchecker: (typeof req.query.moodchecker === "undefined" ? "Mood" : req.query.moodchecker)
-    });
+        });
 });
 
 
@@ -804,14 +804,244 @@ app.get('/tasksDetail', function (req, res) {
         res.send({ isSuccess: false, message: '로그인이 필요한 서비스입니다.' });
         return;
     }
-    res.render('tasksDetail', 
+    res.render('tasksDetail',
         {
             innerExpress: express,
             ejs: ejs,
             innerApp: app,
             moodchecker: (typeof req.query.moodchecker === "undefined" ? "Mood" : req.query.moodchecker)
-    });
+        });
 });
+
+
+//Read Data ( 데이터열람 )
+app.get('/readData', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.redirect('/login');
+        return;
+    }
+    var patientCookie = req.cookies.patient;
+    if (!patientCookie || isUndefined(patientCookie)) {
+        res.redirect('/search/patient/readData');
+        return;
+    }
+    var patientData;
+    try {
+        patientData = JSON.parse(patientCookie);
+    } catch (e) {
+        res.redirect('/search/patient/readData');
+        return;
+    }
+    var patientId = patientData["id"];
+    var patientName = patientData["name"];
+    var patientBirthDate = patientData["birthdate"];
+    var patientHistoryNum = patientData["history_number"];
+    var query =
+        "SELECT p.history_number, CAST(AES_DECRYPT(UNHEX(p.name), 'brain') AS CHAR) AS name, p.gender, p.birthdate, r.id AS result_id, r.scale AS scaleName, r.value, r.date AS scaleDate, s.insurance " +
+        "FROM patient as p " +
+        "JOIN results as r ON p.id = r.patient_id " +
+        "JOIN scale as s ON r.scale = s.code " +
+        "WHERE p.id='" + patientId + "' " +
+        "ORDER BY scaleDate, r.id ASC";
+
+    pool.getConnection(function (err, connection) {
+        connection.query(query, function (err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status(500);
+            } else {
+                rows.forEach(function (item, i, items) {
+                    item.birthdate = moment(item.birthdate).format('YYYY-MM-DD');
+                    item.scaleDate = moment(item.scaleDate).format('YYYY-MM-DD');
+                })
+                res.render('read-data',
+                    {
+                        innerExpress: express,
+                        ejs: ejs,
+                        innerApp: app,
+                        results: JSON.stringify(rows),
+                        patientName: patientName,
+                        patientBirthDate: patientBirthDate,
+                        patientHistoryNum: patientHistoryNum
+                    });
+            }
+        })
+    })
+})
+
+
+//patientResult ( 자가평가 )
+app.get('/patientResult', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.redirect('/login');
+        return;
+    }
+    var hospital = req.cookies.user_hospital;
+    if (isUndefined(hospital)) {
+        res.send({ isSuccess: false, message: '유효하지 않은 환자입니다.' });
+        return;
+    }
+
+    var patientCookie = req.cookies.patient;
+    if (isUndefined(patientCookie)) {
+        res.redirect('/search/patient/patientResult');
+        return;
+    }
+    var patientData;
+    try {
+        patientData = JSON.parse(patientCookie);
+    } catch (e) {
+        res.redirect('/search/patient/patientResult');
+        return;
+    }
+    var patientId = patientData["id"];
+    
+    var resultQuery =
+        "SELECT r.id AS result_id, r.scale AS scaleCode, r.value, r.date AS date, s.korean_abbr_name AS scaleName, s.english_abbr_name AS scaleEngName " +
+        "FROM patient as p " +
+        "JOIN results as r ON p.id = r.patient_id " +
+        "JOIN scale as s ON r.scale = s.code " +
+        "WHERE p.id='" + patientId + "' " +
+        "ORDER BY date DESC, result_id DESC;";
+
+    var averageQuery =
+        "SELECT s.code AS scale, ROUND(AVG(r.value), 1) AS value " +
+        "FROM results AS r " +
+        "JOIN patient AS p ON r.patient_id = p.id " +
+        "JOIN scale AS s ON r.scale = s.code " +
+        "WHERE p.hospital='" + hospital + "' GROUP BY r.scale;"
+
+    // 스케일 번호 지정 - 2018.08.24 by buffer0
+    var scaleNumQuery =
+        "SELECT @num:=@num+1 AS num, a.scalecode from ( " +
+        "SELECT r.scale AS scaleCode " +
+        "FROM patient as p " +
+        "JOIN results as r ON p.id = r.patient_id " +
+        "JOIN scale as s ON r.scale = s.code " +
+        "WHERE p.id='" + patientId + "' and s.type = 'manual' " +
+        "group by r.scale " +
+        "order by s.id " +
+        ")a,(SELECT @num:=0) b;";
+
+    // answers data(KDACL만 일단추가) - 2018.09.06 by buffer0 
+    var answerDataQuery =
+        "SELECT * FROM answers WHERE patient_id = '" + patientId + "' " +
+        "and scale = 'KDACL'";
+
+    pool.getConnection(function (err, connection) {
+        connection.query(resultQuery + averageQuery + scaleNumQuery + answerDataQuery, function (err, rows) {
+            connection.release();
+            var scaleResults = rows[0];
+            var averageResults = rows[1];
+            var scaleNumResults = rows[2]; // 스케일 번호 지정 - 2018.08.24 by buffer0
+            var answersResults = rows[3]; // answers data - 2018.09.06 by buffer0
+
+            if (err || isUndefined(scaleResults)) {
+                console.log(err);
+                res.status(500).send("스케일 결과값 열람 중 오류");
+                return;
+            }
+            if (isUndefined(averageResults)) {
+                console.log(err);
+                res.status(500).send("병원 평균 결과값 열람 중 오류");
+                return;
+            }
+            scaleResults.forEach(function (item, i, items) {
+                item.date = moment(item.date).format('MM-DD');
+            })
+
+            // TODO : Result에 없는 스케일은 빼기
+            var results = { 'STAIX1': [], 'STAIX2': [], 'BDI': [], 'KDACL': [], 'PSQI': [], 'ISI': [], 'AUDITC': [], 'PHQ15': [], 'PHQPanic': [], 'BIS': [], 'KSAD': [], 'CESD': [], 'BSDS': [], 'ASI': [], 'SAIC': [], 'TAIC': [], 'CDI': [], 'CESDC': [], 'SAS': [], 'SCARED': [], 'DBDS': [], 'ARS': [], 'SDQKR': [] };
+            scaleResults.forEach(function (item) {
+                pushDrawItems(item, results);
+            })
+
+            // 평균값 디폴트는 0 으로 지정
+            var averages = { 'STAIX1': 0, 'STAIX2': 0, 'BDI': 0, 'KDACL': 0, 'PSQI': 0, 'ISI': 0, 'AUDITC': 0, 'PHQ15': 0, 'PHQPanic': 0, 'BIS': 0, 'KSAD': 0, 'CESD': 0, 'BSDS': 0, 'ASI': 0, 'SAIC': 0, 'TAIC': 0, 'CDI': 0, 'CESDC': 0, 'SAS': 0, 'SCARED': 0, 'DBDS': 0, 'ARS': 0, 'SDQKR': 0 };
+            averageResults.forEach(function (average) {
+                averages[average.scale] = average.value;
+            })
+
+            // 스케일 번호 지정 2018-08.24 by buffer0
+            var scaleNumber = { 'STAIX1': 0, 'STAIX2': 0, 'BDI': 0, 'KDACL': 0, 'PSQI': 0, 'ISI': 0, 'AUDITC': 0, 'PHQ15': 0, 'PHQPanic': 0, 'BIS': 0, 'KSAD': 0, 'CESD': 0, 'BSDS': 0, 'ASI': 0, 'SAIC': 0, 'TAIC': 0, 'CDI': 0, 'CESDC': 0, 'SAS': 0, 'SCARED': 0, 'DBDS': 0, 'ARS': 0, 'SDQKR': 0 };
+            scaleNumResults.forEach(function (scaleNum) {
+                scaleNumber[scaleNum.scalecode] = scaleNum.num;
+            })
+
+            // answers data 가져오기 - 2018.09.06 by buffer0
+            var answers = { 'KDACL': [] }; // 일단 KDACL 만 추가 
+            answersResults.forEach(function (item) {
+                pushAnswersItems(item, answers);
+            })
+
+            res.render('patient-result', { innerExpress: express, ejs: ejs, innerApp: app, results: JSON.stringify(results), averages: JSON.stringify(averages), scaleNumber: JSON.stringify(scaleNumber), answers: JSON.stringify(answers) });
+        })
+    })
+})
+
+// 자가평가 답안 출력
+app.get('/patient/result/comment/:resultId/:visibleType', function (req, res) {
+    var resultId = req.params.resultId;
+    var visibleType = req.params.visibleType;
+    var query = "CALL commentByResultId(" + resultId + ", '" + visibleType + "', @comment);";
+    query += " SELECT @comment AS comment;"
+
+    pool.getConnection(function (err, connection) {
+        connection.query(query, function (err, rows) {
+            connection.release();
+            if (err) {
+                sendError(res, "result comment err : " + err)
+                return;
+            } else {
+                var result = rows[rows.length - 1][0]; // multi statements의 경우 결과값이 마지막 요소에 있음.
+                var commentNotFound = "커멘트가 존재하지 않거나 커멘트가 지원되지 않는 스케일입니다.";
+                if (typeof result == typeof undefined || result == null) {
+                    res.send({ isSuccess: false, result: commentNotFound })
+                    return;
+                }
+                var comment = result["comment"];
+                if (typeof comment == typeof undefined || comment == null) {
+                    res.send({ isSuccess: false, result: commentNotFound })
+                    return;
+                }
+                res.send({ isSuccess: true, result: comment })
+            }
+        })
+    })
+})
+
+// result data push
+function pushDrawItems(item, results) {
+    var result = results[item.scaleCode];
+    if (typeof result == typeof undefined || result.length > 9) {
+        return
+    }
+    for (i = 0; i < result.length; i++) {
+        var existingItem = result[i];
+        if (existingItem.date == item.date) {
+            return;
+        }
+    }
+    result.push({ "resultId": item.result_id, "date": item.date, "value": item.value, "scaleCode": item.scaleCode, "scaleName": item.scaleName, "scaleEngName": item.scaleEngName, "average": 45.89 });
+    results[item.scaleCode] = result;
+}
+
+// answers data push
+function pushAnswersItems(item, answers) {
+    var answer = answers[item.scale];
+    if (typeof answer == typeof undefined) {
+        return
+    }
+    for (i = 0; i < answer.length; i++) {
+        var existingItem = answer[i];
+        if (existingItem.date == item.date) {
+            return;
+        }
+    }
+    answer.push({ "resultId": item.result_id, "date": item.date, "value": item.value, "scaleCode": item.scale, "question_id": item.question_id });
+    answers[item.scale] = answer;
+}
 
 //isUndefined 함수
 function isUndefined($0) {
