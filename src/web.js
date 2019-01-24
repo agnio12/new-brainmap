@@ -1048,6 +1048,13 @@ function isUndefined($0) {
     return !$0 || typeof $0 == typeof undefined;
 }
 
+//sendError 함수
+function sendError(res, message) {
+    console.log(message);
+    res.status(500);
+    res.send({ isSuccess: false, message: message })
+}
+
 //404 에러 페이지 처리
 var errorHandler = expressErrorHandler({
     static: {
