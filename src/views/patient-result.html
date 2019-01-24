@@ -142,7 +142,9 @@
                             <div class="o-line u-mb-small">
                                 <div id="<%- result[0].scaleCode %>-c"></div>
                                 <div class="comment-block" style="width: 100%;">
-                                    <label class="comment-label" id='<%- result[0].scaleCode %>'></label>
+                                    <label class="comment-label" id='<%- result[0].scaleCode %>'>
+
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -581,7 +583,7 @@
             } else {
                 visibleType = 'S';
             }
-            $.ajax({
+            /*$.ajax({
                 type: 'GET',
                 url: '/patient/result/comment/' + resultId + '/' + visibleType,
                 success: function (data) {
@@ -605,7 +607,7 @@
                     return ""
                 },
                 contentType: "application/json"
-            });
+            });*/
         }
 
         /* SAS Comments 값에 따른 background-color 설정 */
