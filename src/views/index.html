@@ -48,8 +48,7 @@
                             </h3>
                             <p class="c-graph-card__date">To date, the last 10
                                 <%-moodchecker%> check have been made</p>
-                            <h3 class="c-graph-card__title">Average 10day
-                                <%-moodchecker%>&ensp;<span id="moodchecker-avg"></span></h3>
+                            <h3 class="c-graph-card__title avg-tot">Average 10day <%-moodchecker%>&ensp;<span id="moodchecker-avg"></span></h3>
                         </div>
 
                         <a href="/moodDetail" class="mood-chart">
@@ -65,7 +64,7 @@
                         <div class="c-graph-card__content">
                             <h3 class="c-graph-card__title">Sleep</h3>
                             <p class="c-graph-card__date">To date, the last 10 Sleep check have been made</p>
-                            <h3 class="c-graph-card__title">Average sleep duration&ensp;<span id="sleep-avg"></span>hr</h3>
+                            <h3 class="c-graph-card__title avg-tot">Average sleep duration&ensp;<span id="sleep-avg"></span>hr</h3>
                         </div>
                         <a href="/sleepDetail" class="mood-chart">
                             <div class="c-graph-card__chart sleep" style="cursor: pointer;">
@@ -402,7 +401,7 @@
             </div><!-- // .row -->
 
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-12">
                     <div class="c-card u-mb-medium" style="overflow: auto">
                         <div class="c-card__header c-card__header--transparent o-line" style="border: none;">
@@ -422,7 +421,8 @@
 
                     </div>
                 </div>
-            </div><!-- // .row -->
+            </div>  -->
+            <!-- // .row -->
 
         </div><!-- // .container -->
 
@@ -461,18 +461,19 @@
             $(".c-project-card__meta").hide();
             $(".data-graph").hide();
             $(".mood-chart").hide();
+            $(".avg-tot").hide();
             $(".scale-data-wrapper").hide();
         }
 
         //검사결과 - BDI 스케일 4단계 표시
         var BDI_value = parseInt($("#BDI-val").text());
-        if(BDI_value < 10) { //9점이하
+        if(BDI_value <= 9) { //9점이하
             $("#BDI-img").attr("src", "img/main/BDI-1.png");
-        } else if(BDI_value < 16) { //10 ~ 15점
+        } else if(BDI_value <= 15) { //10 ~ 15점
             $("#BDI-img").attr("src", "img/main/BDI-2.png");
-        } else if(BDI_value < 24) { //16 ~ 23점
+        } else if(BDI_value <= 23) { //16 ~ 23점
             $("#BDI-img").attr("src", "img/main/BDI-3.png");
-        } else if(BDI_value <= 24) { //24점이상
+        } else if(BDI_value >= 24) { //24점이상
             $("#BDI-img").attr("src", "img/main/BDI-4.png");
         }
 
@@ -807,7 +808,7 @@
             });
         })(jQuery);
 
-        //교육자료
+        /*교육자료
         (function education() {
             $.ajax({
                 type: 'GET',
@@ -845,7 +846,7 @@
                     $("#home-edu-slick" + (i + 1)).append(itemTag);
                 })
             }
-        })(jQuery);
+        })(jQuery);*/
 
 
         //Mood & Sleep
