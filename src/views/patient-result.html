@@ -40,148 +40,149 @@
         <!-- 스케일 번호 지정 2018-08.24 by buffer0 -->
         <% var parsedScaleNum = JSON.parse(scaleNumber+'') %>
 
-        <div class="container">
-            <div class="row">
+        <div class="container-fluid">
 
-                <!-- Scale Graph -->
-                <div class="col-xl-8">
-                    <% for (i = 0 ; i < values.length ; i++) { %>
-                    <% var result = values[i]; %>
-                    <% if (result.length > 0) { %>
-
-                    <div class="c-card u-p-medium u-mb-medium scale-grpah <%- result[0].scaleCode %>" name="<%- result[0].scaleCode %>">
-                        <div class="u-flex u-justify-between u-align-items-center u-mb-small">
-                            <h3 class="c-card__title">
-                                <%- result[0].scaleName %>
-                            </h3>
-                            <span class="u-text-small u-text-uppercase u-text-mute">
-                                <%- result[0].scaleEngName %></span>
-                        </div>
-
-                        <div class="u-flex u-mb-small" style="height: 30px; padding-left: 10px;">
-                            <span class="u-text-small u-text-mute">
-                                <label class="top-info-label"></label>
-                            </span>
-                        </div>
-
-                        <canvas id='<%- result[0].scaleCode %>' ondblclick='chartOnDbClick(event,<%- parsedScaleNum[result[0].scaleCode]-1 %>)'
-                            width="300" height="148" class="scale-indicator"></canvas>
+            <!-- Scale List -->
+            <div class="col-xl-3" style="float: left;">
+                <div class="c-card c-card--responsive u-mb-medium">
+                    <div class="c-card__header c-card__header--transparent o-line head-padding">
+                        <h5 class="c-card__title">Scale List</h5>
                     </div>
-                    <% } %>
-                    <% } %>
-                </div>
-
-                <div class="col-xl-4">
-                    <div class="c-card c-card--responsive u-mb-medium">
-                        <div class="c-card__header c-card__header--transparent o-line head-padding">
-                            <h5 class="c-card__title">Scale List</h5>
-                        </div>
-                        <div style="height: 207px; overflow-y: auto;">
-                            <% for (i = 0 ; i < values.length ; i++) { %>
-                            <% var result = values[i]; %>
-                            <% if (result.length > 0) { %>
-                            <div class="c-card" style="border: none;">
-                                <div class="o-line div-padding scale-list" title="<%- result[0].scaleCode %>" style="border-bottom: 1px solid #e6eaee;">
-                                    <p class="u-text-small u-mr-small">
-                                        <%- result[0].scaleName %>
-                                    </p>
-                                    </td>
-                                    <div class="u-text-small u-text-mute u-ml-small">
-                                        <%- result[0].scaleEngName %>
-                                    </div>
-                                </div>
-                            </div>
-                            <% } %>
-                            <% } %>
-                        </div>
-                    </div>
-
-                    <% for (i = 0 ; i < values.length ; i++) { %>
-                    <% var result = values[i]; %>
-                    <% if (result.length > 0) { %>
-                    <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
-                        <div class="c-card__header c-card__header--transparent o-line head-padding">
-                            <h5 class="c-card__title">Results List</h5>
-                            <a class="c-card__meta">
-                                <%- result[0].scaleEngName %></a>
-                        </div>
-                        <div style="height: 103px; overflow-y: auto;">
-                            <% for (j = 0 ; j < result.length ; j++) { %>
-                            <% var resultData = result.slice().reverse();%>
-                            <div class="c-card" style="border: none;">
-                                <div class="o-line div-padding" style="border-bottom: 1px solid #e6eaee;">
-                                    <p class="u-text-small u-mr-small">
-                                        <%- resultData[j].date %>
-                                    </p>
-                                    <div class="u-text-small u-text-mute u-ml-small">
-                                        <%- resultData[j].value %>
-                                    </div>
-                                </div>
-                            </div>
-                            <% } %>
-                        </div>
-                    </div>
-                    <% } %>
-                    <% } %>
-                </div>
-
-            </div><!-- // .row -->
-
-            <div class="row">
-                <div class="col-lg-8">
-                    <% for (i = 0 ; i < values.length ; i++) { %>
-                    <% var result = values[i]; %>
-                    <% if (result.length > 0) { %>
-                    <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
-                        <div class="c-card__header c-card__header--transparent o-line head-padding">
-                            <h5 class="c-card__title">Scale Comments</h5>
-                            <a class="c-card__meta">
-                                <%- result[0].scaleEngName %></a>
-                        </div>
-                        <div class="c-card u-p-medium" style="border: none;">
-                            <div class="o-line u-mb-small">
-                                <div class="comment-block" style="width: 100%;">
-                                    이 검사에서 당신의 점수는&nbsp;【48점】&nbsp;입니다.<BR><BR>
-                                    <DIV class='step'>
-                                        <DIV class='step-score'>
-                                            1단계 (51점 이하)<BR>
-                                            2단계 (52~56점)<BR>
-                                            3단계 (57~61점)<BR>
-                                            4단계 (62점 이상)
-                                        </DIV>
-                                        <DIV class='step-text'>
-                                            <SPAN class='choice-box'>상태 불안평가에서 <B>정상</B> 입니다.</SPAN><BR>
-                                            상태 불안평가에서 <B>가벼운 불안</B> 상태입니다.<BR>
-                                            상태 불안평가에서 <B>상당한 불안</B> 상태입니다.<BR>
-                                            상태 불안평가에서 <B>심한 불안</B> 상태입니다.
-                                        </DIV>
-                                    </DIV>
+                    <div style="height: 740px; overflow-y: auto;">
+                        <% for (i = 0 ; i < values.length ; i++) { %>
+                        <% var result = values[i]; %>
+                        <% if (result.length > 0) { %>
+                        <div class="c-card" style="border: none;">
+                            <div class="o-line div-padding scale-list <%- result[0].scaleCode %>-scale" title="<%- result[0].scaleCode %>" style="border-bottom: 1px solid #e6eaee;">
+                                <p class="u-text-small u-mr-small">
+                                    <%- result[0].scaleName %>
+                                </p>
+                                </td>
+                                <div class="u-text-small u-text-mute u-ml-small">
+                                    <%- result[0].scaleEngName %>
                                 </div>
                             </div>
                         </div>
+                        <% } %>
+                        <% } %>
                     </div>
-                    <% } %>
-                    <% } %>
                 </div>
+            </div>
 
-                <div class="col-lg-4">
-                    <div class="c-card c-card--responsive u-mb-medium">
-                        <div class="c-card__header c-card__header--transparent o-line head-padding">
-                            <h5 class="c-card__title">Detail Comments</h5>
-                            <a class="c-card__meta"></a>
-                        </div>
-                        <div class="c-card u-p-medium" style="border: none; height: 230px; overflow-y: auto;">
+            <!-- Scale Graph -->
+            <div class="col-xl-6" style="float: left;">
+                <% for (i = 0 ; i < values.length ; i++) { %>
+                <% var result = values[i]; %>
+                <% if (result.length > 0) { %>
+                <div class="c-card u-p-medium u-mb-medium scale-grpah <%- result[0].scaleCode %>" name="<%- result[0].scaleCode %>">
+                    <div class="u-flex u-justify-between u-align-items-center u-mb-small">
+                        <h3 class="c-card__title">
+                            <%- result[0].scaleName %>
+                        </h3>
+                        <span class="u-text-small u-text-uppercase u-text-mute">
+                            <%- result[0].scaleEngName %></span>
+                    </div>
+                    <div class="u-flex u-mb-small" style="height: 30px; padding-left: 10px;">
+                        <span class="u-text-small u-text-mute">
+                            <label class="top-info-label"></label>
+                        </span>
+                    </div>
+                    <canvas id='<%- result[0].scaleCode %>' ondblclick='chartOnDbClick(event,<%- parsedScaleNum[result[0].scaleCode]-1 %>)'
+                        width="300" height="136" class="scale-indicator"></canvas>
+                </div>
+                <% } %>
+                <% } %>
+            </div>
+
+            <!-- 상세 답안 -->
+            <div class="col-xl-3" style="float: left;">
+                <% for (i = 0 ; i < values.length ; i++) { %>
+                <% var result = values[i]; %>
+                <% if (result.length > 0) { %>
+                <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
+                    <div class="c-card__header c-card__header--transparent o-line head-padding">
+                        <h5 class="c-card__title">Detail Comments</h5>
+                        <a class="c-card__meta">
+                            <%- result[0].scaleEngName %></a>
+                    </div>
+                    <div style="height: 410px; overflow-y: auto;">
+                        <div class="c-card u-pv-medium u-ph-large" style="border: none;">
                             <div class="o-line u-mb-small">
                                 <div class="detail-block" style="width: 100%;">
-                                    <div class="detail-step">1단계 (51점 이하)</div>
-                                    <div class="detail-comm">일상적으로 느끼는 불안수준이 잘 유지되고 있는 것으로 보입니다.</div>
+                                    <div class="ss" id='<%- result[0].scaleCode %>-cmd'>
+                                        <div class="detail-step"></div>
+                                        <div class="detail-comm"></div>
+                                        <div class="detail-empty" style="display: none; text-align: center; line-height: 32px;">
+                                            <b><%- result[0].scaleEngName %></b> 스케일은<br>상세답안이 <b>없는</b> 스케일입니다.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <% } %>
+                <% } %>
+            </div>
 
-            </div><!-- // .row -->
+
+            <!-- 답안 -->
+            <div class="col-lg-6" style="float: left;">
+                <% for (i = 0 ; i < values.length ; i++) { %>
+                <% var result = values[i]; %>
+                <% if (result.length > 0) { %>
+                <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
+                    <div class="c-card__header c-card__header--transparent o-line head-padding">
+                        <h5 class="c-card__title">Scale Comments</h5>
+                        <a class="c-card__meta">
+                            <%- result[0].scaleEngName %></a>
+                    </div>
+                    <div style="height: 231px;">
+                        <div class="c-card u-pv-medium u-ph-large" style="border: none;">
+                            <div class="o-line u-mb-small">
+                                <div id="<%- result[0].scaleCode %>-c"></div>
+                                <div class="comment-block" style="width: 100%;">
+                                    <label class="comment-label" id='<%- result[0].scaleCode %>-cm'></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+                <% } %>
+            </div>
+
+            <!-- Result List -->
+            <div class="col-lg-3" style="float: left;">
+                <% for (i = 0 ; i < values.length ; i++) { %>
+                <% var result = values[i]; %>
+                <% if (result.length > 0) { %>
+                <div class="c-card c-card--responsive u-mb-medium scale-grpah <%- result[0].scaleCode %>">
+                    <div class="c-card__header c-card__header--transparent o-line head-padding">
+                        <h5 class="c-card__title">Results List</h5>
+                        <a class="c-card__meta">
+                            <%- result[0].scaleEngName %></a>
+                    </div>
+                    <div style="height: 231px; overflow-y: auto;">
+                        <% for (j = 0 ; j < result.length ; j++) { %>
+                        <% var resultData = result.slice();%>
+                        <div class="c-card" style="border: none;">
+                            <div class="o-line div-padding" style="border-bottom: 1px solid #e6eaee;">
+                                <p class="u-text-small u-mr-small">
+                                    <%- resultData[j].date %>
+                                </p>
+                                <div class="u-text-small u-text-mute u-ml-small">
+                                    <%- resultData[j].value %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+                <% } %>
+            </div>
+
         </div><!-- // .container -->
 
     </main><!-- // .o-page__content -->
@@ -199,6 +200,7 @@
 
         var scales_box = $(".scale-grpah").attr("name");
         $("." + scales_box).show();
+        $("." + scales_box + "-scale").addClass("font-change");
 
         $(".scale-list").on("click", function () {
             var scale_name = $(this).attr("title");
@@ -207,8 +209,6 @@
             $(".scale-grpah").hide();
             $("." + scale_name).show();
         });
-
-
 
         $(document).mouseup(function (e) {
             var modal_content = $(".modal-content");
@@ -315,7 +315,7 @@
             let result = results[scale].slice().reverse();
 
             result.forEach(function (item, index) {
-                dates.push(item["date"]);
+                dates.push(moment(item["date"]).format('MM.DD'));
                 datas.push(item["value"]);
             });
             while (dates.length < 10) {
@@ -332,16 +332,17 @@
                 datasets: [{
                     label: [name],
                     fill: true,
-                    backgroundColor: 'rgba(111, 205, 216, 0.5)',
+                    lineTension: 0,
+                    backgroundColor: 'rgba(163,136,227, 0.1)',
                     borderWidth: 2,
-                    borderColor: "rgba(111, 205, 216, 1.00)",
+                    borderColor: "#886CE6",
                     pointRadius: 4,
-                    pointBorderColor: "rgba(111, 205, 216, 1.00)",
+                    pointBorderColor: "#886CE6",
                     pointBackgroundColor: "#fff",
                     pointBorderWidth: 2,
                     pointHoverRadius: 6,
                     pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(111, 205, 216, 1.00)",
+                    pointHoverBorderColor: "#886CE6",
                     pointHoverBorderWidth: 2,
                     data: datas,
                     spanGaps: false
@@ -440,6 +441,7 @@
             var recentValue = (result.length > 0) ? result[0]["value"] : -1;
             var $commentLabel = $("#" + scale + "-c").next(".comment-block").children(".comment-label");
             var latestResultId = result[result.length - 1].resultId;
+
             // KDACL(우울형용사) scale이 아닐때만 comment 업데이트 2018.09.04 buffer0
             if (scale != 'KDACL') {
                 updateCommentLabel(scale, latestResultId);
@@ -521,7 +523,7 @@
         // chart.js add data function - 2018-8.22  by buffer0 (chart 생성이후 datasets추가 함수)
         function addChartData(scale, idx) {
             var colors = { //각각 수치들의 line 색상
-                "우리 병원": ["rgb(110, 222, 235, 0.4)", "rgb(110, 222, 235, 1.00)", true],
+                "우리 병원": ["rgba(0,172,255, 0.1)", "rgba(0,172,255, 1.0)", true],
                 "고등학생": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
                 "대학생": ["rgb(32, 123, 167, 0.4)", "rgb(32, 123, 167, 1.00)", true],
                 "일반인": ["rgb(68, 173, 224, 0.4)", "rgb(68, 173, 224, 1.00)", true],
@@ -593,7 +595,7 @@
             } else {
                 visibleType = 'S';
             }
-            /*$.ajax({
+            $.ajax({
                 type: 'GET',
                 url: '/patient/result/comment/' + resultId + '/' + visibleType,
                 success: function (data) {
@@ -601,6 +603,19 @@
                         var comment = data["result"];
                         var scaleId = $commentLabel.attr("id");
                         $commentLabel.replaceWith("<label class='comment-label' id='" + scaleId + "'>" + comment + "</label>");
+                        var detail_score = $("#" + scaleId + " .detail-score").text();
+                        var detail_text = $("#" + scaleId + " .detail-text").text();
+                        if (detail_score == "" && detail_text == "") {
+                            $("#" + scaleId + "d .detail-empty").show();
+                            $("#" + scaleId + "d .detail-comm").hide();
+                        } else {
+                            $("#" + scaleId + "d .detail-step").empty();
+                            $("#" + scaleId + "d .detail-comm").empty();
+                            $("#" + scaleId + "d .detail-step").append(detail_score);
+                            $("#" + scaleId + "d .detail-comm").append(detail_text);
+                            $("#" + scaleId + "d .detail-empty").hide();
+                        }
+
                         //SAS 스케일 시 함수 적용
                         if (scaleId == 'SAS') {
                             SAS_comments();
@@ -617,7 +632,7 @@
                     return ""
                 },
                 contentType: "application/json"
-            });*/
+            });
         }
 
         /* SAS Comments 값에 따른 background-color 설정 */
@@ -652,6 +667,7 @@
                 }
             }
         }
+
     </script>
 </body>
 

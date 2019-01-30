@@ -399,33 +399,7 @@
                 </div>
 
             </div><!-- // .row -->
-
-
-            <!-- <div class="row">
-                <div class="col-12">
-                    <div class="c-card u-mb-medium" style="overflow: auto">
-                        <div class="c-card__header c-card__header--transparent o-line" style="border: none;">
-                            <h5 class="c-card__title">교육자료</h5>
-                            <a href="#" style="font-size: 0.75rem;">READ MORE</a>
-                        </div>
-
-                        <div class="col-md-4" style="float: left;" id="home-edu-slick1">
-
-                        </div>
-
-                        <div class="col-md-4" style="float: left;" id="home-edu-slick2">
-                        </div>
-
-                        <div class="col-md-4" style="float: left;" id="home-edu-slick3">
-                        </div>
-
-                    </div>
-                </div>
-            </div>  -->
-            <!-- // .row -->
-
         </div><!-- // .container -->
-
     </main><!-- // .o-page__content -->
 
     <script type="text/javascript">
@@ -807,46 +781,6 @@
                 });
             });
         })(jQuery);
-
-        /*교육자료
-        (function education() {
-            $.ajax({
-                type: 'GET',
-                url: '/education',
-                success: function (응답) {
-                    if (!응답["isSuccess"]) {
-                        alert(응답["message"]);
-                    } else {
-                        drawEducationItems(응답["results"])
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log('error : ' + textStatus);
-                    console.log('error : ' + errorThrown);
-                    alert("교육자료를 받아오는데 실패하였습니다");
-                },
-                contentType: "application/json"
-            });
-            function drawEducationItems(results) {
-                results.forEach(function (item, i) {
-                    var itemTag =
-                        `<article class="c-plan" style="padding: 20px 20px 25px;">
-                            <a href="${item.pdf_dir}"><img class="c-project-card__img" src="img/main/0${i + 1}.jpg" alt="About the image"></a>
-                            <h4>
-                                <span class="edu-title">${item.title}</span>
-                                <span class="edu-date">${item.created_time}</span>
-                            </h4>
-                            <span class="c-plan__divider" style="margin: 7px 0 12px;"></span>
-                            <ul>
-                                <li class="c-plan__feature">
-                                    ${item.description}
-                                </li>
-                            </ul>
-                        </article>`;
-                    $("#home-edu-slick" + (i + 1)).append(itemTag);
-                })
-            }
-        })(jQuery);*/
 
 
         //Mood & Sleep

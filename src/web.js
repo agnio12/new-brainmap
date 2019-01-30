@@ -948,7 +948,7 @@ app.get('/patientResult', function (req, res) {
                 return;
             }
             scaleResults.forEach(function (item, i, items) {
-                item.date = moment(item.date).format('MM-DD');
+                item.date = moment(item.date).format('YYYY-MM-DD');
             })
 
             // TODO : Result에 없는 스케일은 빼기

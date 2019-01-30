@@ -13722,7 +13722,10 @@ textarea.c-input {
 
 .detail-comm {
   font-size: 0.95rem;
-  height: 111px; 
+  box-sizing: border-box;
+  padding-right: 10px;
+  height: 290px; 
   overflow-y: auto;
   line-height: 27px;
 }
+
