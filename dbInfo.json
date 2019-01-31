@@ -2,6 +2,6 @@
     "host" : "52.79.137.101",
     "user" : "root",
     "port" : "3306",
-    "password" : "db1004",
+    "password" : "db2019",
     "database" : "brainmap"
 }
