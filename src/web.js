@@ -1011,7 +1011,214 @@ app.get('/patient/result/comment/:resultId/:visibleType', function (req, res) {
     })
 })
 
-//result data push
+
+// doctorResult ( 임상평가 )
+app.get('/doctorResult', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.redirect('/login');
+        return;
+    }
+    var hospital = req.cookies.user_hospital;
+    if (isUndefined(hospital)) {
+        res.send({ isSuccess: false, message: '유효하지 않은 환자입니다.' });
+        return;
+    }
+
+    var patientCookie = req.cookies.patient;
+    if (isUndefined(patientCookie)) {
+        res.redirect('/search/patient/doctorResult');
+        return;
+    }
+    var patientData;
+    try {
+        patientData = JSON.parse(patientCookie);
+    } catch (e) {
+        res.redirect('/search/patient/doctorResult');
+        return;
+    }
+    var patientId = patientData["id"];
+    var resultQuery =
+        "SELECT r.id AS result_id, r.scale AS scaleCode, r.value, r.date AS date, s.korean_abbr_name AS scaleName, s.english_abbr_name AS scaleEngName " +
+        "FROM patient as p " +
+        "JOIN results as r ON p.id = r.patient_id " +
+        "JOIN scale as s ON r.scale = s.code " +
+        "WHERE p.id='" + patientId + "' " +
+        "AND s.type='doctor'" +
+        "ORDER BY date DESC, result_id DESC;";
+
+    var averageQuery =
+        "SELECT s.code AS scale, ROUND(AVG(r.value), 1) AS value " +
+        "FROM results AS r " +
+        "JOIN patient AS p ON r.patient_id = p.id " +
+        "JOIN scale AS s ON r.scale = s.code " +
+        "WHERE p.hospital='" + hospital + "' GROUP BY r.scale;"
+
+    // 스케일 번호 지정 2018-08.24 by buffer0
+    var scaleNumQuery =
+        "SELECT @num:=@num+1 AS num, a.scalecode from ( " +
+        "SELECT r.scale AS scaleCode " +
+        "FROM patient as p " +
+        "JOIN results as r ON p.id = r.patient_id " +
+        "JOIN scale as s ON r.scale = s.code " +
+        "WHERE p.id='" + patientId + "' and s.type = 'doctor' " +
+        "group by r.scale " +
+        "order by s.id " +
+        ")a,(SELECT @num:=0) b;";
+
+    pool.getConnection(function (err, connection) {
+        connection.query(resultQuery + averageQuery + scaleNumQuery, function (err, rows) {
+            connection.release();
+            var scaleResults = rows[0];
+            var averageResults = rows[1];
+            var scaleNumResults = rows[2]; // 스케일 번호 지정 2018-08.24 by buffer0
+
+            if (err || isUndefined(scaleResults)) {
+                console.log(err);
+                res.status(500).send("스케일 결과값 열람 중 오류");
+                return;
+            }
+            scaleResults.forEach(function (item, i, items) {
+                item.date = moment(item.date).format('YYYY-MM-DD');
+            })
+
+            // TODO : Result에 없는 스케일은 뺴기
+            var results = { 'CGI-S': [], 'CGI-I': [], 'HRSD': [], 'HAS': [], 'CDR': [], 'GDS': [], 'MMSE': [], 'NPI': [], 'KADL': [], 'BPRS': [] };
+            scaleResults.forEach(function (item) {
+                pushDrawItems(item, results);
+            })
+
+            // 평균값 디폴트는 0
+            var averages = { 'CGI-S': 0, 'CGI-I':0, 'HRSD': 0, 'HAS': 0, 'CDR': 0, 'GDS': 0, 'MMSE': 0, 'NPI': 0, 'KADL': 0, 'BPRS': 0 };
+            averageResults.forEach(function (average) {
+                averages[average.scale] = average.value;
+            })
+
+            // 스케일 번호 지정 2018-08.24 by buffer0
+            var scaleNumber = { 'CGI-S': 0, 'CGI-I':0, 'HRSD': 0, 'HAS': 0, 'CDR': 0, 'GDS': 0, 'MMSE': 0, 'NPI': 0, 'KADL': 0, 'BPRS': 0 };
+            scaleNumResults.forEach(function (scaleNum) {
+                scaleNumber[scaleNum.scalecode] = scaleNum.num;
+            })
+
+            res.render('doctor-result', { innerExpress: express, ejs: ejs, innerApp: app, results: JSON.stringify(results), averages: JSON.stringify(averages), scaleNumber: JSON.stringify(scaleNumber) });
+        })
+    })
+})
+
+// 임상평가 답안 출력
+app.get('/doctor/result/comment/:resultId', function (req, res) {
+    var resultId = req.params.resultId;
+    var scaleQuery = "SELECT scale FROM results AS r JOIN scale AS s ON r.scale = s.code WHERE r.id=" + resultId + " AND s.type='doctor';";
+    scaleQuery += "SELECT * FROM sub_results WHERE result_id=" + resultId + ";";
+    scaleQuery += "SELECT * FROM results WHERE id=" + resultId;
+
+    var visibleType = req.params.visibleType;
+    var query = "CALL commentByResultId(" + resultId + ", '" + visibleType + "', @comment);";
+    query += " SELECT @comment AS comment;"
+
+
+    pool.getConnection(function (err, connection) {
+        connection.query(scaleQuery, function (err, rows) {
+            if (err || rows.length < 0) {
+                res.send({ isSuccess: false, result: "유효한 result id가 아닙니다." })
+                return;
+            } else if (isUndefined(rows[0][0].scale)) {
+                res.send({ isSuccess: false, result: "scale 정보가 존재하지 않는 result id 입니다." })
+                return;
+            } else if (typeof rows[2][0].value == typeof undefined) {
+                res.send({ isSuccess: false, result: "result value 정보가 존재하지 않는 result id 입니다." })
+                return;
+            }
+
+            var scale = rows[0][0].scale;
+            var subResults = rows[1];
+            var resultValue = parseInt(rows[2][0].value)
+
+            // TODO : scale 이름 바뀌면 여기도 바뀌어야 함. 디펜던시 줄이기.
+            var comment = "<B>검사 날짜 : </B>" + moment(rows[2][0].date).format('YYYY-MM-DD') + "&emsp;&emsp;" + "<B>총점 : </B>" + resultValue + "<BR>";
+
+            if (scale == "MMSE") {
+                if (isUndefined(subResults) || isUndefined(subResults[0])) {
+                    res.send({ isSuccess: false, result: "정상여부에 대한 데이터가 존재하지 않습니다." })
+                    return;
+                }
+                var isNormal = subResults[0].value == 1;
+                comment += (isNormal) ? "<BR>정상: 당신은 나이와 학력을 고려하였을 때, 인지기능 정상군에 해당됩니다.<BR>" : "<BR>인지저하 : 당신은 나이와 학력을 고려하였을 때, 인지저하가 의심됩니다. 추가적인 검사가 필요할 수 있습니다.<BR>"
+                // TODO : 27점인 경우는 어떻게 하나?
+                if (resultValue <= 20) {
+                    comment += "<BR>이 환자는 치매약물 중 <B>Memantine</B>을 사용할 수 있습니다."
+                } else if (resultValue <= 26) {
+                    comment += "<BR>이 환자는 치매약물 중 <B>ACE inhibitors</B>를 사용할 수 있습니다."
+                }
+                res.send({ isSuccess: true, result: comment })
+                return;
+            } else if (scale == "CDR") {
+                if (isUndefined(subResults)) {
+                    res.send({ isSuccess: false, result: "Sum of Box에 대한 데이터가 존재하지 않습니다." })
+                    return;
+                }
+                var sumOfBox = subResults[0].value;
+                comment += "<BR><B>Sum of Box</B> : " + sumOfBox + "<BR>";
+                comment += "<B>CDR</B> : " + resultValue + "<BR>";
+                if (resultValue >= 2) {
+                    comment += "<BR>이 환자는 치매약물 중 <B>Memantine</B>을 사용할 수 있습니다."
+                } else if (resultValue >= 1) {
+                    comment += "<BR>이 환자는 치매약물 중 <B>ACE inhibitors</B>를 사용할 수 있습니다."
+                }
+                res.send({ isSuccess: true, result: comment })
+                return;
+            }
+            else if (scale == "GDS") {
+                comment += "<BR><B>GDS</B> : " + resultValue + "<BR>";
+                if (resultValue >= 5) {
+                    comment += "<BR>이 환자는 치매약물 중 <B>Memantine</B>을 사용할 수 있습니다."
+                } else if (resultValue >= 3) {
+                    comment += "<BR>이 환자는 치매약물 중 <B>ACE inhibitors</B>를 사용할 수 있습니다."
+                }
+                res.send({ isSuccess: true, result: comment })
+                return;
+            }
+
+            connection.query(query, function (err, rows) {
+                connection.release();
+                if (err) {
+                    sendError(res, "result comment err : " + err)
+                    return;
+                } else {
+                    var result = rows[rows.length - 1][0]; // multi statements의 경우 결과값이 마지막 요소에 있음.
+                    var commentNotFound = "커멘트가 존재하지 않거나 커멘트가 지원되지 않는 스케일입니다.";
+                    if (typeof result == typeof undefined || result == null) {
+                        res.send({ isSuccess: false, result: commentNotFound })
+                        return;
+                    }
+                    comment += result["comment"];
+                    if (typeof comment == typeof undefined || comment == null) {
+                        res.send({ isSuccess: false, result: commentNotFound })
+                        return;
+                    }
+                    res.send({ isSuccess: true, result: comment })
+                }
+            })
+        })
+    })
+})
+
+
+app.get('/search/patient/:nextPage', function (req, res) {
+    if (req.cookies.didLogin != "true") {
+        res.redirect('/login');
+        return;
+    }
+    var patientCookie = req.cookies.patient;
+    if (patientCookie == "" || typeof patientCookie == typeof undefined) {
+        res.render('patient-search.html', { innerExpress: express, ejs: ejs, innerApp: app, patient: patientCookie, nextPage: req.params.nextPage });
+        return;
+    } else {
+        res.redirect("/" + req.params.nextPage);
+        return;
+    }
+})
+
+// result data push
 function pushDrawItems(item, results) {
     var result = results[item.scaleCode];
     if (typeof result == typeof undefined || result.length > 9) {
@@ -1027,7 +1234,7 @@ function pushDrawItems(item, results) {
     results[item.scaleCode] = result;
 }
 
-//answers data push
+// answers data push
 function pushAnswersItems(item, answers) {
     var answer = answers[item.scale];
     if (typeof answer == typeof undefined) {
@@ -1054,6 +1261,7 @@ function sendError(res, message) {
     res.status(500);
     res.send({ isSuccess: false, message: message })
 }
+
 
 //404 에러 페이지 처리
 var errorHandler = expressErrorHandler({

@@ -13685,7 +13685,7 @@ textarea.c-input {
 /* == Result ( 자가평가, 임상평가) == */
 
 /* Comment에서 해당 점수 표시 */
-.choice-box {  background-color: rgba(111, 205, 216, 0.4);}
+.choice-box {  background-color: rgba(136, 108, 230, 0.3);}
 
 /* Scale-List & Result-List  table */
 .font-change {  background-color: rgba(230, 234, 238, 0.3);}
@@ -13696,36 +13696,76 @@ textarea.c-input {
 .div-padding {  padding: 15px 1.875rem;}
 
 
-/* 답안 - Comment */
-.step { 
-  width: 100%;
-  line-height: 27px;
-}
-.step-score {
-  float: left;
-  width: 30%;
-}
+/* ======= 자가평가 답안 - Patient Result Comment ======= */
+/* 일반적인 스케일 */
+.step {  width: 100%; line-height: 27px;}
+.step-score {  float: left; width: 30%;}
+.step-text {  float: left; width: 70%;}
+.detail {  display: none;}
+.detail-step {  font-weight: bold; margin-bottom: 20px;}
+.detail-comm {  font-size: 0.95rem; box-sizing: border-box; padding-right: 10px; height: 290px;  overflow-y: auto; line-height: 27px;}
 
-.step-text {
-  float: left;
-  width: 70%;
-}
+/* Sub Result 스케일 (PSQI, BIS) */
+.subResult-step {  float: left; width: 25%; margin-bottom: 7px; font-weight: bold;}
+.subResult-detail {  float: left; width: 75%; margin-bottom: 7px; box-sizing: border-box; padding-left: 12px;}
+.subResult2-step {  float: left; width: 15%; margin-bottom: 15px; font-weight: bold;}
+.subResult2-detail {  float: left; width: 85%; margin-bottom: 15px; box-sizing: border-box; padding-left: 25px;}
+.subResult-sc {  float: right;} /* 세미콜론 ( : ) */
 
-.detail { 
-  display: none;
-}
+/* BIS-Comments */
+.BIS-wrap {  width: 100%;}
+.BIS-wrap table {  width: 100%; border-collapse: collapse; text-align: center;}
+.BIS-wrap table tbody td{  border: 1px solid #e6eaee; padding: 8px 0;}
+.BIS-head{  font-weight: bold;  width: 20%;}
 
-.detail-step {
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+/* AUDITC-Comments */
+.AUDITC-wrap {  width: 100%; margin-top: 10px;}
+.AUDITC-wrap table {  text-align: center; border-collapse: collapse;}
+.AUDITC-wrap table thead {  font-size: 0.9rem;}
+.AUDITC-wrap table tbody td {  padding: 20px 15px; width: calc(100% / 12); font-size: 1.2rem; border: 1px solid #e6eaee;}
 
-.detail-comm {
-  font-size: 0.95rem;
-  box-sizing: border-box;
-  padding-right: 10px;
-  height: 290px; 
-  overflow-y: auto;
-  line-height: 27px;
-}
+/* PHQPanic-Comments */
+.PHQPanic-wrap {  width: 100%; overflow: auto;}
+.PHQPanic-wrap:last-child {  border-bottom: 1px solid #e6eaee;}
+.PHQPanic-q {  width: 60%; float: left; border-left: 1px solid #e6eaee; border-top: 1px solid #e6eaee; padding: 4px 20px;}
+.PHQPanic-a {  width: 20%; float: left; text-align: center; border-left: 1px solid #e6eaee; border-top: 1px solid #e6eaee; padding: 4px 0;}
+.PHQPanic-a:last-child {  border-right: 1px solid #e6eaee;}
 
+/* SAS-Comments */
+.SAS-wrap {  width: 100%;}
+.SAS-wrap table {  width: 100%; border-collapse: collapse; font-size: 0.875rem;}
+.SAS-wrap table tbody td {  border: 1px solid #e6eaee; padding: 3px 12px;}
+.SAS-contents, .SAS-latent {  width: 70%; text-align: left;}
+.SAS-subContents {  text-align: left; font-weight: bold; color: rgb(124, 124, 124);}
+.SAS-tot {  font-weight: bold; text-align: center; border: 1px solid #e6eaee; background-color: #f5f8fa;}
+
+/* DBDS-Comments */
+.DBDS-wrap {  width: 100%;}
+.DBDS-wrap table {  width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: center;}
+.DBDS-wrap table tbody td {  padding: 8px 0; border: 1px solid #e6eaee;}
+
+/* SDQKR-Comments */
+.SDQKR-wrap{  width: 100%;}
+.SDQKR-wrap table {  width: 100%; text-align: center; border-collapse: collapse; font-size: 0.875rem;}
+.SDQKR-wrap table thead td {  color: #7f8fa4; padding: 3px 0; border: 1px solid #e6eaee; background-color: #f5f8fa;}
+.SDQKR-wrap table tbody td {  padding: 3px 0; border: 1px solid #e6eaee;}
+
+
+/* ======= 임상평가 답안 - Doctor Result Comment ======= */
+/* KADL-Comments */
+.KADL-wrap {  width: 100%;}
+.KADL-wrap table {  width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: center;}
+.KADL-wrap table thead td {  padding: 7px 0; border: 1px solid #e6eaee; background-color: #f5f8fa;}
+.KADL-wrap table tbody td {  width: calc(100% / 8); padding: 7px 0; border: 1px solid #e6eaee;}
+
+/* NPI-Comments */
+.NPI-wrap {  width: 100%;}
+.NPI-wrap table {  width: 100%; border-collapse: collapse; text-align: center;}
+.NPI-wrap table thead td {  padding: 7px 0; border: 1px solid #e6eaee; background-color: #f5f8fa; font-size: 0.75rem;}
+.NPI-wrap table tbody td {  width: calc(100% / 13); padding: 7px 0; border: 1px solid #e6eaee; font-size: 0.875rem;}
+
+/* BPRS-Comments */
+.BPRS-wrap {  width: 100%;}
+.BPRS-wrap table {  width: 100%; border-collapse: collapse; font-size: 0.875rem;}
+.BPRS-wrap table thead td {  padding: 7px 12px; border: 1px solid #e6eaee; background-color: #f5f8fa;}
+.BPRS-wrap table tbody td {  padding: 7px 12px; border: 1px solid #e6eaee;}

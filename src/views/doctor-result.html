@@ -36,7 +36,8 @@
 
         <% var parsedResults = JSON.parse(results+'') %>
         <% var keys = Object.keys(parsedResults) %>
-        <% var values = keys.map(function(key) { return parsedResults[key] }) %>
+        <% var scales = ["CGI-S", "CGI-I", "HRSD", "HAS", "CDR", "GDS", "MMSE", "NPI", "KADL", "BPRS"] %>
+        <% var values = scales.map(function(scale) { return parsedResults[scale] }) %>
         <!-- 스케일 번호 지정 2018-08.24 by buffer0 -->
         <% var parsedScaleNum = JSON.parse(scaleNumber+'') %>
 
@@ -111,7 +112,7 @@
                                 <div class="detail-block" style="width: 100%;">
                                     <div class="ss" id='<%- result[0].scaleCode %>-cmd'>
                                         <div class="detail-step"></div>
-                                        <div class="detail-comm"></div>
+                                        <div class="detail-comm" style="height: 100px;"></div>
                                         <div class="detail-empty" style="display: none; text-align: center; line-height: 32px;">
                                             <b><%- result[0].scaleEngName %></b> 스케일은<br>상세답안이 <b>없는</b> 스케일입니다.
                                         </div>
@@ -194,7 +195,7 @@
 
     <script type="text/javascript">
         $(".c-sidebar__link").removeClass("is-active");
-        $(".c-sidebar__list .c-sidebar__link:contains('자가평가')").addClass('is-active');
+        $(".c-sidebar__list .c-sidebar__link:contains('임상평가')").addClass('is-active');
 
         $(".scale-grpah").hide();
 
@@ -222,90 +223,55 @@
         var keys = Object.keys(results);
         var patientData = JSON.parse(Cookies.get("patient"));
         var name = patientData["name"];
-        var isMale = (patientData["gender"] == "M");
+        var isMale = (patientData["gender"] == "M")
+
         var compareGroups =
         {
-            // TODO : 병원평균을 포함하여 나머지 데이터들 DB에서 가져와야.
-            STAIX1: [{ value: averages.STAIX1, title: "우리 병원" }, { value: 45.89, title: "고등학생" }, { value: 42.5, title: "대학생" }],
+            "CGI-S": [{ value: averages.CGI, title: "우리 병원" }],
 
-            STAIX2: [{ value: averages.STAIX2, title: "우리 병원" }, { value: 46.24, title: "고등학생" }, { value: 44.53, title: "대학생" }],
+            "CGI-I": [{ value: averages.CGI, title: "우리 병원" }],
 
-            BDI: [{ value: averages.BDI, title: "우리 병원" }, { value: 8.43, title: "일반인" }, { value: 23.46, title: "우울증 환자" }, { value: 16.0, title: "절단점", isCuttingPoint: true }],
+            "HRSD": [{ value: averages.HRSD, title: "우리 병원" }, { value: 18.0, title: "절단점" }],
 
-            KDACL: [{ value: averages.KDACL, title: "우리 병원" }],
+            "HAS": [{ value: averages.HAS, title: "우리 병원" }, { value: 25.40, title: "공황장애 환자" }, { value: 22.0, title: "우울증 환자" }],
 
-            PSQI: [{ value: averages.PSQI, title: "우리 병원" }, { value: 5.0, title: "국내 절단점" }, { value: 9.0, title: "국외 절단점" }],
+            "CDR": [{ value: averages.CDR, title: "우리 병원" }],
 
-            ISI: [{ value: 16.0, title: "절단점", isCuttingPoint: true }],
+            "GDS": [{ value: averages.GDS, title: "우리 병원" }],
 
-            AUDITC: [{ value: averages.AUDITC, title: "우리 병원" }],
+            "MMSE": [{ value: averages.MMSE, title: "우리 병원" }],
 
-            PHQ15: [{ value: 5.0, title: "절단점", isCuttingPoint: true }],
+            "NPI": [{ value: averages.NPI, title: "우리 병원" }],
 
-            PHQPanic: [{ value: averages.PHQPanic, title: "우리 병원" }],
-
-            BIS: [{ value: averages.BIS, title: "우리 병원" }],
-
-            KSAD: [{ value: averages.KSAD, title: "우리 병원" }, { value: 76.67, title: "일반인" }, { value: 81.69, title: "대학생" }, { value: 105.81, title: "사회공포증 환자" }],
-
-            CESD: [{ value: averages.CESD, title: "우리 병원" }],
-
-            BSDS: [{ value: 13.0, title: "절단점", isCuttingPoint: true }],
-
-            ASI: [{ value: 24.1, title: "불안집단" }, { value: 7.58, title: "정상인 집단" }],
-
-            SAIC: [{ value: averages.SAIC, title: "우리 병원" }, { value: 33.27, title: "초등학생 평상시" }, { value: 36.44, title: "초등학생 시험직전" }],
-
-            TAIC: [{ value: averages.TAIC, title: "우리 병원" }, { value: 31.96, title: "초등학생" }],
-
-            CDI: [{ value: averages.CDI, title: "우리 병원" }],
-
-            CESDC: [{ value: averages.CESDC, title: "우리 병원" }],
-
-            SAS: [{ value: averages.SAS, title: "우리 병원" }],
-
-            SCARED: [{ value: 24.0, title: "절단점", isCuttingPoint: true }],
-
-            DBDS: [{ value: averages.SDQKR, title: "우리 병원" }],
-
-            ARS: [{ value: 13.0, title: "절단점", isCuttingPoint: true }],
-
-            SDQKR: [{ value: 17.0, title: "절단점", isCuttingPoint: true }]
+            "KADL": [{ value: averages.KADL, title: "우리 병원" }],
+            
+            "BPRS": [{ value: averages.KADL, title: "우리 병원" }]
 
         }
 
         var topInfos =
         {
             // TODO : 우리환자 평균을 포함하여 나머지 데이터들 DB에서 가져와야.
-            STAIX1: '상태불안은 특수한 상황에서 자율신경계의 각성으로 인해 야기된 일시적인 불안 상태를 의미합니다.<BR>이것은 내가 "지금" 느끼는 우려, 긴장, 신경과민, 걱정 등의 느낌을 반영하는 것입니다.',
-            STAIX2: "특성 불안은 불안을 일으키는 경향으로 개인이 지니고 있는 지속적인 특성을 의미합니다.",
-            BDI: "우울증의 인지적, 정서적, 동기적, 신체적 증상 영역을 포함하는 21문항으로 구성된 검사입니다.",
-            KDACL: "개인의 감정상태를 나타내는 다양한 감정들을 알아봄으로써 현재의 우울 정서를 알 수 있는 검사입니다.",
-            PSQI: "한 달간의 일반적인 수면질과 불편 정도를 측정하는 검사입니다.<BR>수면질과 수면방해의 일시적 변화를 측정하는데 효과적입니다.",
-            ISI: "",
-            AUDITC: "심각한 알코올의존의 증상 유무를 가려내는 것보다는 초기의 문제음주를 선별하는 것이 목적인 검사입니다.",
-            PHQ15: "신체증상을 평가하기 위해 만들어진 스케일로 외래진료환자가 호소하는 신체 증상의 90% 이상을 포함하고 있습니다.",
-            PHQPanic: "",
-            BIS: "당신의 충동적 성향을 평가할 수 있는 스케일입니다.",
-            KSAD: "사회적 상황에서의 불안을 측정하여 사회적 상호작용과 관련한 불편감 및 회피 등을 알아보는 검사입니다.",
-            CESD: "CES-D는 역학조사에서 모든 연령층에 가장 많이 사용하는 우울증상 평가도구입니다.",
-            BSDS: "양극성장애 스펙트럼 진단척도<BR>경한 조증 증상을 특징으로 하는 여러 양극성 장애 선별이 도움 되고자 개발된 척도입니다.",
-            ASI: "",
-            SAIC: "상태불안은 특수한 상황에서 자율신경계의 각성으로 인해 야기된 일시적인 불안 상태를 의미합니다.<BR>이것은 내가 “지금” 느끼는 우려, 긴장, 신경과민, 걱정 등의 느낌을 반영하는 것입니다.",
-            TAIC: "특성 불안은 불안을 일으키는 경향으로 개인이 지니고 있는 지속적인 특성을 의미합니다.",
-            CDI: "소아의 우울 정도를 알아보는 검사 입니다.",
-            CESDC: "",
-            SAS: "",
-            SCARED: "DSM-IV의 불안장애 진단 유형을 토대로 하여 불안을 측정하기 위해 만들어진 스케일입니다.",
-            DBDS: "정신과 진단 분류인 DSM-IV의 주의력결핍 과잉행동장애(ADHD), 적대적 반항장애(ODD), 품행장애(CD) 들의 진단기준에 근거하여 부모가 아동의 행동에 대하여 평가할 수 있도록 개발한 척도입니다.",
-            ARS: "",
-            SDQKR: "이 검사는 ‘사회지향행동ʼ, ‘과잉행동ʼ, ‘정서증상ʼ, ‘품행문제ʼ, ‘또래문제ʼ 5개 척도로 구성되어 있습니다.<BR>아동청소년의 다양한 증상과 강점을 측정 가능하며, 개입 이전과 이후의 효과를 측정하는데 사용되기도 합니다."
+            "CGI-S": "현재의 환자 상태가 얼마나 병이 심각한가를 평가하는 척도입니다.",
+            "CGI-I": "과거의 상태에 비해 전반적으로 얼마나 호전되었는지를 평가하는 척도입니다.",
+            "HRSD": "해밀턴 우울 평가 척도는 우울증의 신체화 증상을 강조하여 중증 우울증 환자의 변화에 특히 민감합니다.",
+            "HAS": "해밀턴 불안척도는 정신적 불안 증상과 신체적 불안 증상의 2요인으로 구성되어 있습니다. 치료의 전후를 비교하는데 많이 사용됩니다.",
+            "CDR": "",
+            "GDS": "GDS는 각 단계의 인지장애 정도를 구체적인 예를 들어 기술하고 있어 검사자가 어느 단계인지를 쉽게 판단할 수 있습니다.<BR>초기 인지장애를 세밀하게 여러 단계로 분류하고 있습니다.",
+            "MMSE": "",
+            "NPI": "인지 노화 및 치매에 동반될 수 있는 모든 정신행동증상을 평가하는 검사입니다.<BR><B><중요></B> 정신행동증상이 있더라도 <B>병전 혹은 고유한 성격에서 보이던 행동이 아니거나 그 정도가 증가한 경우</B>에만 '있다'로 평가합니다.",
+            "KADL": "ADL의 평가는 치매조기 진단에 유용합니다.",
+            "BPRS": "정신병적 증상을 신속히 측정할 수 있도록 개발된 척도입니다."
         }
+
+        // TODO : scale 순서 바뀌면 ejs쪽에 scales 배열도 바뀌어야 함. 디펜던시 줄이기.
+        var scales = ["CGI-S", "CGI-I", "HRSD", "HAS", "CDR", "GDS", "MMSE", "NPI", "KADL", "BPRS"];
 
         var chartArray = []; //chart 배열
 
-        for (i = 0; i < keys.length; i++) {
-            var scale = keys[i];
+        // TODO : 원래는 keys를 순회하다가, scale 나오는 순서가 중요해져서 scales를 순회하게 됨.
+        for (i = 0; i < scales.length; i++) {
+            var scale = scales[i];
             if (typeof results[scale] == typeof undefined || results[scale].length == 0) {
                 continue;
             }
@@ -387,8 +353,7 @@
                                         if (value % 1 === 0) {
                                             return value;
                                         }
-                                    },
-                                    min: scale.match(/^(STAIX1|STAIX2)$/) ? 20 : 0
+                                    }
                                 }
                             }]
                         },
@@ -413,17 +378,11 @@
                         onClick: function (evt, activeElements) {
                             var scaleName = evt.target.id;
                             var activePoints = this.getElementAtEvent(evt);
+
                             if (activePoints.length) {
                                 var elementIndex = activeElements[0]._index;
                                 var resultId = result[elementIndex].resultId;
-                                if (scaleName != 'KDACL') {
-                                    //해당 점수에 맞는 상세 답안 출력 / 답안이 없는 스케일의 경우 아무 comments도 띄우지 않음 - 2018.09.06 by buffer0
-                                    requestComment(resultId, $("#" + scaleName + "-c").next(".comment-block").children(".comment-label"), 'S');
-                                }
-                                if (scaleName == 'KDACL') {
-                                    kdacl_value = resultId;
-                                    updateAnswers(scaleName, resultId); // KDACL comment - 2018.09.06 by buffer0
-                                }
+                                requestComment(resultId, $("#" + scaleName + "-c").next(".comment-block").children(".comment-label"), 'S');
                             }
                         }
                     }
@@ -441,18 +400,8 @@
             var recentValue = (result.length > 0) ? result[0]["value"] : -1;
             var $commentLabel = $("#" + scale + "-c").next(".comment-block").children(".comment-label");
             var latestResultId = result[result.length - 1].resultId;
-
-            // KDACL(우울형용사) scale이 아닐때만 comment 업데이트 2018.09.04 buffer0
-            if (scale != 'KDACL') {
-                updateCommentLabel(scale, latestResultId);
-            }
-            if (scale == 'KDACL') {
-                kdacl_value = latestResultId;
-                $(".comment-label").css("padding", "0 30px 30px 30px");
-                updateAnswers(scale, latestResultId);
-            }
+            updateCommentLabel(scale, latestResultId);
         }
-
 
         function updateCommentLabel(scale, resultId) {
             var $commentLabel =
@@ -460,82 +409,12 @@
             requestComment(resultId, $commentLabel);
         }
 
-        // KDACL(우울형용사) scale이 아닐때만 comment 업데이트 - 2018.09.06 by buffer0
-        function updateAnswers(scale, resultId) {
-
-            // 긍정&부정형용사
-            var questions = {
-                "P01": "가뿐하다.", "P02": "따뜻하다.", "03": "맥빠진다.", "04": "어수선하다.", "05": "우울하다.", "06": "막막하다.",
-                "P07": "뿌듯하다.", "08": "침울하다.", "P09": "든든하다.", "10": "죽고싶다.", "11": "허탈하다.", "12": "비참하다.",
-                "P13": "시원하다.", "P14": "편하다.", "15": "울적하다.", "16": "넌더리난다.", "17": "슬프다.", "P18": "홀가분하다.",
-                "19": "절망적이다.", "20": "서글프다", "21": "외롭다.", "P22": "좋다.", "23": "무기력하다.", "P24": "개운하다.", "25": "멍하다.",
-                "26": "허무하다.", "27": "의기소침하다.", "28": "허전하다.", "29": "쓸쓸하다.", "P30": "부드럽다.", "P31": "느긋하다.", "32": "맥없다."
-            };
-            var qKeys = Object.keys(questions);
-            var answers = JSON.parse('<%- answers %>'); // 2018.09.04 buffer0 answers data 추가
-            var akeys = Object.keys(answers); // 2018.09.04 buffer0 answers data 추가
-
-            $('#comments_KDACL_td1').html('');
-            //$('#comments_KDACL_td2').html('');
-            $('#comments_KDACL_td3').html('');
-            //$('#comments_KDACL_td4').html('');
-
-            for (var i = 0; i < akeys.length; i++) {
-                var scale = akeys[i];
-                if (typeof answers[scale] == typeof undefined || answers[scale].length == 0) {
-                    continue;
-                }
-
-                let answer = answers[scale].slice().reverse();
-                answer.forEach(function (item, index) {
-                    if (resultId == item["resultId"]) {
-
-                        var q_id = '';
-
-                        if (item["question_id"] == 'KDACL1001' || item["question_id"] == 'KDACL1002' || item["question_id"] == 'KDACL1007' || item["question_id"] == 'KDACL1009' ||
-                            item["question_id"] == 'KDACL1013' || item["question_id"] == 'KDACL1014' || item["question_id"] == 'KDACL1018' || item["question_id"] == 'KDACL1022' ||
-                            item["question_id"] == 'KDACL1024' || item["question_id"] == 'KDACL1030' || item["question_id"] == 'KDACL1031') {
-                            q_id = 'P' + item["question_id"].substring(7, 9); // 부정형용사일때 변수
-                            $('#comments_KDACL_td3').append(questions[q_id] + " ");
-                            qKeys.splice(qKeys.indexOf(q_id), 1);
-                        } else {
-                            q_id = item["question_id"].substring(7, 9); // 긍정형용사일때 변수
-                            $('#comments_KDACL_td1').append(questions[q_id] + " ");
-                            qKeys.splice(qKeys.indexOf(q_id), 1);
-                        }
-                    }
-                });
-            }
-
-            $("#" + scale + "-c").next(".comment-block").children(".comment-label").append($('#comments_kdacl'));
-            $('#comments_kdacl').show();
-            kdacl_unceck_value1 = '';
-            kdacl_unceck_value2 = '';
-            qKeys.map(function (key, item) {
-                if (qKeys[item].substring(0, 1) == 'P') { // 긍정형용사 X
-                    kdacl_unceck_value2 += questions[key] + ' ';
-                } else { // 부정형용사 X
-                    kdacl_unceck_value1 += questions[key] + ' ';
-                }
-            });
-        }
-
         // chart.js add data function - 2018-8.22  by buffer0 (chart 생성이후 datasets추가 함수)
         function addChartData(scale, idx) {
-            var colors = { //각각 수치들의 line 색상
-                "우리 병원": ["rgba(0,172,255, 0.1)", "rgba(0,172,255, 1.0)", true],
-                "고등학생": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
-                "대학생": ["rgb(90, 217, 70, 0.1)", "rgb(90, 217, 70, 1.00)", true],
-                "일반인": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
+            var colors = { //각각 수치들의 line 색상 & compareGroups의 title명 꼭 확인!
+                "우리 병원": ["rgb(0,172,255, 0.1)", "rgb(0,172,255, 1.00)", true],
+                "공황장애 환자": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
                 "우울증 환자": ["rgb(90, 217, 70, 0.1)", "rgb(90, 217, 70, 1.00)", true],
-                "국내 절단점": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
-                "국외 절단점": ["rgb(90, 217, 70, 0.1)", "rgb(90, 217, 70, 1.00)", true],
-                "불안집단": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
-                "정상인 집단": ["rgb(90, 217, 70, 0.1)", "rgb(90, 217, 70, 1.00)", true],
-                "초등학생": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
-                "초등학생 평상시": ["rgb(248, 207, 93, 0.1)", "rgb(248, 207, 93, 1.00)", true],
-                "초등학생 시험직전": ["rgb(90, 217, 70, 0.1)", "rgb(90, 217, 70, 1.00)", true],
-                "사회공포증 환자": ["rgb(249, 83, 89, 0.1)", "rgb(249, 83, 89, 1.00)", true],
                 "절단점": ["rgb(13, 64, 89, 0.1)", "rgb(13, 64, 89, 1.00)", true]
             }
 
@@ -544,7 +423,6 @@
                 while (cutDatas.length <= 10) {
                     cutDatas.push(item["value"]);
                 }
-
                 chartArray[idx].data.datasets.push({
                     label: [item["title"]],
                     data: cutDatas,
@@ -553,7 +431,7 @@
                     hidden: colors[item["title"]][2], //line 숨기기 (boolean으로 구분)
                     borderWidth: 1.5,
                     pointRadius: 0, //point 지점 숨기기
-                    fill: false //Area 효과 없애기
+                    fill: false, //Area 효과 없애기
                 });
                 chartArray[idx].update();
             });
@@ -564,16 +442,11 @@
         // line graph point 더블 클릭 시 검사결과 페이지 이동 이벤트함수
         function chartOnDbClick(evt, idx) {
             var scaleName = evt.target.id; // 현재스케일네임 확인용
-
             var activePoints = chartArray[idx].getElementAtEvent(evt); // active point 클릭이벤트 포인트
-
             let result = results[scaleName].slice().reverse(); // result 값
 
             if (activePoints.length > 0) { // active point 가 있을 시
                 var clickedElementindex = activePoints[0]._index;
-                //var clickedDatasetIndex = activePoints[0]._datasetIndex;
-                //var label = chartArray[idx].data.labels[clickedElementindex]; 
-                //var value = chartArray[idx].data.datasets[clickedDatasetIndex].data[clickedElementindex]; 
 
                 // 검사 값이 없는 point 클릭 시 null 에러 방지 2018-08.24 by buffer0
                 if (clickedElementindex == result.length) {
@@ -581,23 +454,16 @@
                 } else {
                     var resultId = result[clickedElementindex].resultId; //설문작성 번호
                 }
-
                 //검사결과
                 window.location.href = "/edit/" + resultId; //해당 검사 페이지 이동
             }
         }
 
         /* Comment */
-        function requestComment(resultId, $commentLabel, visibleType) {
-            // visibleType 상세보기 show hide 매게변수 - 2018.09.03 by buffer0
-            if (typeof visibleType === typeof undefined) {
-                visibleType = 'H';
-            } else {
-                visibleType = 'S';
-            }
+        function requestComment(resultId, $commentLabel) {
             $.ajax({
                 type: 'GET',
-                url: '/patient/result/comment/' + resultId + '/' + visibleType,
+                url: '/doctor/result/comment/' + resultId,
                 success: function (data) {
                     if (data["isSuccess"]) {
                         var comment = data["result"];
@@ -605,6 +471,7 @@
                         $commentLabel.replaceWith("<label class='comment-label' id='" + scaleId + "'>" + comment + "</label>");
                         var detail_score = $("#" + scaleId + " .detail-score").html();
                         var detail_text = $("#" + scaleId + " .detail-text").html();
+                        $(".BPRS-name").text(patientData.name); //BPRS 환자이름
                         if (typeof detail_score == typeof undefined && typeof detail_text == typeof undefined) {
                             $("#" + scaleId + "d .detail-empty").show();
                             $("#" + scaleId + "d .detail-comm").hide();
@@ -615,12 +482,6 @@
                             $("#" + scaleId + "d .detail-comm").append(detail_text);
                             $("#" + scaleId + "d .detail-empty").hide();
                         }
-
-                        //SAS 스케일 시 함수 적용
-                        if (scaleId == 'SAS-cm') {
-                            SAS_comments();
-                        }
-
                     } else {
                         var comment = data["result"];
                         $commentLabel.replaceWith("<label class='comment-label'>" + comment + "</label>");
@@ -633,39 +494,6 @@
                 },
                 contentType: "application/json"
             });
-        }
-
-        /* SAS Comments 값에 따른 background-color 설정 */
-        function SAS_comments() {
-            //고위험군 - 총점 / 요인 총합
-            if (parseInt($("#SAS-total").val()) >= 45) {
-                $(".SAS-contents").css("background-color", "rgba(136, 108, 230, 0.3)");
-                $(".SAS-contents").css("font-weight", "bold");
-            }
-
-            //잠재적 위험군 - 총점 / 요인
-            else if ((parseInt($("#SAS-total").val()) >= 42 && parseInt($("#SAS-total").val()) <= 44) ||
-                parseInt($("#latent-1").val()) >= 14 || parseInt($("#latent-3").val()) >= 12 || parseInt($("#latent-4").val()) >= 13) {
-
-                //잠재적 위험군 Text-Box
-                $(".SAS-latent").css("background-color", "rgba(136, 108, 230, 0.3)");
-                $(".SAS-latent").css("font-weight", "bold");
-
-                if (parseInt($("#latent-1").val()) >= 14) { //1요인 - 14이상
-                    $("#latent-td-1").css("background-color", "rgba(136, 108, 230, 0.3)");
-                    $("#latent-td-1").css("font-weight", "bold");
-
-                }
-                if (parseInt($("#latent-3").val()) >= 12) { //3요인 - 12이상
-                    $("#latent-td-3").css("background-color", "rgba(136, 108, 230, 0.3)");
-                    $("#latent-td-3").css("font-weight", "bold");
-
-                }
-                if (parseInt($("#latent-4").val()) >= 13) { //4요인 - 13이상
-                    $("#latent-td-4").css("background-color", "rgba(136, 108, 230, 0.3)");
-                    $("#latent-td-4").css("font-weight", "bold");
-                }
-            }
         }
 
     </script>
