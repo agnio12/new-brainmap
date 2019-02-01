@@ -13705,12 +13705,10 @@ textarea.c-input {
 .detail-step {  font-weight: bold; margin-bottom: 20px;}
 .detail-comm {  font-size: 0.95rem; box-sizing: border-box; padding-right: 10px; height: 290px;  overflow-y: auto; line-height: 27px;}
 
-/* Sub Result 스케일 (PSQI, BIS) */
-.subResult-step {  float: left; width: 25%; margin-bottom: 7px; font-weight: bold;}
-.subResult-detail {  float: left; width: 75%; margin-bottom: 7px; box-sizing: border-box; padding-left: 12px;}
-.subResult2-step {  float: left; width: 15%; margin-bottom: 15px; font-weight: bold;}
-.subResult2-detail {  float: left; width: 85%; margin-bottom: 15px; box-sizing: border-box; padding-left: 25px;}
-.subResult-sc {  float: right;} /* 세미콜론 ( : ) */
+/* PSQI-Comments */
+.PSQI-step {  float: left; width: 21%; margin-bottom: 10px; font-weight: bold; font-size: 0.875rem;}
+.PSQI-detail {  float: left; width: 79%; margin-bottom: 10px; box-sizing: border-box; padding-left: 12px; font-size: 0.875rem;}
+.PSQI-sc {  float: right;} /* 세미콜론 ( : ) */
 
 /* BIS-Comments */
 .BIS-wrap {  width: 100%;}
