@@ -50,8 +50,9 @@
                                             readonly="readonly" />
                                         <span id="next" class="next-arrow"></span>
                                         <span style="float: right;">
-                                            <a class="c-btn c-btn--secondary" href="#" id="tasks-btn1"></a>&ensp;
-                                            <a class="c-btn c-btn--secondary" href="#" id="tasks-btn2"></a>
+                                            <a class="c-btn c-btn--moodchecker" href="/tasksDetail?moodchecker=Mood" id="tasks-btn1">Mood</a>&ensp;
+                                            <a class="c-btn c-btn--moodchecker" href="/tasksDetail?moodchecker=Anxiety" id="tasks-btn2">Anxiety</a>&ensp;
+                                            <a class="c-btn c-btn--moodchecker" href="/tasksDetail?moodchecker=ADHD" id="tasks-btn3">ADHD</a>
                                         </span>
                                         
                                     </caption>
@@ -121,24 +122,6 @@
             return vars;
         }
 
-        //우측 상단 버튼
-        if(moodchecker == 'Mood'){
-            $("#tasks-btn1").text("Anxiety");
-            $("#tasks-btn1").attr("href","tasksDetail?moodchecker=Anxiety");
-            $("#tasks-btn2").text("ADHD");
-            $("#tasks-btn2").attr("href","tasksDetail?moodchecker=ADHD");
-        } else if(moodchecker == 'Anxiety') {
-            $("#tasks-btn1").text("Mood");
-            $("#tasks-btn1").attr("href","tasksDetail?moodchecker=Mood");
-            $("#tasks-btn2").text("ADHD");
-            $("#tasks-btn2").attr("href","tasksDetail?moodchecker=ADHD");
-        } else if(moodchecker == 'ADHD') {
-            $("#tasks-btn1").text("Mood");
-            $("#tasks-btn1").attr("href","tasksDetail?moodchecker=Mood");
-            $("#tasks-btn2").text("Anxiety");
-            $("#tasks-btn2").attr("href","tasksDetail?moodchecker=Anxiety");
-        }
-
         //datePicker 달력 설정
         (function datePicker() {
             $("#datepicker").datepicker({
@@ -192,6 +175,7 @@
                                 $(".no-tasks").hide();
                             } else {
                                 $(".no-tasks").show();
+                                $(".record").hide();
                             }
                         } else {
                             alert(data["message"]);
@@ -220,6 +204,7 @@
                                 $(".no-tasks").hide();
                             } else {
                                 $(".no-tasks").show();
+                                $(".record").hide();
                             }
                         } else {
                             alert(data["message"]);

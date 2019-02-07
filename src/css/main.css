@@ -13676,6 +13676,8 @@ textarea.c-input {
 .preview-arrow {  cursor: pointer; border: solid #93a3b8; border-width: 0 3px 3px 0; display: inline-block; padding: 3px; transform: rotate(135deg); -webkit-transform: rotate(135deg);}
 
 /* == Tasks Detail == */
+.c-btn--moodchecker {  border-radius: 150px; background: #f8f8f8; color: #354052; border: 1px solid #eceff3; padding: 0.2rem 1.25rem;}
+.c-btn--moodchecker:hover {  color: #000; background: #eceff3; font-weight: bold;}
 .tasks-table .text-s {  font-size: 1.0rem;}
 .tasks-table .text-m {  font-size: 1.4rem;}
 .tasks-head {  width: 12%; cursor: pointer;}
