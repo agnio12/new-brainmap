@@ -836,13 +836,13 @@ app.get('/readData', function (req, res) {
     var patientName = patientData["name"];
     var patientBirthDate = patientData["birthdate"];
     var patientHistoryNum = patientData["history_number"];
-    var query =
-        "SELECT p.history_number, CAST(AES_DECRYPT(UNHEX(p.name), 'brain') AS CHAR) AS name, p.gender, p.birthdate, r.id AS result_id, r.scale AS scaleName, r.value, r.date AS scaleDate, s.insurance " +
-        "FROM patient as p " +
-        "JOIN results as r ON p.id = r.patient_id " +
-        "JOIN scale as s ON r.scale = s.code " +
-        "WHERE p.id='" + patientId + "' " +
-        "ORDER BY scaleDate, r.id ASC";
+    var query = `
+        SELECT p.history_number, CAST(AES_DECRYPT(UNHEX(p.name), 'brain') AS CHAR) AS name, p.gender, p.birthdate, r.id AS result_id, r.scale AS scaleName, r.value, r.date AS scaleDate, s.insurance 
+        FROM patient as p 
+        JOIN results as r ON p.id = r.patient_id 
+        JOIN scale as s ON r.scale = s.code 
+        WHERE p.id='${patientId}' 
+        ORDER BY scaleDate, r.id ASC`;
 
     pool.getConnection(function (err, connection) {
         connection.query(query, function (err, rows) {

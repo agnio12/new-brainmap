@@ -10,8 +10,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -40,7 +40,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="c-card c-card--responsive u-mb-medium">
+                    <div class="c-card c-card--responsive scale-results">
                         <div class="c-card__header c-card__header--transparent o-line">
                             <h5 class="c-card__title">데이터 열람</h5>
                             <span>
@@ -48,33 +48,55 @@
                                 <%-patientName%> &nbsp&nbsp&nbsp
                                 <%-patientBirthDate%></span>
                             <div class="c-field has-icon-right" style="width: 180px;">
-                                <input class="c-input" type="text" placeholder="검사명">
+                                <input class="c-input" id="scale-name-search" type="text" placeholder="검사명">
                                 <span class="c-field__icon">
                                     <i class="fa fa-search"></i>
                                 </span>
                             </div>
                         </div>
 
-                        <table class="c-table u-border-zero">
-                            <thead class="c-table__head c-table__head--slim c-table__head__border-bottom">
-                                <tr class="c-table__row">
-                                    <th class="c-table__cell c-table__cell--head">검사명</th>
-                                    <th class="c-table__cell c-table__cell--head">검사 날짜</th>
-                                    <th class="c-table__cell c-table__cell--head">검사 결과</th>
-                                    <th class="c-table__cell c-table__cell--head">검사 횟수</th>
-                                    <th class="c-table__cell c-table__cell--head">보험 코드</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="c-table__row u-border-top-zero ">
-                                    <td class="c-table__cell u-text-mute">00450</td>
-                                    <td class="c-table__cell">Design Works</td>
-                                    <td class="c-table__cell u-text-mute">Carlson Limited</td>
-                                    <td class="c-table__cell">$2,580</td>
-                                    <td class="c-table__cell u-text-mute">Carlson Limited</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div style="max-height: 726px; overflow-y: auto;">
+                            <table class="c-table u-border-zero">
+                                <thead class="c-table__head c-table__head--slim c-table__head__border-bottom">
+                                    <tr class="c-table__row">
+                                        <th class="c-table__cell c-table__cell--head">
+                                            <span style="cursor:pointer;" id="scale-name">검사명</span>
+                                            <img id="scale-name-img" width="10" height="10"
+                                                src="/img/brainmap/default.png" style="cursor:pointer;" />
+                                        </th>
+                                        <th class="c-table__cell c-table__cell--head">
+                                            <span style="cursor:pointer;" id="scale-date">검사 날짜</span>
+                                            <img id="scale-date-img" width="10" height="10"
+                                                src="/img/brainmap/default.png" style="cursor:pointer;" />
+                                        </th>
+                                        <th class="c-table__cell c-table__cell--head">
+                                            <span style="cursor:pointer;" id="scale-answer"><B>검사 결과</B></span>
+                                            <img id="scale-answer-img" width="10" height="10"
+                                                src="/img/brainmap/default.png" style="cursor:pointer;" />
+                                        </th>
+                                        <th class="c-table__cell c-table__cell--head">
+                                            <span style="cursor:pointer;" id="scale-count">검사 횟수</span>
+                                            <img id="scale-count-img" width="10" height="10"
+                                                src="/img/brainmap/default.png" style="cursor:pointer;" />
+                                        </th>
+                                        <th class="c-table__cell c-table__cell--head">
+                                            <span style="cursor:pointer;" id="scale-code">보험 코드</span>
+                                            <img id="scale-code-img" width="10" height="10"
+                                                src="/img/brainmap/default.png" style="cursor:pointer;" />
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recode">
+                                    <tr class="c-table__row u-border-top-zero empty-record">
+                                        <td class="c-table__cell u-text-mute"></td>
+                                        <td class="c-table__cell"></td>
+                                        <td class="c-table__cell u-text-mute"></td>
+                                        <td class="c-table__cell"></td>
+                                        <td class="c-table__cell u-text-mute"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div><!-- // .row -->
@@ -92,6 +114,281 @@
     <script type="text/javascript">
         $(".c-sidebar__link").removeClass("is-active");
         $(".c-sidebar__list .c-sidebar__link:contains('데이터 열람')").addClass('is-active');
+
+        function nth(d) {
+            if (d > 3 && d < 21) return d + 'th';
+            switch (d % 10) {
+                case 1: return d + "st";
+                case 2: return d + "nd";
+                case 3: return d + "rd";
+                default: return d + "th";
+            }
+        }
+
+        /* result 데이터 초기 가공 : scale Count 계산 */
+        var scaleCounter = {};
+        var results = <%- results %>;
+        results = results.map(function (result) {
+            var count = scaleCounter[result["scaleName"]];
+            if (typeof count == typeof undefined) {
+                scaleCounter[result["scaleName"]] = 1;
+                result["scaleCount"] = 1;
+                return result
+            } else {
+                scaleCounter[result["scaleName"]] += 1;
+                result["scaleCount"] = count + 1;
+                return result
+            }
+        }).reverse();
+        grid_result();
+
+        /* result 데이터를 테이블에 넣음 */
+        function grid_result() {
+            $("#recode").children("tr").remove();
+            var records = "";
+            for (i = 0; i < results.length; i++) {
+                var result = results[i];
+                records += `
+                    <tr class="c-table__row u-border-top-zero record" result-id="${result["result_id"]}">
+                        <td class="c-table__cell u-text-mute">
+                            <label class='lab_info' for='scale-name'>
+                                ${result["scaleName"]}
+                            </label>
+                        </td>
+                        <td class="c-table__cell">${result["scaleDate"]}</td>
+                        <td class="c-table__cell u-text-mute">${result["value"]}</td>
+                        <td class="c-table__cell">${result["scaleCount"]}</td>
+                        <td class="c-table__cell u-text-mute">${result["insurance"]}</td>
+                    </tr>`;
+            }
+            //$(records).insertBefore("#recode");
+            $("#recode").append(records);
+        }
+
+        $("#scale-name-search").on("input", function (event) {
+            if (event.keycode == 13) {
+                event.preventDefault();
+            }
+            var keyword = $("#scale-name-search").val().toLowerCase()
+            filterResultTableByScale(keyword);
+        });
+
+        function filterResultTableByScale(scaleName) {
+            if (scaleName == "" || scaleName == null || typeof scaleName == typeof undefined) {
+                $(".scale-results .c-table .record").css("display", "")
+                return;
+            }
+            $(".scale-results .c-table .record").each(function (index, record) {
+                var targetScaleName = $(record).find("label[for='scale-name']").text().toLowerCase();
+                if (!targetScaleName.includes(scaleName)) {
+                    $(record).css("display", "none");
+                } else {
+                    $(record).css("display", "");
+                }
+            });
+        };
+
+        let scale_orderby = {
+            name: "asc",
+            date: "asc",
+            answer: "desc",
+            count: "desc",
+            code: "desc"
+        }
+        $("#scale-name, #scale-name-img").on("click", function () {
+            sort_group("name")
+        });
+        $("#scale-date, #scale-date-img").on("click", function () {
+            sort_group("date")
+        });
+        $("#scale-code, #scale-code-img").on("click", function () {
+            sort_group("code")
+        });
+        $("#scale-count, #scale-count-img").on("click", function () {
+            sort_group("count")
+        });
+        $("#scale-answer, #scale-answer-img").on("click", function () {
+            sort_group("answer")
+        });
+
+        function sort_group(type) {
+            grid_result(func_sort(type, set_orderby_img(type), results));
+        }
+
+        function set_orderby_img(type) {
+            switch (type) {
+                case "name":
+                    scale_orderby.name = scale_orderby.name === "asc" ? "desc" : "asc";
+                    set_img(type, scale_orderby.name);
+                    return scale_orderby.name;
+                    break;
+                case "date":
+                    scale_orderby.date = scale_orderby.date === "asc" ? "desc" : "asc";
+                    set_img(type, scale_orderby.date);
+                    return scale_orderby.date;
+                    break;
+                case "count":
+                    scale_orderby.count = scale_orderby.count === "asc" ? "desc" : "asc";
+                    set_img(type, scale_orderby.count);
+                    return scale_orderby.count;
+                    break;
+                case "answer":
+                    scale_orderby.answer = scale_orderby.answer === "asc" ? "desc" : "asc";
+                    set_img(type, scale_orderby.answer);
+                    return scale_orderby.answer;
+                    break;
+                case "code":
+                    scale_orderby.code = scale_orderby.code === "asc" ? "desc" : "asc";
+                    set_img(type, scale_orderby.code);
+                    return scale_orderby.code;
+                    break;
+            }
+        }
+
+        function set_img(type_id, type_order) {
+            $("img[id^='scale-']").prop("src", "/img/brainmap/default.png");
+            $("#scale-" + type_id + "-img").prop("src", "/img/brainmap/" + type_order + ".png");
+        }
+
+        function func_sort(type, orderby, results) {
+            switch (type) {
+                case "name":
+                    return name_sort(orderby, results);
+                    break;
+                case "date":
+                    return date_sort(orderby, results);
+                    break;
+                case "count":
+                    return count_sort(orderby, results);
+                    break;
+                case "answer":
+                    return answer_sort(orderby, results);
+                    break;
+                case "code":
+                    return code_sort(orderby, results);
+                    break;
+            }
+        }
+
+        function name_sort(orderby, results) {
+            return results.sort((a, b) => {
+                let a_name = a.scaleName.toUpperCase();
+                let b_name = b.scaleName.toUpperCase();
+
+                if (orderby === "desc") {
+                    if (a_name > b_name) {
+                        return -1;
+                    }
+                    if (b_name > a_name) {
+                        return 1;
+                    }
+                } else {
+                    if (a_name > b_name) {
+                        return 1;
+                    }
+                    if (b_name > a_name) {
+                        return -1;
+                    }
+                }
+                return 0;
+            });
+        }
+
+        function date_sort(orderby, results) {
+            return results.sort((a, b) => {
+                let a_date = a.scaleDate.toUpperCase();
+                let b_date = b.scaleDate.toUpperCase();
+
+                if (orderby === "desc") {
+                    if (a_date > b_date) {
+                        return -1;
+                    }
+                    if (b_date > a_date) {
+                        return 1;
+                    }
+                } else {
+                    if (a_date > b_date) {
+                        return 1;
+                    }
+                    if (b_date > a_date) {
+                        return -1;
+                    }
+                }
+                return 0;
+            });
+        }
+
+        function count_sort(orderby, results) {
+            return results.sort((a, b) => {
+                let a_scaleCount = a.scaleCount;
+                let b_scaleCount = b.scaleCount;
+
+                if (orderby === "desc") {
+                    if (a_scaleCount > b_scaleCount) {
+                        return -1;
+                    }
+                    if (b_scaleCount > a_scaleCount) {
+                        return 1;
+                    }
+                } else {
+                    if (a_scaleCount > b_scaleCount) {
+                        return 1;
+                    }
+                    if (b_scaleCount > a_scaleCount) {
+                        return -1;
+                    }
+                }
+                return 0;
+            });
+        }
+
+        function answer_sort(orderby, results) {
+            return results.sort((a, b) => {
+                let a_value = a.value;
+                let b_value = b.value;
+
+                if (orderby === "desc") {
+                    if (a_value > b_value) {
+                        return -1;
+                    }
+                    if (b_value > a_value) {
+                        return 1;
+                    }
+                } else {
+                    if (a_value > b_value) {
+                        return 1;
+                    }
+                    if (b_value > a_value) {
+                        return -1;
+                    }
+                }
+                return 0;
+            });
+        }
+
+        function code_sort(orderby, results) {
+            return results.sort((a, b) => {
+                let a_insurance = a.insurance.toUpperCase();
+                let b_insurance = b.insurance.toUpperCase();
+
+                if (orderby === "desc") {
+                    if (a_insurance > b_insurance) {
+                        return -1;
+                    }
+                    if (b_insurance > a_insurance) {
+                        return 1;
+                    }
+                } else {
+                    if (a_insurance > b_insurance) {
+                        return 1;
+                    }
+                    if (b_insurance > a_insurance) {
+                        return -1;
+                    }
+                }
+                return 0;
+            });
+        }
     </script>
 
 </body>
