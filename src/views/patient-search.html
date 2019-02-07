@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BrainMap</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/main.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <div class="container-fluid">
+            <div class="row u-mb-large">
+                <div class="col-10" style="margin: 0 auto;">
+                    <div class="c-tabs">
+
+                        <ul class="c-tabs__list c-tabs__list--splitted nav nav-tabs" id="myTab" role="tablist">
+                            <li class="c-tabs__item">
+                                <a class="c-tabs__link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                    role="tab" aria-controls="nav-home" aria-selected="true">환자 선택
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="c-tabs__content tab-content" id="nav-tabContent">
+                            <div class="c-tabs__pane active u-p-medium" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="c-field u-mb-medium">
+                                            <label class="c-field__label" for="bio">환자 선택</label>
+                                            <textarea class="c-input" id="bio" style="min-height: 130px;">1. 환자가 선택되어 있지 않아 스케일에 대한 정보를 가져올 수 없습니다.
+
+2. 하단의 환자 검색을 통하여 스케일 정보를 등록할 환자를 선택해주십시오.</textarea>
+                                        </div>
+                                        <label class="c-field__label" for="navbar-search-small">환자 검색</label>
+                                        <div class="c-field has-icon-right u-mb-small">
+                                            <span class="c-field__icon">
+                                                <i class="fa fa-search"></i>
+                                            </span>
+                                            <input class="c-input s-input" id="navbar-search-small" type="text"
+                                                placeholder="선택할 환자를 검색해주십시오." style="width: 100%;">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-1">
+                                        <div style="margin: 0 auto; width: 2px; height: calc(100%); border: 1px solid rgb(207, 207, 207, 0.3);"></div>
+                                    </div>
+
+                                    <div class="col-lg-7">
+                                        <label class="c-field__label">환자 목록</label>
+                                        <div style="height: 291px; overflow-y: auto;">
+                                            <table class="c-table">
+                                                <thead class="c-table__head c-table__head--slim">
+                                                    <tr class="c-table__row">
+                                                        <th class="c-table__cell c-table__cell--head no-sort">이름</th>
+                                                        <th class="c-table__cell c-table__cell--head">성별</th>
+                                                        <th class="c-table__cell c-table__cell--head no-sort">생년월일</th>
+                                                        <th class="c-table__cell c-table__cell--head">병력번호</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="c-table__row">
+                                                        <td class="c-table__cell"></td>
+                                                        <td class="c-table__cell"></td>
+                                                        <td class="c-table__cell"></td>
+                                                        <td class="c-table__cell"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div><!-- // .row -->
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- // .col-12 -->
+            </div>
+        </div><!-- // .container -->
+    </main>
+
+    <script src="/js/main.min.js"></script>
+    <script src="/js/jquery-confirm.js"></script>
+
+    <script>
+        $(".c-sidebar__link").removeClass("is-active");
+        <% var menu = (nextPage == "readData") ? "데이터 열람" : "수동 입력" %>
+        $(".c-sidebar__list .c-sidebar__link:contains(<%- menu%>)").addClass('is-active');
+
+
+        $("#patient-search-box").focus(function () {
+            $($(".inputUnderline")[0]).css("background-color", "#55668657");
+        })
+
+        $("#patient-search-box").blur(function () {
+            $($(".inputUnderline")[0]).css("background-color", "transparent");
+        })
+
+
+        $("#patient-search").on("submit", function (event) {
+            event.preventDefault();
+            if ($("#patient-search-box").val() == "") {
+                $.alert({
+                    title: "",
+                    content: "환자의 일련번호 또는 이름을 입력해주세요."
+                });
+                return;
+            }
+            sendDataToServer({ "keyword": $("#patient-search-box").val() });
+        });
+
+        $("#patient-search-box").on("input", function (e) {
+            if ($(this).data("lastval") != $(this).val()) {
+                $(this).data("lastval", $(this).val());
+            };
+        });
+
+        $(".search-result .table").on("click", ".record", function () {
+            var id = $(this).attr("patient-id");
+            var patient;
+            $.each(searchResults, function (index, result) {
+                if (result["id"] == id) {
+                    patient = result;
+                }
+            })
+            Cookies.set('patient', patient);
+            window.location.href = "/" + "<%-nextPage%>";
+        })
+
+        function updateResultTable(results) {
+            $(".search-result .table .record").empty();
+            console.log(results);
+
+            $.each(results, function (index, result) {
+                var tag =
+                    "<tr class='record' patient-id='" + result["id"] + "'>" +
+                    "<td><label class='lab_info' for='name'>" + result["name"] + "</label></td>" +
+                    "<td><label class='lab_info' for='gender'>" + result["gender"] + "</label></td>" +
+                    "<td><label class='lab_info' for='birthdate'>" + result["birthdate"].substring(0, 10) + "</label></td>" +
+                    "<td><label class='lab_info' for='historynumber'>" + result["history_number"] + "</label></td>" +
+                    "</tr>"
+
+                $(tag).insertBefore(".search-result .table .empty-record");
+            })
+        }
+
+        function sendDataToServer(result) {
+            $.ajax({
+                type: 'POST',
+                url: '/search/patient',
+                data: JSON.stringify(result),
+                success: function (data) {
+                    if (data["isSuccess"]) {
+                        var parsed = JSON.parse(data["result"]);
+                        var results = [];
+                        for (var result in parsed) {
+                            results.push(parsed[result]);
+                        }
+                        searchResults = results;
+                        updateResultTable(results);
+                    } else {
+                        console.log("검색 에러 : " + data["result"]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error : ' + textStatus);
+                    console.log('error : ' + errorThrown);
+                },
+                contentType: "application/json"
+            });
+        };
+
+    </script>
+
+</body>
+
+</html>
