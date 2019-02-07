@@ -13705,16 +13705,19 @@ textarea.c-input {
 .detail-step {  font-weight: bold; margin-bottom: 20px;}
 .detail-comm {  font-size: 0.95rem; box-sizing: border-box; padding-right: 10px; height: 290px;  overflow-y: auto; line-height: 27px;}
 
+/* KDACL-Comments */
+.KDACL-wrap {  width: 100%;}
+.KDACL-wrap table {  width: 100%; border-collapse: collapse; text-align: center; font-size: 0.875rem;}
+.KDACL-wrap table tbody td{  border: 1px solid #e6eaee; padding: 10px;}
+.KDACL-tit {  width: 17%; font-weight: bold;}
+.KDACL-choice {  width: 22%;}
+.KDACL-more {  color: #7f8fa4; cursor: pointer;}
+.KDACL-more:hover {  color: #2ea1f8;}
+
 /* PSQI-Comments */
 .PSQI-step {  float: left; width: 21%; margin-bottom: 10px; font-weight: bold; font-size: 0.875rem;}
 .PSQI-detail {  float: left; width: 79%; margin-bottom: 10px; box-sizing: border-box; padding-left: 12px; font-size: 0.875rem;}
 .PSQI-sc {  float: right;} /* 세미콜론 ( : ) */
-
-/* BIS-Comments */
-.BIS-wrap {  width: 100%;}
-.BIS-wrap table {  width: 100%; border-collapse: collapse; text-align: center;}
-.BIS-wrap table tbody td{  border: 1px solid #e6eaee; padding: 8px 0;}
-.BIS-head{  font-weight: bold;  width: 20%;}
 
 /* AUDITC-Comments */
 .AUDITC-wrap {  width: 100%; margin-top: 10px;}
@@ -13728,6 +13731,12 @@ textarea.c-input {
 .PHQPanic-q {  width: 60%; float: left; border-left: 1px solid #e6eaee; border-top: 1px solid #e6eaee; padding: 4px 20px;}
 .PHQPanic-a {  width: 20%; float: left; text-align: center; border-left: 1px solid #e6eaee; border-top: 1px solid #e6eaee; padding: 4px 0;}
 .PHQPanic-a:last-child {  border-right: 1px solid #e6eaee;}
+
+/* BIS-Comments */
+.BIS-wrap {  width: 100%;}
+.BIS-wrap table {  width: 100%; border-collapse: collapse; text-align: center;}
+.BIS-wrap table tbody td{  border: 1px solid #e6eaee; padding: 8px 0;}
+.BIS-head{  font-weight: bold;  width: 20%;}
 
 /* SAS-Comments */
 .SAS-wrap {  width: 100%;}

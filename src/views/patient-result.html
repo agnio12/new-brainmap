@@ -10,8 +10,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -53,7 +53,8 @@
                         <% var result = values[i]; %>
                         <% if (result.length > 0) { %>
                         <div class="c-card" style="border: none;">
-                            <div class="o-line div-padding scale-list <%- result[0].scaleCode %>-scale" title="<%- result[0].scaleCode %>" style="border-bottom: 1px solid #e6eaee;">
+                            <div class="o-line div-padding scale-list <%- result[0].scaleCode %>-scale"
+                                title="<%- result[0].scaleCode %>" style="border-bottom: 1px solid #e6eaee;">
                                 <p class="u-text-small u-mr-small">
                                     <%- result[0].scaleName %>
                                 </p>
@@ -74,7 +75,8 @@
                 <% for (i = 0 ; i < values.length ; i++) { %>
                 <% var result = values[i]; %>
                 <% if (result.length > 0) { %>
-                <div class="c-card u-p-medium u-mb-medium scale-grpah <%- result[0].scaleCode %>" name="<%- result[0].scaleCode %>">
+                <div class="c-card u-p-medium u-mb-medium scale-grpah <%- result[0].scaleCode %>"
+                    name="<%- result[0].scaleCode %>">
                     <div class="u-flex u-justify-between u-align-items-center u-mb-small">
                         <h3 class="c-card__title">
                             <%- result[0].scaleName %>
@@ -87,8 +89,9 @@
                             <label class="top-info-label"></label>
                         </span>
                     </div>
-                    <canvas id='<%- result[0].scaleCode %>' ondblclick='chartOnDbClick(event,<%- parsedScaleNum[result[0].scaleCode]-1 %>)'
-                        width="300" height="136" class="scale-indicator"></canvas>
+                    <canvas id='<%- result[0].scaleCode %>'
+                        ondblclick='chartOnDbClick(event,<%- parsedScaleNum[result[0].scaleCode]-1 %>)' width="300"
+                        height="136" class="scale-indicator"></canvas>
                 </div>
                 <% } %>
                 <% } %>
@@ -109,10 +112,11 @@
                         <div class="c-card u-pv-medium u-ph-large" style="border: none;">
                             <div class="o-line u-mb-small">
                                 <div class="detail-block" style="width: 100%;">
-                                    <div class="ss" id='<%- result[0].scaleCode %>-cmd'>
-                                        <div class="detail-step"></div>
-                                        <div class="detail-comm"></div>
-                                        <div class="detail-empty" style="display: none; text-align: center; line-height: 32px;">
+                                    <div id='<%- result[0].scaleCode %>-cmd'>
+                                        <div class="detail-step detail-full"></div>
+                                        <div class="detail-comm detail-full"></div>
+                                        <div class="detail-empty"
+                                            style="display: none; text-align: center; line-height: 32px;">
                                             <b><%- result[0].scaleEngName %></b> 스케일은<br>상세답안이 <b>없는</b> 스케일입니다.
                                         </div>
                                     </div>
@@ -181,10 +185,62 @@
                 </div>
                 <% } %>
                 <% } %>
+
+                <!-- kdacl-Modal -->
+                <div class="c-modal modal fade" id="standard-modal" tabindex="-1" role="dialog"
+                    aria-labelledby="standard-modal" data-backdrop="static">
+                    <div class="c-modal__dialog modal-dialog" role="document">
+                        <div class="c-modal__content">
+                            <div class="c-modal__header" style="background: #fff; border-bottom: 1px solid rgba(224, 224, 224, 0.6);">
+                                <h3 class="c-modal__title" id="kdacl-title" style="color: #000;"></h3>
+                                <span class="c-modal__close" data-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-close" style="color: #354052;"></i>
+                                </span>
+                            </div>
+                            <div class="c-modal__body">
+                                <p id="kdacl-body"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KDACL Comments Table - 2018.09.06 by buffer0 -->
+                <div id='comments_KDACL' class="KDACL-wrap" style='display:none;'>
+                    <table class="KDACL-table">
+                        <tbody>
+                            <tr>
+                                <td rowspan="2" style="background-color: rgba(100, 61, 190, 0.6)" class="KDACL-tit">부정 형용사</td>
+                                <td class="KDACL-choice">선택</td>
+                                <td id="comments_KDACL_td1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="KDACL-choice">선택하지 않음</td>
+                                <td id="comments_KDACL_td2">
+                                    <span id="kdacl_more1" class="KDACL-more" data-toggle="modal"
+                                        data-target="#standard-modal">more</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td rowspan="2" style="background-color: rgba(163,136,227, 0.3)" class="KDACL-tit">긍정 형용사</td>
+                                <td class="KDACL-choice">선택</td>
+                                <td id="comments_KDACL_td3">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="KDACL-choice">선택하지 않음</td>
+                                <td id="comments_KDACL_td4">
+                                    <span id="kdacl_more2" class="KDACL-more" data-toggle="modal"
+                                        data-target="#standard-modal">more</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div><!-- // .container -->
-
     </main><!-- // .o-page__content -->
 
     <script src="js/moment.js"></script>
@@ -448,7 +504,8 @@
             }
             if (scale == 'KDACL') {
                 kdacl_value = latestResultId;
-                $(".comment-label").css("padding", "0 30px 30px 30px");
+                $("#" + scale + "-cmd .detail-empty").show();
+                $("#" + scale + "-cmd .detail-full").hide();
                 updateAnswers(scale, latestResultId);
             }
         }
@@ -507,8 +564,8 @@
                 });
             }
 
-            $("#" + scale + "-c").next(".comment-block").children(".comment-label").append($('#comments_kdacl'));
-            $('#comments_kdacl').show();
+            $("#" + scale + "-c").next(".comment-block").children(".comment-label").append($('#comments_KDACL'));
+            $('#comments_KDACL').show();
             kdacl_unceck_value1 = '';
             kdacl_unceck_value2 = '';
             qKeys.map(function (key, item) {
@@ -607,7 +664,7 @@
                         var detail_text = $("#" + scaleId + " .detail-text").html();
                         if (typeof detail_score == typeof undefined && typeof detail_text == typeof undefined) {
                             $("#" + scaleId + "d .detail-empty").show();
-                            $("#" + scaleId + "d .detail-comm").hide();
+                            $("#" + scaleId + "d .detail-full").hide();
                         } else {
                             $("#" + scaleId + "d .detail-step").empty();
                             $("#" + scaleId + "d .detail-comm").empty();
@@ -667,6 +724,20 @@
                 }
             }
         }
+
+
+        // kdacl modal 호출 - 긍정
+        $('#kdacl_more1').on('click', function () {
+            $('#kdacl-body').text('');
+            $('#kdacl-title').text('').text('부정형용사');
+            $('#kdacl-body').append(kdacl_unceck_value1);
+        });
+        // kdacl modal 호출 - 부정
+        $('#kdacl_more2').on('click', function () {
+            $('#kdacl-body').text('');
+            $('#kdacl-title').text('').text('긍정형용사');
+            $('#kdacl-body').append(kdacl_unceck_value2);
+        });
 
     </script>
 </body>
