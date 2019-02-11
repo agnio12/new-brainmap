@@ -55,7 +55,7 @@
                             </div>
                         </div>
 
-                        <div style="max-height: 726px; overflow-y: auto;">
+                        <div id="readData-wrap">
                             <table class="c-table u-border-zero">
                                 <thead class="c-table__head c-table__head--slim c-table__head__border-bottom">
                                     <tr class="c-table__row">
@@ -151,8 +151,7 @@
                         <td class="c-table__cell u-text-mute">${result["insurance"]}</td>
                     </tr>`;
             }
-            //$(records).insertBefore("#recode");
-            $("#recode").append(records);
+            $(records).insertBefore("#recode");
         }
 
         $("#scale-name-search").on("input", function (event) {

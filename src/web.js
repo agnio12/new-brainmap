@@ -1202,7 +1202,7 @@ app.get('/doctor/result/comment/:resultId', function (req, res) {
     })
 })
 
-
+//환자가 선택되어 있지 않을 때 (patinet-search - GET)
 app.get('/search/patient/:nextPage', function (req, res) {
     if (req.cookies.didLogin != "true") {
         res.redirect('/login');
@@ -1216,6 +1216,39 @@ app.get('/search/patient/:nextPage', function (req, res) {
         res.redirect("/" + req.params.nextPage);
         return;
     }
+})
+
+//환자가 선택되어 있지 않을 때 (patinet-search - POST)
+app.post('/search/patient', function (req, res, next) {
+    var keyword = req.body["keyword"];
+    var hospital = req.cookies.user_hospital;
+    if (isUndefined(hospital)) {
+        console.log("병원 정보 누락.");
+        res.send({ isSuccess: false, result: "병원 정보 누락" });
+        return;
+    }
+    var searchQuery =
+        "SELECT id, CAST(AES_DECRYPT(UNHEX(name), 'brain') AS CHAR) AS name, "
+        + "gender, birthdate, history_number, hospital, moodchecker_id FROM patient "
+        + "WHERE (id='" + keyword + "' OR "
+        + "name LIKE HEX(AES_ENCRYPT('" + keyword + "', 'brain')) OR "
+        + "CAST(history_number AS CHAR) LIKE '" + keyword + "') "
+        + "AND hospital=" + hospital;
+
+    pool.getConnection(function (err, connection) {
+        connection.query(searchQuery, function (err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.send({ isSuccess: false, result: err })
+            } else {
+                rows.forEach(function (item, i, items) {
+                    item.birthdate = moment(item.birthdate).format('YYYY-MM-DD');
+                })
+                res.send({ isSuccess: true, result: JSON.stringify(rows) })
+            }
+        })
+    })
 })
 
 // result data push

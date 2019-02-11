@@ -50,12 +50,13 @@
                                 <%-moodchecker%> check have been made</p>
                             <h3 class="c-graph-card__title avg-tot">Average 10day <%-moodchecker%>&ensp;<span id="moodchecker-avg"></span></h3>
                         </div>
-
-                        <a href="/moodDetail" class="mood-chart">
+                        <div class="mood-chart">
+                        <a href="/moodDetail">
                             <div class="c-graph-card__chart mood" style="cursor: pointer;">
                                 <canvas id="js-chart-mood" width="300" height="74"></canvas>
                             </div>
                         </a>
+                        </div>
                     </div>
                 </div>
 
@@ -66,11 +67,13 @@
                             <p class="c-graph-card__date">To date, the last 10 Sleep check have been made</p>
                             <h3 class="c-graph-card__title avg-tot">Average sleep duration&ensp;<span id="sleep-avg"></span>hr</h3>
                         </div>
-                        <a href="/sleepDetail" class="mood-chart">
+                        <div class="mood-chart">
+                        <a href="/sleepDetail">
                             <div class="c-graph-card__chart sleep" style="cursor: pointer;">
                                 <canvas id="js-chart-sleep" width="300" height="74"></canvas>
                             </div>
                         </a>
+                    </div>
                     </div>
                 </div>
 
@@ -118,7 +121,10 @@
                         <div class="c-project-card__content">
                             <div class="c-project-card__head">
                                 <h4 class="c-project-card__title">검사 결과</h4>
-                                <p class="c-project-card__info"><a href="#.">READ MORE</a></p>
+                                <p class="c-project-card__info">
+                                    <a href="/readData">READ MORE</a>
+                                    <span style="float: right;">가장 최근에 검사한 결과입니다.</span>
+                                </p>
                             </div>
 
                             <% var recentDatas = JSON.parse(datas) %>
@@ -130,16 +136,23 @@
                             <div class="state-wrapper" style="position: relative;">
                                 <!-- 우울척도 (BDI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.0rem; line-height: 30px; padding-right: 24px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px; padding-right: 22px;">
                                         <span>
                                             <%- BDIData["date"] %></span><br />
                                         <span>우울척도</span>
                                     </p>
+                                    <span class="c-badge c-badge--info state-lev" id="BDI-lev"></span>
                                     <p style="font-size: 2.6rem;" id="BDI-val">
                                         <%- BDIData["value"] %>
                                     </p>
-                                    <p style="padding-top: 9px;">
-                                        <span><img src="" style="width: 50px;" id="BDI-img"></span>
+                                    <p style="padding-top: 8px;">
+                                        <span><img src="img/main/BDI-1.png" style="width: 50px;" id="BDI-img"></span>
+                                    </p>
+                                </div>
+
+                                <div class="c-project-card__meta state c-card__border-top BDI-emtpy" style="display: none;">
+                                    <p style="font-size: 1.0rem; padding: 19px 0;">
+                                        BDI 스케일을 검사한 데이터가 없습니다.
                                     </p>
                                 </div>
 
@@ -150,26 +163,28 @@
                                             <%- STAIX1Data["date"] %></span><br />
                                         <span>상태불안척도</span>
                                     </p>
-                                    <p style="font-size: 2.6rem;">
+                                    <span class="c-badge c-badge--info state-lev" id="ST1-lev"></span>
+                                    <p style="font-size: 2.6rem;" id="ST1-val">
                                         <%- STAIX1Data["value"] %>
                                     </p>
-                                    <p style="padding-top: 9px;">
-                                        <span><img src="img/main/ST1.jpg" style="width: 50px;"></span>
+                                    <p style="padding-top: 8px;">
+                                        <span><img src="img/main/ST1-1.png" style="width: 50px;" id="ST1-img"></span>
                                     </p>
                                 </div>
 
                                 <!-- 수면척도 (ISI) -->
                                 <div class="c-project-card__meta state c-card__border-top">
-                                    <p style="font-size: 1.0rem; line-height: 30px; padding-right: 24px;">
+                                    <p style="font-size: 1.0rem; line-height: 30px; padding-right: 22px;">
                                         <span>
                                             <%- ISIData["date"] %></span><br />
                                         <span>수면척도</span>
                                     </p>
-                                    <p style="font-size: 2.6rem;">
+                                    <span class="c-badge c-badge--info state-lev" id="ISI-lev"></span>
+                                    <p style="font-size: 2.6rem;" id="ISI-val">
                                         <%- ISIData["value"] %>
                                     </p>
-                                    <p style="padding-top: 9px;">
-                                        <span><img src="img/main/ISI.jpg" style="width: 50px;"></span>
+                                    <p style="padding-top: 8px;">
+                                        <span><img src="img/main/ISI-1.png" style="width: 50px;" id="ISI-img"></span>
                                     </p>
                                 </div>
                             </div>
@@ -287,7 +302,7 @@
                                 <input type="text" placeholder="검사명 검색" id="scale-name-search">
                                 <i class="fa fa-search"></i>
                             </div>
-                            <a href="#" style="font-size: 0.75rem;">READ MORE</a>
+                            <a href="/readData" style="font-size: 0.75rem;">READ MORE</a>
                         </div>
 
                         <div class="scale-data-wrapper transparent-scrollbar" style="width: 100%; max-height: 317px; overflow-y: auto;">
@@ -431,7 +446,7 @@
         })(jQuery);
 
         //처음 index 페이지로 접속 시
-        if (patientId == undefined) {
+        if (typeof patientId == typeof undefined) {
             $(".c-project-card__meta").hide();
             $(".data-graph").hide();
             $(".mood-chart").hide();
@@ -443,13 +458,61 @@
         var BDI_value = parseInt($("#BDI-val").text());
         if(BDI_value <= 9) { //9점이하
             $("#BDI-img").attr("src", "img/main/BDI-1.png");
+            $("#BDI-lev").text("Lev 1");
+            $("#BDI-lev").show();
         } else if(BDI_value <= 15) { //10 ~ 15점
             $("#BDI-img").attr("src", "img/main/BDI-2.png");
+            $("#BDI-lev").text("Lev 2");
+            $("#BDI-lev").show();
         } else if(BDI_value <= 23) { //16 ~ 23점
             $("#BDI-img").attr("src", "img/main/BDI-3.png");
+            $("#BDI-lev").text("Lev 3");
+            $("#BDI-lev").show();
         } else if(BDI_value >= 24) { //24점이상
             $("#BDI-img").attr("src", "img/main/BDI-4.png");
+            $("#BDI-lev").text("Lev 4");
+            $("#BDI-lev").show();
         }
+
+        var ST1_value = parseInt($("#ST1-val").text());
+        if(ST1_value <= 51) { //51점이하
+            $("#ST1-img").attr("src", "img/main/ST1-1.png");
+            $("#ST1-lev").text("Lev 1");
+            $("#ST1-lev").show();
+        } else if(ST1_value <= 56) { //52 ~ 56점
+            $("#ST1-img").attr("src", "img/main/ST1-2.png");
+            $("#ST1-lev").text("Lev 2");
+            $("#ST1-lev").show();
+        } else if(ST1_value <= 61) { //57 ~ 61점
+            $("#ST1-img").attr("src", "img/main/ST1-3.png");
+            $("#ST1-lev").text("Lev 3");
+            $("#ST1-lev").show();
+        } else if(ST1_value >= 62) { //62점이상
+            $("#ST1-img").attr("src", "img/main/ST1-4.png");
+            $("#ST1-lev").text("Lev 4");
+            $("#ST1-lev").show();
+        }
+
+        var ISI_value = parseInt($("#ISI-val").text());
+        if(ISI_value <= 7) { //7점이하
+            $("#ISI-img").attr("src", "img/main/ISI-1.png");
+            $("#ISI-lev").text("Lev 1");
+            $("#ISI-lev").show();
+        } else if(ISI_value <= 14) { //8 ~ 14점
+            $("#ISI-img").attr("src", "img/main/ISI-2.png");
+            $("#ISI-lev").text("Lev 2");
+            $("#ISI-lev").show();
+        } else if(ISI_value <= 21) { //15 ~ 21점
+            $("#ISI-img").attr("src", "img/main/ISI-3.png");
+            $("#ISI-lev").text("Lev 3");
+            $("#ISI-lev").show();
+        } else if(ISI_value >= 22) { //22점이상
+            $("#ISI-img").attr("src", "img/main/ISI-4.png");
+            $("#ISI-lev").text("Lev 4");
+            $("#ISI-lev").show();
+        }
+
+
 
         //환자분석 - 자살 위험성
         if (analysis_risk != 0) {

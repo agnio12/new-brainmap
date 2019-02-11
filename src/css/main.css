@@ -13638,14 +13638,13 @@ textarea.c-input {
 .delete {  opacity: 0; cursor: pointer;}
 .shows {  display: block;}
 
-/* All Tasks Overview 텍스트 */
-
 /* index - Comment table 목록 hover */
 #home-comment tbody tr:hover {  cursor: pointer; background-color: rgba(230, 234, 238, 0.3);}
 
 /* 상위 4개 BOX a 태그 */
 .c-project-card__meta a {  color: #000;  text-decoration: none;}
 .c-project-card__meta a:hover {  font-weight: bold;}
+.state-lev{  height: 25px; margin: 25px 0 0; text-transform: none; display: none;}
 
 /* DATA table */
 .data__cell--head {  color: #7f8fa4;}
@@ -13684,8 +13683,7 @@ textarea.c-input {
 .c-table__head__border-bottom {  border-bottom: 2px solid #e6eaee;}
 
 
-/* == Result ( 자가평가, 임상평가) == */
-
+/* ======= Result(자가,임상) - 공통 ======= */
 /* Comment에서 해당 점수 표시 */
 .choice-box {  background-color: rgba(136, 108, 230, 0.3);}
 
@@ -13778,3 +13776,14 @@ textarea.c-input {
 .BPRS-wrap table {  width: 100%; border-collapse: collapse; font-size: 0.875rem;}
 .BPRS-wrap table thead td {  padding: 7px 12px; border: 1px solid #e6eaee; background-color: #f5f8fa;}
 .BPRS-wrap table tbody td {  padding: 7px 12px; border: 1px solid #e6eaee;}
+
+
+/* ======= 데이터 열람 (Read-Data) ======= */
+#readData-wrap {  max-height: 726px; overflow-y: auto;}
+.record:hover {  cursor: pointer; background-color: rgba(230, 234, 238, 0.3);}
+
+
+
+
+
+

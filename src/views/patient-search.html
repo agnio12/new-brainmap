@@ -57,13 +57,15 @@
 
 2. 하단의 환자 검색을 통하여 스케일 정보를 등록할 환자를 선택해주십시오.</textarea>
                                         </div>
-                                        <label class="c-field__label" for="navbar-search-small">환자 검색</label>
+                                        <label class="c-field__label" for="patient-search-box">환자 검색</label>
                                         <div class="c-field has-icon-right u-mb-small">
                                             <span class="c-field__icon">
                                                 <i class="fa fa-search"></i>
                                             </span>
-                                            <input class="c-input s-input" id="navbar-search-small" type="text"
-                                                placeholder="선택할 환자를 검색해주십시오." style="width: 100%;">
+                                            <form id="patient-search" method="post">
+                                                <input class="c-input s-input" id="patient-search-box" type="text"
+                                                    placeholder="선택할 환자를 검색해주십시오." style="width: 100%;">
+                                            </form>
                                         </div>
                                     </div>
 
@@ -73,7 +75,7 @@
 
                                     <div class="col-lg-7">
                                         <label class="c-field__label">환자 목록</label>
-                                        <div style="height: 291px; overflow-y: auto;">
+                                        <div class="search-result" style="height: 291px; overflow-y: auto;">
                                             <table class="c-table">
                                                 <thead class="c-table__head c-table__head--slim">
                                                     <tr class="c-table__row">
@@ -84,7 +86,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="c-table__row">
+                                                    <tr class="c-table__row empty-record">
                                                         <td class="c-table__cell"></td>
                                                         <td class="c-table__cell"></td>
                                                         <td class="c-table__cell"></td>
@@ -112,15 +114,6 @@
         $(".c-sidebar__list .c-sidebar__link:contains(<%- menu%>)").addClass('is-active');
 
 
-        $("#patient-search-box").focus(function () {
-            $($(".inputUnderline")[0]).css("background-color", "#55668657");
-        })
-
-        $("#patient-search-box").blur(function () {
-            $($(".inputUnderline")[0]).css("background-color", "transparent");
-        })
-
-
         $("#patient-search").on("submit", function (event) {
             event.preventDefault();
             if ($("#patient-search-box").val() == "") {
@@ -139,7 +132,7 @@
             };
         });
 
-        $(".search-result .table").on("click", ".record", function () {
+        $(".search-result .c-table").on("click", ".record", function () {
             var id = $(this).attr("patient-id");
             var patient;
             $.each(searchResults, function (index, result) {
@@ -152,19 +145,20 @@
         })
 
         function updateResultTable(results) {
-            $(".search-result .table .record").empty();
+            $(".search-result .c-table .record").empty();
             console.log(results);
 
             $.each(results, function (index, result) {
-                var tag =
-                    "<tr class='record' patient-id='" + result["id"] + "'>" +
-                    "<td><label class='lab_info' for='name'>" + result["name"] + "</label></td>" +
-                    "<td><label class='lab_info' for='gender'>" + result["gender"] + "</label></td>" +
-                    "<td><label class='lab_info' for='birthdate'>" + result["birthdate"].substring(0, 10) + "</label></td>" +
-                    "<td><label class='lab_info' for='historynumber'>" + result["history_number"] + "</label></td>" +
-                    "</tr>"
+                var tag = `
+                    <tr class='c-table__row record' patient-id='${result["id"]}'>
+                        <td class='c-table__cell'><label class='lab_info' for='name'>${result["name"]}</label></td>
+                        <td class='c-table__cell'><label class='lab_info' for='gender'>${result["gender"]}</label></td>
+                        <td class='c-table__cell'><label class='lab_info' for='birthdate'>${result["birthdate"].substring(0, 10)}</label></td>
+                        <td class='c-table__cell'><label class='lab_info' for='historynumber'>${result["history_number"]}</label></td>
+                    </tr>`;
 
-                $(tag).insertBefore(".search-result .table .empty-record");
+                $(tag).insertBefore(".search-result .c-table .empty-record");
+                $(".search-result .c-table .empty-record").hide();
             })
         }
 
