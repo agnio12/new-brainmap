@@ -107,6 +107,11 @@ textarea {
      -moz-appearance: none;
           appearance: none; }
 
+          ::-webkit-scrollbar{width: 9px;}
+          ::-webkit-scrollbar-track {background-color:rgb(245, 245, 245);}
+          ::-webkit-scrollbar-thumb {background-color:rgb(209, 207, 207); border-radius: 15px;}
+          ::-webkit-scrollbar-thumb:hover {background: rgb(180, 180, 180);}          
+
 /* ==========================================================================
    #BASE TYPOGRAPHY
    ========================================================================== */
@@ -13784,6 +13789,14 @@ textarea.c-input {
 
 
 
+/* ======= 스케일 입력 (수동,의사) ======= */
+.search-sacle {  border-bottom: 1px solid #e6eaee;}
+.sacle-search-icon {  border: none; background: none;}
+.sacle-search-input {  padding: 0.6rem 0.8rem; border: none;}
+.c-btn--scale {  border-radius: 150px; background: #f8f8f8; color: #808792; border: 1px solid #eceff3;}
+.c-btn--scale:hover, .c-btn--scale:focus {  outline: 0; color: #000; text-decoration: none; border: 1px solid #ccced1;}
 
+
+.scale-card {  display: inline-block; width: 100%; padding: 16px 20px 20px;}
 
 

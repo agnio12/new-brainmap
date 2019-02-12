@@ -1251,6 +1251,72 @@ app.post('/search/patient', function (req, res, next) {
     })
 })
 
+//수동입력 리스트
+app.get('/manualInput', function (req, res, next) {
+    if (req.cookies.didLogin != "true") {
+        res.redirect('/login');
+        return;
+    }
+    var patientCookie = req.cookies.patient;
+    if (!patientCookie || typeof patientCookie == typeof undefined || patientCookie == "") {
+        res.redirect('/search/patient/manualInput');
+        return
+    }
+    var patientData;
+    try {
+        patientData = JSON.parse(patientCookie);
+    } catch (e) {
+        res.redirect('/search/patient/manualInput');
+        return;
+    }
+    var scaleQuery = "SELECT * FROM scale WHERE type='manual'";
+
+    pool.getConnection(function (err, connection) {
+        connection.query(scaleQuery, function (err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status(500);
+            } else {
+                res.render('manual-input-home', { innerExpress: express, ejs: ejs, innerApp: app, patient: patientData, patientId: patientData["id"], scales: JSON.stringify(rows) });
+            }
+        })
+    })
+})
+
+//의사입력 리스트
+app.get('/doctorInput', function (req, res, next) {
+    if (req.cookies.didLogin != "true") {
+        res.redirect('/login');
+        return;
+    }
+    var patientCookie = req.cookies.patient;
+    if (!patientCookie || typeof patientCookie == typeof undefined) {
+        res.redirect('/search/patient/doctorInput');
+        return;
+    }
+    var patientData;
+    try {
+        patientData = JSON.parse(patientCookie);
+    } catch (e) {
+        res.redirect('/search/patient/doctorInput');
+        return;
+    }
+    var scaleQuery = "SELECT * FROM scale WHERE type='doctor'";
+
+    pool.getConnection(function (err, connection) {
+        connection.query(scaleQuery, function (err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status(500);
+            } else {
+                res.render('doctor-input-home', { innerExpress: express, ejs: ejs, innerApp: app, patient: patientData, patientId: patientData["id"], scales: JSON.stringify(rows) });
+            }
+        })
+    })
+})
+
 // result data push
 function pushDrawItems(item, results) {
     var result = results[item.scaleCode];

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BrainMap</title>
+    <meta name="description" content="Dashboard UI Kit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/main.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+    <style>
+
+    </style>
+</head>
+
+<body class="o-page">
+
+    <% include ./temp/menu.html %>
+
+    <main class="o-page__content">
+
+        <% include ./temp/header.html %>
+
+        <div class="c-toolbar u-mb-small">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="row">
+                    <div class="col-6 col-md-2 c-toolbar__state">
+                        <div class="c-field has-addon-left search-sacle">
+                            <span class="c-field__addon sacle-search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <input class="c-input sacle-search-input" type="text" placeholder="스케일 검색">
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 c-toolbar__state">
+                        <div class="c-dropdown dropdown">
+                            <button class="c-btn c-btn--scale has-dropdown dropdown-toggle" id="dropdownMenuButton5"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">테마 선택</button>
+
+                            <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton5">
+                                <a class="c-dropdown__item dropdown-item" href="#">성인기본평가</a>
+                                <a class="c-dropdown__item dropdown-item" href="#">불안평가</a>
+                                <a class="c-dropdown__item dropdown-item" href="#">성인ADHD평가</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 c-toolbar__state">
+                        <a class="c-btn c-btn--scale" href="#">스케일 리스트</a>
+                    </div>
+                </div><!-- // .row -->
+            </div><!-- // -->
+        </div><!-- // .c-toolbar -->
+
+        <% var scales = JSON.parse(scales); %>
+
+        <div class="container-fluid">
+
+
+            <div class="row">
+                <!-- 성인용 -->
+                <div class="col-lg-6 u-ml-auto u-mb-medium">
+                    <div class="c-card u-p-medium">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="u-mb-xsmall">성인</h4>
+                                <p class="u-text-mute u-mb-medium">
+                                    성인용 스케일 검사 목록입니다.&ensp;검사할 스케일을 선택해주십시오.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row" style="height: 590px; overflow-y: auto;">
+                            <% for (i=0 ; i<scales.length ; i++) { %>
+                            <% var scale = scales[i] %>
+                            <% if(scale.age_group == "adult") { %>
+                            <% var koreanFullName = scale.korean_full_name.replace(/ /g, '') %>
+                            <% var koreanAbbrName = scale.korean_abbr_name.replace(/ /g, '') %>
+                            <% var kor_title = scale.korean_abbr_name %>
+                            <% var eng_title = scale.english_abbr_name %>
+                            <% var url = "/input/" + scale.code %>
+                            <div class="col-md-4">
+                                <article class="c-plan" style="padding: 4px 0 0 0;">
+                                    <a href=<%-url%> class="scale-card" korean-abbr-name=<%-koreanAbbrName%>
+                                        english-abbr-name=<%-eng_title%>>
+                                        <span class="u-h6"><%- kor_title %></span>
+                                        <span class="c-plan__divider"></span>
+                                        <span class="u-text-mute u-h5"><%- eng_title %></span>
+                                    </a>
+                                </article>
+                            </div>
+                            <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 아동용 -->
+                <div class="col-lg-6 u-mr-auto u-mb-medium">
+                    <div class="c-card u-p-medium">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="u-mb-xsmall">청소년 · 아동</h4>
+                                <p class="u-text-mute u-mb-medium">
+                                    청소년 · 아동용 스케일 검사 목록입니다.&ensp;검사할 스케일을 선택해주십시오.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row" style="height: 590px; overflow-y: auto;">
+                            <% for (i=0 ; i<scales.length ; i++) { %>
+                            <% var scale = scales[i] %>
+                            <% if(scale.age_group == "youth") { %>
+                            <% var koreanFullName = scale.korean_full_name.replace(/ /g, '') %>
+                            <% var koreanAbbrName = scale.korean_abbr_name.replace(/ /g, '') %>
+                            <% var kor_title = scale.korean_abbr_name %>
+                            <% var eng_title = scale.english_abbr_name %>
+                            <% var url = "/input/" + scale.code %>
+                            <div class="col-md-4">
+                                <article class="c-plan" style="padding: 4px 0 0 0;">
+                                    <a href=<%-url%> class="scale-card" korean-abbr-name=<%-koreanAbbrName%>
+                                        english-abbr-name=<%-eng_title%>>
+                                        <span class="u-h6"><%- kor_title %></span>
+                                        <span class="c-plan__divider"></span>
+                                        <span class="u-text-mute u-h5"><%- eng_title %></span>
+                                    </a>
+                                </article>
+                            </div>
+                            <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- // .row -->
+        </div><!-- // .container -->
+    </main>
+
+    <script src="/js/main.min.js"></script>
+    <script src="/js/jquery-confirm.js"></script>
+
+    <script>
+        $(".c-sidebar__link").removeClass("is-active");
+        $(".c-sidebar__list .c-sidebar__link:contains('수동 입력')").addClass('is-active');
+        $(".c-navbar").removeClass("u-mb-medium");
+
+        //스케일 검색
+        $(".search-sacle .sacle-search-input").on("input", function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+            }
+            var keyword = $(".search-sacle .sacle-search-input").val()
+            if (keyword == "") {
+                filterScalesWithKeyword("")
+                return;
+            }
+            filterScalesWithKeyword(keyword);
+        });
+
+
+        //스케일 검색 시 해당 스케일 효과주기
+        function filterScalesWithKeyword(keyword) {
+            if (keyword == "" || !keyword || typeof keyword === typeof undefined) {
+                $(".scale-card").css("outline", "0px")
+                return;
+            }
+
+            //영문명과 한글명 둘다 입력 시 검색 가능
+            var korNameMatches = $("a[korean-abbr-name*='" + keyword + "']");
+            var engNameMatches = $("a[english-abbr-name*='" + keyword + "']");
+            var scalesCards = $(".scale-card");
+            scalesCards.each(function (index, scaleCard) {
+                if ($.inArray(scaleCard, korNameMatches) == -1 && $.inArray(scaleCard, engNameMatches) == -1) {
+                    $(scaleCard).css("outline", "0px")
+                } else {
+                    $(scaleCard).css("outline", "5px solid rgba(67, 126, 177, 0.3)")
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
